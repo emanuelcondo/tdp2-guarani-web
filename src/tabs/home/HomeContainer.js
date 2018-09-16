@@ -4,7 +4,7 @@ import React,{Component} from 'react';
 
 class HomeContainer extends Component {
   render(){
-    return <h1>HomeContainer </h1>
+    return <h1>Home Container</h1>
   }
 }
 

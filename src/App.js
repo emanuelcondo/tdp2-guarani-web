@@ -1,25 +1,20 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import HomeContainer from '../src/tabs/home/HomeContainer'
+import { BrowserRouter as Router, Route,Switch } from "react-router-dom";
+import AdminContainer from './tabs/admin/AdminContainer'
+import TeacherContainer from './tabs/teacher/TeacherContainer';
+import HomeContainer from './tabs/home/HomeContainer';
 import NotFound from '../src/common/NotFound'
-import TeacherContainer from '../src/tabs/teacher/TeacherContainer'
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-      <div>
-        <Switch>
-          <Route exact path="/" component={HomeContainer} />
-          <Route exact path="/teacher" component={TeacherContainer} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
-    </Router>
-    );
-  }
-}
+const App = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={HomeContainer} />
+      <Route path="/admin" component={AdminContainer} />
+      <Route path="/teacher" component={TeacherContainer} />
+      <Route component={NotFound}/>
+    </Switch>
+  </Router>
+);
 
 export default App;

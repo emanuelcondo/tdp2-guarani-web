@@ -5,7 +5,7 @@ import * as teacherService from './TeacherService';
 
 const columns = [
   {
-    title:'Número',
+    title:'Número de Curso',
     dataIndex:'numero',
     key:'numero'
   },
@@ -26,13 +26,25 @@ const columns = [
   dataIndex:'anio',
   key:'anio'
 },{
-  title:'Cantidad de Alumnos',
+  title:'Cantidad de Inscriptos',
   dataIndex:'cantidadAlumnos',
   key:'cantidadAlumno'
 },{
   title:'Horario',
   dataIndex:'horario',
   key:'horario'
+},{
+  title:'Cantidad de Condicionales',
+  dataIndex:'cantidadDeCondicionales',
+  key:'cantidadDeCondicionales'
+},{
+  title:'Ayudantes de Primera',
+  dataIndex:'ayudantesDePrimera',
+  key:'ayudantesDePrimera'
+},{
+  title:'Ayudantes de Segunda',
+  dataIndex:'ayudantesDeSegunda',
+  key:'ayudantesDeSegunda'
 }
 ];
 

@@ -12,6 +12,8 @@ class TeacherContainer extends Component {
   
   render(){
     return (
+      <div>
+      <h3> Bienvenido Juan Cand </h3>
     <Tabs defaultActiveKey="1" onChange={this.callback}>
       <TabPane 
         tab={<span><Icon type="database"/>Mis Cursos</span>} 
@@ -32,6 +34,7 @@ class TeacherContainer extends Component {
         Content of Tab Pane 2
       </TabPane>
     </Tabs>
+    </div>
     )
   }
 }

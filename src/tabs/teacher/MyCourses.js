@@ -1,36 +1,68 @@
 import React,{Component} from 'react';
 import {Table} from 'antd';
+import * as teacherService from './TeacherService';
 
-const dataSource = [{
-  key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
-}, {
-  key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
-}];
 
-const columns = [{
-  title: 'Name',
+const columns = [
+  {
+    title:'Número de Curso',
+    dataIndex:'numero',
+    key:'numero'
+  },
+  {
+  title: 'Docente',
   dataIndex: 'name',
   key: 'name',
 }, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
+  title: 'JTP',
+  dataIndex: 'jtp',
+  key: 'jtp',
 }, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}];
+  title: 'Periodo Lectivo',
+  dataIndex: 'cuatrimestre',
+  key: 'cuatrimestre',
+},{
+  title:'Año',
+  dataIndex:'anio',
+  key:'anio'
+},{
+  title:'Cantidad de Inscriptos',
+  dataIndex:'cantidadDeInscriptos',
+  key:'cantidadAlumno'
+},{
+  title:'Horario',
+  dataIndex:'horario',
+  key:'horario'
+},{
+  title:'Cantidad de Condicionales',
+  dataIndex:'cantidadDeCondicionales',
+  key:'cantidadDeCondicionales'
+},{
+  title:'Ayudantes de Primera',
+  dataIndex:'ayudantesDePrimera',
+  key:'ayudantesDePrimera'
+},{
+  title:'Ayudantes de Segunda',
+  dataIndex:'ayudantesDeSegunda',
+  key:'ayudantesDeSegunda'
+},
+{
+  title:'Sede',
+  dataIndex:'sede',
+  key:'sede' 
+},
+{
+  title:'Aula',
+  dataIndex:'aula',
+  key:'aula'
+}
+];
 
 
 
 class MyCourses extends Component {
   render(){
+    const dataSource = teacherService.getCoursesOfTeacher();
     return<Table dataSource={dataSource} columns={columns} />
   }
 }

@@ -1,36 +1,46 @@
 import React,{Component} from 'react';
 import {Table} from 'antd';
+import * as teacherService from './TeacherService';
 
-const dataSource = [{
-  key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
-}, {
-  key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
-}];
 
-const columns = [{
-  title: 'Name',
+const columns = [
+  {
+    title:'Número',
+    dataIndex:'numero',
+    key:'numero'
+  },
+  {
+  title: 'Docente',
   dataIndex: 'name',
   key: 'name',
 }, {
-  title: 'Age',
+  title: 'JTP',
   dataIndex: 'age',
   key: 'age',
 }, {
-  title: 'Address',
+  title: 'Cuatrimestre',
   dataIndex: 'address',
   key: 'address',
-}];
+},{
+  title:'Año',
+  dataIndex:'anio',
+  key:'anio'
+},{
+  title:'Cantidad de Alumnos',
+  dataIndex:'cantidadAlumnos',
+  key:'cantidadAlumno'
+},{
+  title:'Horario',
+  dataIndex:'horario',
+  key:'horario'
+}
+];
 
 
 
 class MyCourses extends Component {
   render(){
+    const dataSource = teacherService.getCoursesOfTeacher();
     return<Table dataSource={dataSource} columns={columns} />
   }
 }

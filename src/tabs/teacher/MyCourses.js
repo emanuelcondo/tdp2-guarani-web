@@ -15,19 +15,19 @@ const columns = [
   key: 'name',
 }, {
   title: 'JTP',
-  dataIndex: 'age',
-  key: 'age',
+  dataIndex: 'jtp',
+  key: 'jtp',
 }, {
-  title: 'Cuatrimestre',
-  dataIndex: 'address',
-  key: 'address',
+  title: 'Periodo Lectivo',
+  dataIndex: 'cuatrimestre',
+  key: 'cuatrimestre',
 },{
   title:'Año',
   dataIndex:'anio',
   key:'anio'
 },{
   title:'Cantidad de Inscriptos',
-  dataIndex:'cantidadAlumnos',
+  dataIndex:'cantidadDeInscriptos',
   key:'cantidadAlumno'
 },{
   title:'Horario',
@@ -45,6 +45,16 @@ const columns = [
   title:'Ayudantes de Segunda',
   dataIndex:'ayudantesDeSegunda',
   key:'ayudantesDeSegunda'
+},
+{
+  title:'Sede',
+  dataIndex:'sede',
+  key:'sede' 
+},
+{
+  title:'Aula',
+  dataIndex:'aula',
+  key:'aula'
 }
 ];
 

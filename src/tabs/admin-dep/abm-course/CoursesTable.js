@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Table} from 'antd';
+import {Table,Button} from 'antd';
 
 
 
@@ -72,8 +72,14 @@ const columns = [
   key:'aula'
 },
 {
-  title:'Actions'
-}
+  title:'Actions',
+  render : (idx) => (
+  <div>
+    <Button style={{marginRight:'5px'}}icon="edit"/>
+    <Button icon="delete"/>
+  </div> 
+  )
+  }
 ];
 
 
@@ -81,7 +87,9 @@ const columns = [
 class CoursesTable extends Component {
   render(){
     const dataSource = data;
-    return<Table dataSource={dataSource} columns={columns} />
+    return<Table 
+    dataSource={dataSource} 
+    columns={columns} />
   }
 }
 

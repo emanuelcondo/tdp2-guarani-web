@@ -3,26 +3,26 @@ import {Table} from 'antd';
 
 const dataSource = [{
   key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
+  name: 'Periodo de finales',
+  age: '19-07-2017',
+  address: '24-07-2017'
 }, {
   key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
+  name: 'Periodo inscripcion',
+  age: '27-07-2017',
+  address: '03-08-2017'
 }];
 
 const columns = [{
-  title: 'Name',
+  title: 'Periodo',
   dataIndex: 'name',
   key: 'name',
 }, {
-  title: 'Age',
+  title: 'Dia de arranque',
   dataIndex: 'age',
   key: 'age',
 }, {
-  title: 'Address',
+  title: 'Dia de finalización',
   dataIndex: 'address',
   key: 'address',
 }];

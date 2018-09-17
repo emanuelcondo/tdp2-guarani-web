@@ -23,7 +23,7 @@ class SelectPeriod extends Component {
   return <Select
     showSearch
     style={{ width: 300 ,marginRight:'50px'}}
-    placeholder="Select a person"
+    placeholder="Selecionar periodo"
     optionFilterProp="children"
     onChange={this.handleChange}
     onFocus={this.handleFocus}

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Tabs ,Icon} from 'antd';
-
+import DefinePeriod from './DefinePeriod'
 const TabPane = Tabs.TabPane;
 
 class AdminContainer extends Component {
@@ -11,6 +11,7 @@ class AdminContainer extends Component {
           tab={<span><Icon type="database"/>Definir periodos</span>} 
           key="1"
           >
+          <DefinePeriod/>
         </TabPane>
         <TabPane 
           tab={<span><Icon type="plus"/>Agregar Alumno a Curso</span>} 

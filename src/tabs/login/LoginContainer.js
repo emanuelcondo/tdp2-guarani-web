@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
-import { Form, Icon, Input, Button, Checkbox,Card ,Row} from 'antd';
+import { Form, Icon, Input, Button, Checkbox,Card ,Row,Col} from 'antd';
 import './style/style.css'
+
 
 const FormItem = Form.Item;
     
@@ -16,31 +17,37 @@ class NormalLoginForm extends Component {
   
   render() {
         const { getFieldDecorator } = this.props.form;
-        return <Row type="flex" justify="center">
-        <Card style={{ width: 350 }}>
+        return  <div style={{height:500,marginTop:100}}>
+        <Row type="flex" justify="space-around" align="middle">
+        <Card 
+        title={<div style={{width:'100%'}}><div><Row type="flex" justify="center" align="top"><Col>SIU GUARANI</Col></Row>
+        </div><div><Row type="flex" justify="center" align="top"><Col>Ingrese sus datos</Col></Row></div></div>}
+        style={{width: 300,boxShadow:' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}
+        >
            <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
-                rules: [{ required: true, message: 'Please input your username!' }],
+                rules: [{ required: true, message: 'Por favor, ingrese su nombre de usuario!' }],
               })(
-                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Usuario" />
               )}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
+                rules: [{ required: true, message: 'Por favor, ingrese su contraseña!' }],
               })(
-                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Contraseña" />
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit" className="login-form-button">
-                Log in
+              <Button type="primary" htmlType="submit" style={{width:'100%'}}>
+                Ingresar
               </Button>
             </FormItem>
           </Form>
           </Card>
         </Row>
+        </div> 
       }
     }
 

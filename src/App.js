@@ -5,12 +5,12 @@ import AdminContainer from './tabs/admin/AdminContainer'
 import TeacherContainer from './tabs/teacher/TeacherContainer';
 import NotFound from '../src/common/NotFound'
 import AdminDepContainer from '../src/tabs/admin-dep/AdminDepContainer'
-import LoginContainer from './tabs/login/LoginContainer'
+import WrappedNormalLoginForm from './tabs/login/LoginContainer'
 
 const App = () => (
   <Router basename="siu-guarani-web">
     <Switch>
-      <Route path="/login" component={LoginContainer}/>
+      <Route path="/login" component={WrappedNormalLoginForm}/>
       <Route path="/" render={() => <Redirect to="/login" />}/>
       <Route path="/admin" component={AdminContainer} />
       <Route path="/teacher" component={TeacherContainer} />

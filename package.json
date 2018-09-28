@@ -17,9 +17,5 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.1"
   }
 }

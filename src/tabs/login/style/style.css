@@ -6,6 +6,14 @@
   float: right;
 }
 
-#components-form-demo-normal-login .login-form-button {
+.login-form-button {
   width: 100%;
+}
+
+.div-margin-top{
+  margin-top: 100px;
+}
+
+.div-height{
+  height: 700px;
 }

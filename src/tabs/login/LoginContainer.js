@@ -1,23 +1,35 @@
 import React,{Component} from 'react';
 import { Form, Icon, Input, Button, Checkbox,Card ,Row,Col} from 'antd';
 import './style/style.css'
+import * as AuthService from './service/AuthService'
 
 
 const FormItem = Form.Item;
     
 class NormalLoginForm extends Component {
+
+  state = {
+    loginButtonLoading:false
+  }
+
   handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
+            this.setState({loginButtonLoading:true})
+            AuthService.authUser(values).then(()=>{
+              console.log('the user is logged');  
+              this.setState({loginButtonLoading:false})
+            }).catch((e)=>{
+              console.log('the is not logged');
+            })
           }
         });
   }
   
   render() {
         const { getFieldDecorator } = this.props.form;
-        return  <div style={{height:500,marginTop:100}}>
+        return  <div className="div-margin-top div-height">
         <Row type="flex" justify="space-around" align="middle">
         <Card 
         title={<div style={{width:'100%'}}><div><Row type="flex" justify="center" align="top"><Col>SIU GUARANI</Col></Row>
@@ -40,7 +52,12 @@ class NormalLoginForm extends Component {
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit" style={{width:'100%'}}>
+              <Button 
+                type="primary" 
+                htmlType="submit" 
+                loading={this.state.loginButtonLoading} 
+                className="login-form-button"
+              >
                 Ingresar
               </Button>
             </FormItem>

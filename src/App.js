@@ -8,7 +8,7 @@ import AdminDepContainer from '../src/tabs/admin-dep/AdminDepContainer'
 import WrappedNormalLoginForm from './tabs/login/LoginContainer'
 
 const App = () => (
-  <Router basename="siu-guarani-web">
+  <Router basename="/siu-guarani-web">
     <Switch>
       <Route path="/login" component={WrappedNormalLoginForm}/>
       <Route path="/" render={() => <Redirect to="/login" />}/>

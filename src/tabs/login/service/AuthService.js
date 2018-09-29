@@ -1,4 +1,6 @@
-const className = "AUTH-SERVICE-"
+import server from '../../../Server'
+
+const className = "AUTH-SERVICE"
 
 export const authUser = (auth) => {
   console.log(className+'login user',auth);

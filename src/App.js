@@ -15,7 +15,7 @@ const App = () => (
         () => {
         console.log('localStorage',localStorage.getItem('rol'));
         if (localStorage.getItem('rol') === null){
-          console.log('redirect to login');
+          console.log('App - redirect to login');
           return <Redirect to="/login" />
         }
         console.log('App - Redirect to to teacher');

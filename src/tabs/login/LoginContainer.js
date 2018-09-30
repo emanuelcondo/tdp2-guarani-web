@@ -38,7 +38,7 @@ class NormalLoginForm extends Component {
         >
            <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
-              {getFieldDecorator('userName', {
+              {getFieldDecorator('usuario', {
                 rules: [{ required: true, message: 'Por favor, ingrese su nombre de usuario!' }],
               })(
                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Usuario" />

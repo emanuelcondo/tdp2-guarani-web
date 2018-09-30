@@ -90,7 +90,7 @@ class NormalLogin extends Component {
             </FormItem>
             <FormItem>
               <div style={{display:this.state.errorMessageDisplay,color:'red',fontSize:'9px'}}>
-                  La contraseña o el usuario es incorrecto. Vuela a intentarlo.
+                  La contraseña o el usuario es incorrecto. Vuelva a intentarlo.
               </div>
               <Button 
                 type="primary" 

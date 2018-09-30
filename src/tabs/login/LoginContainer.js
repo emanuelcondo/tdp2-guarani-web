@@ -28,15 +28,15 @@ class LoginContainer extends Component {
 
   handlerAuth = (authInfo) =>{
     AuthService.authUser(authInfo).then((response)=>{
-      console.log('the user is logged');  
-      console.log('response',response);
+      console.log('LoginContainer - the user is logged');  
+      console.log('LoginContainer - response',response);
       this.setState({loginButtonLoading:false})
       localStorage.setItem('token',response.data.token);
       localStorage.setItem('rol',response.data.rol)
       this.setState({userIsLogged:true})
     }).catch((e)=>{
-      console.log('the is not logged');
-      console.log('error',e);
+      console.log('LoginContainer -  the is not logged');
+      console.log('LoginContainer -  error',e);
       
     })
   }

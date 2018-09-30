@@ -18,7 +18,7 @@ const App = () => (
           console.log('redirect to login');
           return <Redirect to="/login" />
         }
-        console.log('redirect to to teacher');
+        console.log('App - Redirect to to teacher');
         return <TeacherContainer/> 
       }
       }/>

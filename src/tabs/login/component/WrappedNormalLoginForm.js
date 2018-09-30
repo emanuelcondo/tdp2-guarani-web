@@ -2,21 +2,67 @@ import React,{Component} from 'react';
 import { Form, Icon, Input, Button, Checkbox,Card ,Row,Col} from 'antd';
 import '../style/style.css';
 
+import * as AuthService from '../service/AuthService'
 
 const FormItem = Form.Item;
 
-
+const SUCESS_COLOR = 'green'
+const ERROR_COLOR = 'red'
+const NORMAL_COLOR = 'blue'
 
 class NormalLogin extends Component {
 
+  state = {
+    loginButtonLoading:false,
+    loginButtonColor:NORMAL_COLOR,
+    loginButtonMessage:'Ingresar',
+    loginButtonIcon:'none',
+    errorMessageDisplay:'none'
+
+  }
+
   handleSubmit = (e) => {
+    this.setState({loginButtonLoading:true})
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.loginUser(values)
+        setTimeout(()=>{this.loginUser(values)},2000)
       }
     });
   }
+
+  rollBackButton = () => {
+    this.setState({loginButtonLoading:false,
+      loginButtonColor:NORMAL_COLOR,
+      loginButtonMessage:'Ingresar',
+      loginButtonIcon:'none',})
+  }
+
+  saveAuthData = (data) => {
+    console.log('NormalLogin - save auth data');
+    localStorage.setItem('token',data.token);
+    localStorage.setItem('rol',data.rol);
+  }
+
+  loginUser = (authInfo) => {
+    AuthService.authUser(authInfo).then((response)=>{
+      console.log('NormalLogin - the user is logged');  
+      console.log('NormalLogin - response',response);
+      this.setState({loginButtonLoading:false})
+      this.setState({loginButtonColor:SUCESS_COLOR,loginButtonIcon:'check',loginButtonMessage:''})
+      this.saveAuthData(response.data)
+      //aviso el container que el login fue correcto
+      setTimeout(()=>{this.props.userLogged()},1000)
+    }).catch((e)=>{
+      console.log('NormalLogin -  the is not logged');
+      console.log('NormalLogin -  error',e);
+      this.setState({loginButtonLoading:false})
+      this.setState({loginButtonColor:ERROR_COLOR,loginButtonIcon:'close',loginButtonMessage:'',errorMessageDisplay:'block'})
+      setTimeout(this.rollBackButton,1000);
+    })
+  }
+
+  
 
   render(){
     const { getFieldDecorator } = this.props.form;
@@ -43,13 +89,18 @@ class NormalLogin extends Component {
               )}
             </FormItem>
             <FormItem>
+              <div style={{display:this.state.errorMessageDisplay,color:'red',fontSize:'9px'}}>
+                  La contraseña o el usuario es incorrecto. Vuela a intentarlo.
+              </div>
               <Button 
                 type="primary" 
-                htmlType="submit" 
-                loading={this.props.loginButtonLoading} 
+                htmlType="submit"
+                loading={this.state.loginButtonLoading} 
                 className="login-form-button"
+                style={{backgroundColor:this.state.loginButtonColor}}
+                icon={this.state.loginButtonIcon}
               >
-                Ingresar
+                {this.state.loginButtonMessage}
               </Button>
             </FormItem>
           </Form>

@@ -35,10 +35,11 @@ export default class ConditionalModal extends Component{
     console.log(e);
     this.setState({confirmLoading:true})
     TeacherService.addConditionalStudent(this.state.idCourse,this.state.idAlumno).then(()=>{
-      this.props.update()
       message.success('El alumno fue agregado de manera correcta')
       this.setState({confirmLoading:false})
       setTimeout(()=>{this.setState({modalInscripcionAlumnoCondicional:false})},1000);
+      this.props.update();
+      this.props.updateCourseToShow();
     }).catch(()=>{
       message.error('No se puedo agregar al alumno')
       this.setState({confirmLoading:false})
@@ -82,7 +83,7 @@ export default class ConditionalModal extends Component{
           return <Button 
           key={idx}
           onClick={()=>{
-            this.setState({modalInscripcionAlumnoCondicional:true,studentName:name,idAlumno:row._id})}
+            this.setState({modalInscripcionAlumnoCondicional:true,studentName:name,idAlumno:row.alumno._id})}
           }
           >
             Inscribir alumno

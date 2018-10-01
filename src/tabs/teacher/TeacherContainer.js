@@ -22,7 +22,8 @@ class TeacherContainer extends Component {
     courseToShow:[],
     disableConditionalStudentButton:true,
     conditionalModal:false,
-    conditionalStudents:[]
+    conditionalStudents:[],
+    asignatureSelected : ''
   }
   
 
@@ -46,6 +47,7 @@ class TeacherContainer extends Component {
   }
 
   getAsignatureNames = () => {
+    console.log('TeacherContainer - getAsignaturesName');
     return TeacherService.getAsignatures().then((response)=>{
       const asignatureNames = response.data.data.cursos.map((course)=>course.materia.nombre);
       this.setState({nombreMaterias:asignatureNames})
@@ -66,6 +68,14 @@ class TeacherContainer extends Component {
 
   getAsignaturesNamesOption = () => {
     return this.state.nombreMaterias.map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
+  }
+
+
+  setCoursesToShow = () => {
+    console.log('TeacherContainer - setCoursesToShow');
+    const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === this.state.asignatureSelected)
+    console.log('courseToShow',courseToShow);
+    this.setState({courseToShow,disableConditionalStudentButton:false})
   }
   
   getNumerosDeCursos = () => {
@@ -125,9 +135,7 @@ class TeacherContainer extends Component {
                   placeholder="Selecciona una materia"
                   style={{width:'300px'}}
                   onSelect={(value)=>{
-                    const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === value)
-                    console.log('courseToShow',courseToShow);
-                    this.setState({courseToShow,disableConditionalStudentButton:false})
+                    this.setState({asignatureSelected:value},this.setCoursesToShow)
                   }
                 }
                 >
@@ -156,6 +164,7 @@ class TeacherContainer extends Component {
               data={this.state.conditionalStudents}
               courses={this.getNumerosDeCursos()}
               update = {this.getAsignatureNames}
+              updateCourseToShow={this.setCoursesToShow}
             />
             </Content>
           </Layout>

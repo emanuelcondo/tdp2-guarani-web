@@ -62,7 +62,7 @@ class TeacherContainer extends Component {
         })
       });
       console.log('TeacherContainers - allCursos',response.data.data.cursos[0]);
-      this.setState({allCourses:response.data.data.cursos})
+      this.setState({allCourses:response.data.data.cursos},this.setCoursesToShow)
     })
   }
 

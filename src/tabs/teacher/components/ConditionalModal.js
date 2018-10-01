@@ -40,7 +40,8 @@ export default class ConditionalModal extends Component{
       this.setState({confirmLoading:false})
       setTimeout(()=>{this.setState({modalInscripcionAlumnoCondicional:false})},1000);
     }).catch(()=>{
-
+      message.error('No se puedo agregar al alumno')
+      this.setState({confirmLoading:false})
     })
     
 
@@ -133,7 +134,7 @@ export default class ConditionalModal extends Component{
             }
           }
         >
-        {this.props.courses.map((course)=>{return <Option value={course.id}>000{course.numero}</Option>})}
+        {this.props.courses.map((course)=>{return <Option key={course.id} value={course.id}>000{course.numero}</Option>})}
         </Select>
         </Modal>
         </div>

@@ -17,10 +17,7 @@ export const getMoreInformationFromCourseById = (courseId) => {
 
 
 export const addConditionalStudent = (idCourse,idStudent) => {
-  //return server.get('docentes/mis-cursos/'+idCourse+'/inscribir-alumnos',{
-  //  'alumnos':[idStudent]
-  //})
-  return new Promise((resolve,reject)=>{
-    setTimeout(()=>{resolve()},2000)
+  return server.post('docentes/mis-cursos/'+idCourse+'/inscribir-alumnos',{
+    'alumnos':[idStudent]
   })
 }

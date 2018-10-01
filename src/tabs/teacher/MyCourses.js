@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Table, Button,Modal} from 'antd';
+import {Table, Button,Modal,Alert} from 'antd';
 import * as teacherService from './service/TeacherService';
 
 
@@ -28,7 +28,7 @@ const columns = [
   dataIndex:'cantidadDeInscriptos',
   key:'cantidadAlumno',
   render:(value,row,idx)=>{
-    return '40-mock'
+    return row.cantidadInscriptos
   }
 
 },{
@@ -48,22 +48,36 @@ const columns = [
         const columns = [
           {
             title:'Padron',
-            index:'padron'
-          },{
-            title:'Carrera',
-            padron:'carrera'
+            index:'padron',
+            dataIndex:'alumno.legajo'
           },{
             title:'Nombre y Apellido',
-            padron:'padron'
+            index:'nombre',
+            render:(value,row,index)=>{
+              return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+            }
           },{
             title:'Prioridad',
-            padron:'padron'
+            index:'prioridad',
+            dataIndex:'alumno.prioridad'
+          },{
+            title:'Condicional NO',
+            index:'siEsCondicional',
+            render:(value,row,idx)=>{
+              if (row.exCondicional === true){
+                return <Alert message="Inscripto por docente" type="info" />
+              }
+              return <div></div>
+            }
           }
       ]
         Modal.info({
           title:'Alumnos Inscriptos',
           content:<Table
             columns={columns}
+            dataSource={row.regulares}
+            rowKey={(row)=>(row.alumno.legajo)}
+            pagination={false}
           />,
           width:'1000px'
         })

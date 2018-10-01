@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import './style/style.css'
-import * as AuthService from './service/AuthService'
 import WrappedNormalLoginForm from './component/WrappedNormalLoginForm'
 import {Redirect} from "react-router-dom";
     

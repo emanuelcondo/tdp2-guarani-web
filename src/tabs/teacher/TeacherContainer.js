@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
-import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button,Navbar} from 'antd';
+import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button} from 'antd';
 import MyCourses from './MyCourses'
 import * as TeacherService from './service/TeacherService'
 import logo from '../../resource/logo.png'
+import ConditionalModal from './components/ConditionalModal'
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -10,7 +11,7 @@ const ButtonGroup = Button.Group;
 
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const {Content } = Layout;
 
 class TeacherContainer extends Component {
 
@@ -18,13 +19,18 @@ class TeacherContainer extends Component {
     teacherName:'teacher name',
     nombreMaterias:[],
     allCourses:[],
-    courseToShow:[]
+    courseToShow:[],
+    disableConditionalStudentButton:true,
+    conditionalModal:false,
+    conditionalStudents:[]
   }
   
 
 
 
-
+  setModal = (value) => {
+    this.setState({conditionalModal:value})
+  }
 
   callback = (key) => {
     console.log(key);
@@ -43,15 +49,32 @@ class TeacherContainer extends Component {
     return TeacherService.getAsignatures().then((response)=>{
       const asignatureNames = response.data.data.cursos.map((course)=>course.materia.nombre);
       this.setState({nombreMaterias:asignatureNames})
+      console.log('TeacherContainer - courses',response.data.data.cursos);
+      response.data.data.cursos.forEach(course => {
+         TeacherService.getMoreInformationFromCourseById(course._id).then((response)=>{
+           console.log('response,obtener infor curso',response.data.data);
+           
+           course['regulares'] = response.data.data.regulares
+           course['condicionales'] = response.data.data.condicionales
+           this.setState({conditionalStudents:response.data.data.condicionales})
+        })
+      });
+      console.log('TeacherContainers - allCursos',response.data.data.cursos[0]);
       this.setState({allCourses:response.data.data.cursos})
     })
   }
 
   getAsignaturesNamesOption = () => {
-    return this.state.nombreMaterias.map((name)=>(<Option value={name}> {name} </Option>) )
+    return this.state.nombreMaterias.map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
   }
   
-
+  getNumerosDeCursos = () => {
+    console.log('getNumerosDeCursos',this.state.courseToShow);
+    return this.state.courseToShow.map((course)=>{return {
+      'numero':course.comision,
+      'id':course._id
+    }})
+  }
   componentDidMount(){
     this.getTeacherName()
     this.getAsignatureNames();
@@ -104,7 +127,7 @@ class TeacherContainer extends Component {
                   onSelect={(value)=>{
                     const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === value)
                     console.log('courseToShow',courseToShow);
-                    this.setState({courseToShow})
+                    this.setState({courseToShow,disableConditionalStudentButton:false})
                   }
                 }
                 >
@@ -113,9 +136,27 @@ class TeacherContainer extends Component {
 
               </div>
             </Row>
+            <Row type="flex" justify="end">
+            <Button
+            disabled={this.state.disableConditionalStudentButton}
+            style={{margin:'20px'}}
+            onClick={()=>{
+              this.setState({conditionalModal:true})
+            }}
+            >
+              Inscribir alumno condicional
+            </Button>
+            </Row>
               <MyCourses
                 data={this.state.courseToShow}
               />
+              <ConditionalModal
+              visible={this.state.conditionalModal}
+              show={this.setModal}
+              data={this.state.conditionalStudents}
+              courses={this.getNumerosDeCursos()}
+              update = {this.getAsignatureNames}
+            />
             </Content>
           </Layout>
         </Layout>

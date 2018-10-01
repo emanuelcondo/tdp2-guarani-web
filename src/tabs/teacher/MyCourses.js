@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Table} from 'antd';
+import {Table, Button,Modal,Alert} from 'antd';
 import * as teacherService from './service/TeacherService';
 
 
@@ -26,7 +26,11 @@ const columns = [
 },{
   title:'Cantidad de Inscriptos',
   dataIndex:'cantidadDeInscriptos',
-  key:'cantidadAlumno'
+  key:'cantidadAlumno',
+  render:(value,row,idx)=>{
+    return row.cantidadInscriptos
+  }
+
 },{
   title:'Ayudantes de Primera',
   dataIndex:'ayudantesDePrimera',
@@ -35,11 +39,53 @@ const columns = [
   title:'Ayudantes de Segunda',
   dataIndex:'ayudantesDeSegunda',
   key:'ayudantesDeSegunda'
-},
-{
-  title:'Sede',
-  dataIndex:'sede.nombre',
-  key:'sede' 
+},{
+    title:'Alumnos Inscriptos',
+    render:(value,row,idx)=>{
+      console.log('row.inscriptos',row);
+      return <Button
+      onClick={()=>{
+        const columns = [
+          {
+            title:'Padron',
+            index:'padron',
+            dataIndex:'alumno.legajo'
+          },{
+            title:'Nombre y Apellido',
+            index:'nombre',
+            render:(value,row,index)=>{
+              return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+            }
+          },{
+            title:'Prioridad',
+            index:'prioridad',
+            dataIndex:'alumno.prioridad'
+          },{
+            title:'Condicional NO',
+            index:'siEsCondicional',
+            render:(value,row,idx)=>{
+              if (row.exCondicional === true){
+                return <Alert message="Inscripto por docente" type="info" />
+              }
+              return <div></div>
+            }
+          }
+      ]
+        Modal.info({
+          title:'Alumnos Inscriptos',
+          content:<Table
+            columns={columns}
+            dataSource={row.regulares}
+            rowKey={(row)=>(row.alumno.legajo)}
+            pagination={false}
+          />,
+          width:'1000px'
+        })
+      }}
+      >
+        Ver información
+      </Button>
+  }
 }
 ];
 

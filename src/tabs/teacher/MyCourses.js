@@ -47,13 +47,17 @@ const columns = [
       onClick={()=>{
         const columns = [
           {
-            title:'Padron'
+            title:'Padron',
+            index:'padron'
           },{
-            title:'Carrera'
+            title:'Carrera',
+            padron:'carrera'
           },{
-            title:'Nombre y Apellido'
+            title:'Nombre y Apellido',
+            padron:'padron'
           },{
-            title:'Prioridad'
+            title:'Prioridad',
+            padron:'padron'
           }
       ]
         Modal.info({

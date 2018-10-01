@@ -14,3 +14,13 @@ export const getAsignatures = () => {
 export const getMoreInformationFromCourseById = (courseId) => {
   return server.get('/docentes/mis-cursos/'+courseId)
 }
+
+
+export const addConditionalStudent = (idCourse,idStudent) => {
+  //return server.get('docentes/mis-cursos/'+idCourse+'/inscribir-alumnos',{
+  //  'alumnos':[idStudent]
+  //})
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>{resolve()},2000)
+  })
+}

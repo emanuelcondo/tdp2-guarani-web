@@ -21,7 +21,8 @@ class TeacherContainer extends Component {
     allCourses:[],
     courseToShow:[],
     disableConditionalStudentButton:true,
-    conditionalModal:false
+    conditionalModal:false,
+    conditionalStudents:[]
   }
   
 
@@ -55,8 +56,10 @@ class TeacherContainer extends Component {
            
            course['regulares'] = response.data.data.regulares
            course['condicionales'] = response.data.data.condicionales
+           this.setState({conditionalStudents:response.data.data.condicionales})
         })
       });
+      console.log('TeacherContainers - allCursos',response.data.data.cursos[0]);
       this.setState({allCourses:response.data.data.cursos})
     })
   }
@@ -65,7 +68,13 @@ class TeacherContainer extends Component {
     return this.state.nombreMaterias.map((name)=>(<Option value={name}> {name} </Option>) )
   }
   
-
+  getNumerosDeCursos = () => {
+    console.log('getNumerosDeCursos',this.state.courseToShow);
+    return this.state.courseToShow.map((course)=>{return {
+      'numero':course.comision,
+      'id':course._id
+    }})
+  }
   componentDidMount(){
     this.getTeacherName()
     this.getAsignatureNames();
@@ -138,13 +147,16 @@ class TeacherContainer extends Component {
               Inscribir alumno condicional
             </Button>
             </Row>
-            <ConditionalModal
-              visible={this.state.conditionalModal}
-              show={this.setModal}
-            />
               <MyCourses
                 data={this.state.courseToShow}
               />
+              <ConditionalModal
+              visible={this.state.conditionalModal}
+              show={this.setModal}
+              data={this.state.conditionalStudents}
+              courses={this.getNumerosDeCursos()}
+              update = {this.getAsignatureNames}
+            />
             </Content>
           </Layout>
         </Layout>

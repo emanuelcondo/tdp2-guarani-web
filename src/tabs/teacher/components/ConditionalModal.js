@@ -109,7 +109,7 @@ export default class ConditionalModal extends Component{
           columns={columns}
           dataSource={this.orderByPrioridad()}
           pagination={false}
-          rowKey={(row)=>{row.alumno.padron}}
+          rowKey={(row)=>{ return row.alumno.legajo}}
         />
         </Modal>
 

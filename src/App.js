@@ -7,7 +7,6 @@ import NotFound from '../src/common/NotFound'
 import AdminDepContainer from '../src/tabs/admin-dep/AdminDepContainer'
 import LoginContainer from './tabs/login/LoginContainer'
 import server from './Server'
-import axios from 'axios';
 
 class App extends Component{
 

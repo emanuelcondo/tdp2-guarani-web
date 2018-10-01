@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Form, Icon, Input, Button, Checkbox,Card ,Row,Col} from 'antd';
+import { Form, Icon, Input, Button,Card ,Row,Col} from 'antd';
 import '../style/style.css';
 
 import * as AuthService from '../service/AuthService'

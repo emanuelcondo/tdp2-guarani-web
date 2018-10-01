@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button,Navbar} from 'antd';
+import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button} from 'antd';
 import MyCourses from './MyCourses'
 import * as TeacherService from './service/TeacherService'
 import logo from '../../resource/logo.png'
@@ -11,7 +11,7 @@ const ButtonGroup = Button.Group;
 
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const {Content } = Layout;
 
 class TeacherContainer extends Component {
 
@@ -65,7 +65,7 @@ class TeacherContainer extends Component {
   }
 
   getAsignaturesNamesOption = () => {
-    return this.state.nombreMaterias.map((name)=>(<Option value={name}> {name} </Option>) )
+    return this.state.nombreMaterias.map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
   }
   
   getNumerosDeCursos = () => {

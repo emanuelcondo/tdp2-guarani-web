@@ -43,6 +43,15 @@ class TeacherContainer extends Component {
     return TeacherService.getAsignatures().then((response)=>{
       const asignatureNames = response.data.data.cursos.map((course)=>course.materia.nombre);
       this.setState({nombreMaterias:asignatureNames})
+      console.log('TeacherContainer - courses',response.data.data.cursos);
+      response.data.data.cursos.forEach(course => {
+         TeacherService.getMoreInformationFromCourseById(course._id).then((response)=>{
+           console.log('response,obtener infor curso',response.data.data);
+           
+           course['regulares'] = response.data.data.regulares
+           course['condicionales'] = response.data.data.condicionales
+        })
+      });
       this.setState({allCourses:response.data.data.cursos})
     })
   }

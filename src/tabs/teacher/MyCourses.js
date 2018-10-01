@@ -61,11 +61,11 @@ const columns = [
             index:'prioridad',
             dataIndex:'alumno.prioridad'
           },{
-            title:'Condicional NO',
+            title:'Condinal',
             index:'siEsCondicional',
             render:(value,row,idx)=>{
               if (row.exCondicional === true){
-                return <Alert message="Inscripto por docente" type="info" />
+                return <Alert message="Condicional aceptado" type="info" />
               }
               return <div></div>
             }
@@ -135,6 +135,7 @@ class MyCourses extends Component {
     columns={columns} 
     rowKey={record => record.comision}
     expandedRowRender={this.expandedRowRender}
+    pagination={false}
     />
   }
 }

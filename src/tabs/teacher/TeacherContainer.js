@@ -67,7 +67,7 @@ class TeacherContainer extends Component {
   }
 
   getAsignaturesNamesOption = () => {
-    return this.state.nombreMaterias.map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
+    return this.state.nombreMaterias.filter((value,idx)=> this.state.nombreMaterias.indexOf(value)===idx).map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
   }
 
 
@@ -96,7 +96,6 @@ class TeacherContainer extends Component {
           <div style={{backgroundColor:'#404040'}}>
           <Row>
             <Col span={1}>
-            <div>GUARANI</div>
             </Col>
             <Col span={17}>
             <Menu

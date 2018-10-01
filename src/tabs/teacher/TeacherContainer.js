@@ -96,9 +96,9 @@ class TeacherContainer extends Component {
           <div style={{backgroundColor:'#404040'}}>
           <Row>
             <Col span={1}>
-            Logo
+            <div>GUARANI</div>
             </Col>
-            <Col span={19}>
+            <Col span={17}>
             <Menu
             theme="dark"
              mode="horizontal"
@@ -111,7 +111,8 @@ class TeacherContainer extends Component {
             </Menu.Item>
             <Menu.Item key="2">Otra Opcion</Menu.Item>
           </Menu></Col>
-            <Col span={4}>
+            <Col span={6}>
+            <Row type="flex" justify="end">
               <ButtonGroup style={{padding:'16px'}}>
                 <Button style={{cursor:'text'}}>
                   <Icon type="user" theme="outlined" />
@@ -123,7 +124,8 @@ class TeacherContainer extends Component {
                 <Icon type="logout" theme="outlined" />
                   Salir
                 </Button>
-            </ButtonGroup>
+              </ButtonGroup>
+            </Row>  
             </Col>
            </Row>
           </div>

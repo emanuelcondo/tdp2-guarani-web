@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "export PORT=3001 && react-app-rewired start",
-    "build": "react-scripts build && rm -rf dist && mv build dist",
+    "build": "react-app-rewired build && rm -rf dist && mv build dist",
     "test": "jest",
     "eject": "react-scripts eject"
   }

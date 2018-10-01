@@ -39,7 +39,7 @@ class NormalLogin extends Component {
   }
 
   saveAuthData = (data) => {
-    console.log('NormalLogin - save auth data');
+    console.log('NormalLogin - save auth data',data);
     localStorage.setItem('token',data.token);
     localStorage.setItem('rol',data.rol);
   }
@@ -50,7 +50,7 @@ class NormalLogin extends Component {
       console.log('NormalLogin - response',response);
       this.setState({loginButtonLoading:false})
       this.setState({loginButtonColor:SUCESS_COLOR,loginButtonIcon:'check',loginButtonMessage:''})
-      this.saveAuthData(response.data)
+      this.saveAuthData(response.data.data)
       //aviso el container que el login fue correcto
       setTimeout(()=>{this.props.userLogged()},1000)
     }).catch((e)=>{

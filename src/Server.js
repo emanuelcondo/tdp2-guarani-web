@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-const axiosIntance = axios.create({
+const server = axios.create({
   baseURL:'http://localhost:3000/api/v1.0',
 })
 
-export default axiosIntance;
+
+
+
+export default server;

@@ -1,42 +1,32 @@
 import React,{Component} from 'react';
 import {Table} from 'antd';
-import * as teacherService from './TeacherService';
+import * as teacherService from './service/TeacherService';
 
 
 const columns = [
   {
     title:'Número de Curso',
-    dataIndex:'numero',
+    dataIndex:'comision',
     key:'numero'
   },
   {
   title: 'Docente',
-  dataIndex: 'name',
   key: 'name',
+  render:(e,v,c)=>{
+    return <div key={c}>{v.docenteACargo.apellido+','+v.docenteACargo.nombre}</div>
+  }
 }, {
   title: 'JTP',
-  dataIndex: 'jtp',
   key: 'jtp',
-}, {
-  title: 'Periodo Lectivo',
-  dataIndex: 'cuatrimestre',
-  key: 'cuatrimestre',
-},{
-  title:'Año',
-  dataIndex:'anio',
-  key:'anio'
+  render:(e,v,c)=>{
+    return v.ayudantes.map((ayudante,idx)=>{ 
+    return <div key={idx}>{ayudante.apellido+','+ayudante.nombre}</div>}
+    )
+  }
 },{
   title:'Cantidad de Inscriptos',
   dataIndex:'cantidadDeInscriptos',
   key:'cantidadAlumno'
-},{
-  title:'Horario',
-  dataIndex:'horario',
-  key:'horario'
-},{
-  title:'Cantidad de Condicionales',
-  dataIndex:'cantidadDeCondicionales',
-  key:'cantidadDeCondicionales'
 },{
   title:'Ayudantes de Primera',
   dataIndex:'ayudantesDePrimera',
@@ -48,22 +38,58 @@ const columns = [
 },
 {
   title:'Sede',
-  dataIndex:'sede',
+  dataIndex:'sede.nombre',
   key:'sede' 
-},
-{
-  title:'Aula',
-  dataIndex:'aula',
-  key:'aula'
 }
 ];
 
 
 
 class MyCourses extends Component {
+
+
+  expandedRowRender = (row,idx,indent,expanded) => {
+    const columns = [
+      {
+        title:'Dia',
+        index:'dia',
+        dataIndex:'dia'
+      },{
+        title:'Horario',
+        render:(e,row,idx)=>{
+          console.log('row',row);
+          return row.horario_desde + '-'+ row.horario_hasta
+        }
+      },{
+        title:'Sede',
+        index:'sede',
+        dataIndex:'sede'
+      },{
+        title:'Aula',
+        dataIndex:'aula'
+      },{
+        title:'Tipo',
+        dataIndex:'tipo'
+      }
+    ]
+    console.log('row.cursada',row.cursada);
+    row.cursada.forEach(element => {
+      element['sede'] = row.sede.nombre
+    });
+    return <Table
+      dataSource={row.cursada}
+      columns={columns}
+      pagination={false}
+    />
+  }
+
   render(){
-    const dataSource = teacherService.getCoursesOfTeacher();
-    return<Table dataSource={dataSource} columns={columns} />
+    return <Table 
+    dataSource={this.props.data} 
+    columns={columns} 
+    rowKey={record => record.comision}
+    expandedRowRender={this.expandedRowRender}
+    />
   }
 }
 

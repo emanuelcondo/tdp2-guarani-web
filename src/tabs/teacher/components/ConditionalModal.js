@@ -82,7 +82,7 @@ export default class ConditionalModal extends Component{
           return <Button 
           key={idx}
           onClick={()=>{
-            this.setState({modalInscripcionAlumnoCondicional:true,studentName:name,idAlumno:row._id})}
+            this.setState({modalInscripcionAlumnoCondicional:true,studentName:name,idAlumno:row.alumno._id})}
           }
           >
             Inscribir alumno

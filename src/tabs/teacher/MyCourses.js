@@ -93,6 +93,9 @@ const columns = [
 
 class MyCourses extends Component {
 
+  state={
+    tableMessage:'Seleccione una materia por favor'
+  }
 
   expandedRowRender = (row,idx,indent,expanded) => {
     const columns = [
@@ -136,6 +139,7 @@ class MyCourses extends Component {
     rowKey={record => record.comision}
     expandedRowRender={this.expandedRowRender}
     pagination={false}
+    locale={{ emptyText: this.state.tableMessage }}
     />
   }
 }

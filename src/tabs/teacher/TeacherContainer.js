@@ -3,6 +3,7 @@ import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button,Navbar} from 'antd';
 import MyCourses from './MyCourses'
 import * as TeacherService from './service/TeacherService'
 import logo from '../../resource/logo.png'
+import ConditionalModal from './components/ConditionalModal'
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -18,13 +19,17 @@ class TeacherContainer extends Component {
     teacherName:'teacher name',
     nombreMaterias:[],
     allCourses:[],
-    courseToShow:[]
+    courseToShow:[],
+    disableConditionalStudentButton:true,
+    conditionalModal:false
   }
   
 
 
 
-
+  setModal = (value) => {
+    this.setState({conditionalModal:value})
+  }
 
   callback = (key) => {
     console.log(key);
@@ -113,7 +118,7 @@ class TeacherContainer extends Component {
                   onSelect={(value)=>{
                     const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === value)
                     console.log('courseToShow',courseToShow);
-                    this.setState({courseToShow})
+                    this.setState({courseToShow,disableConditionalStudentButton:false})
                   }
                 }
                 >
@@ -122,6 +127,21 @@ class TeacherContainer extends Component {
 
               </div>
             </Row>
+            <Row type="flex" justify="end">
+            <Button
+            disabled={this.state.disableConditionalStudentButton}
+            style={{margin:'20px'}}
+            onClick={()=>{
+              this.setState({conditionalModal:true})
+            }}
+            >
+              Inscribir alumno condicional
+            </Button>
+            </Row>
+            <ConditionalModal
+              visible={this.state.conditionalModal}
+              show={this.setModal}
+            />
               <MyCourses
                 data={this.state.courseToShow}
               />

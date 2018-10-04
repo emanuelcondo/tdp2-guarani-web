@@ -51,7 +51,7 @@ class ConditionalTable extends Component {
     
 
     const columns = [{
-      title: 'Padron',
+      title: 'Padrón',
       dataIndex: 'padron',
       key: 'padron',
     }, {
@@ -74,12 +74,12 @@ class ConditionalTable extends Component {
           Inscribir
           </Button>
           <Modal
-          title="Inscribir a alumno condicional"
+          title="Inscribir alumno condicional"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-        ¿Estas seguro que queres inscribir a {row.nombre}? 
+        ¿Estás seguro que querés inscribir a {row.nombre}? 
         </Modal>
           </div>
       }
@@ -93,7 +93,7 @@ class ConditionalTable extends Component {
       dataSource={dataSource}
       pagination={false}
       title={()=>{return <h1>Tabla de condicionales</h1>}}
-      locale={{emptyText:'No hay ningún alumno/a condicional'}}
+      locale={{emptyText:'No hay ningún alumno condicional'}}
       />
     </div>
   }

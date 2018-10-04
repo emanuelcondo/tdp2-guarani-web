@@ -48,7 +48,7 @@ const columns = [
       onClick={()=>{
         const columns = [
           {
-            title:'Padron',
+            title:'Padrón',
             index:'padron',
             dataIndex:'alumno.legajo'
           },{
@@ -84,7 +84,7 @@ const columns = [
                 rowKey={(row)=>(row.alumno.legajo)}
                 pagination={false}
                 style={{marginRight:'30px'}}
-                title={()=>{return <h1>Table de regulares</h1>}}
+                title={()=>{return <h1>Tabla de regulares</h1>}}
             />
               </Col>
               <Col span={12}>

@@ -150,14 +150,6 @@ class TeacherContainer extends Component {
               <MyCourses
                 data={this.state.courseToShow}
               />
-              <ConditionalModal
-              visible={this.state.conditionalModal}
-              show={this.setModal}
-              data={this.state.conditionalStudents}
-              courses={this.getNumerosDeCursos()}
-              update = {this.getAsignatureNames}
-              updateCourseToShow={this.setCoursesToShow}
-            />
             </Content>
           </Layout>
         </Layout>

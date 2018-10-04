@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
-import {Table, Button,Modal,Alert} from 'antd';
+import {Table, Button,Modal,Alert,Row,Col,Tag} from 'antd';
 import * as teacherService from '../service/TeacherService';
+import ConditionalTable from './ConditionalTable'
 
 
 const columns = [
@@ -61,25 +62,38 @@ const columns = [
             index:'prioridad',
             dataIndex:'alumno.prioridad'
           },{
-            title:'Condinal',
+            title:'Observacion',
             index:'siEsCondicional',
             render:(value,row,idx)=>{
-              if (row.exCondicional === true){
-                return <Alert message="Condicional aceptado" type="info" />
-              }
-              return <div></div>
+              if (row.exCondicional){
+                return <Tag color="blue" key={idx}>Condicional</Tag>
+              }return <div></div>
             }
           }
       ]
+
         Modal.info({
           title:'Alumnos',
-          content:<Table
-            columns={columns}
-            dataSource={row.regulares}
-            rowKey={(row)=>(row.alumno.legajo)}
-            pagination={false}
-          />,
-          width:'1000px'
+          content:
+          <div>
+            <Row>
+              <Col span={12}>
+              <Table
+                columns={columns}
+                dataSource={row.regulares}
+                rowKey={(row)=>(row.alumno.legajo)}
+                pagination={false}
+                style={{marginRight:'30px'}}
+                title={()=>{return <h1>Table de regulares</h1>}}
+            />
+              </Col>
+              <Col span={12}>
+              <ConditionalTable/>
+              </Col>
+            </Row>
+          </div>
+          ,
+          width:'1500px'
         })
       }}
       >

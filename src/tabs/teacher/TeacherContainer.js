@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button} from 'antd';
-import MyCourses from './MyCourses'
+import MyCourses from './components/MyCourses'
 import * as TeacherService from './service/TeacherService'
 import logo from '../../resource/logo.png'
 import ConditionalModal from './components/ConditionalModal'
@@ -11,7 +11,7 @@ const ButtonGroup = Button.Group;
 
 
 
-const {Content } = Layout;
+const { Content } = Layout;
 
 class TeacherContainer extends Component {
 
@@ -108,7 +108,7 @@ class TeacherContainer extends Component {
               <Icon type="database" />
               Mis Cursos
             </Menu.Item>
-            <Menu.Item key="2">Otra Opcion</Menu.Item>
+            <Menu.Item key="2">Examenes</Menu.Item>
           </Menu></Col>
             <Col span={6}>
             <Row type="flex" justify="end">
@@ -146,15 +146,6 @@ class TeacherContainer extends Component {
               </div>
             </Row>
             <Row type="flex" justify="end">
-            <Button
-            disabled={this.state.disableConditionalStudentButton}
-            style={{margin:'20px'}}
-            onClick={()=>{
-              this.setState({conditionalModal:true})
-            }}
-            >
-              Inscribir alumno condicional
-            </Button>
             </Row>
               <MyCourses
                 data={this.state.courseToShow}

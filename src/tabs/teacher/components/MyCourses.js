@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Table, Button,Modal,Alert} from 'antd';
-import * as teacherService from './service/TeacherService';
+import * as teacherService from '../service/TeacherService';
 
 
 const columns = [
@@ -40,7 +40,7 @@ const columns = [
   dataIndex:'ayudantesDeSegunda',
   key:'ayudantesDeSegunda'
 },{
-    title:'Alumnos Inscriptos',
+    title:'Alumnos',
     render:(value,row,idx)=>{
       console.log('row.inscriptos',row);
       return <Button
@@ -72,7 +72,7 @@ const columns = [
           }
       ]
         Modal.info({
-          title:'Alumnos Inscriptos',
+          title:'Alumnos',
           content:<Table
             columns={columns}
             dataSource={row.regulares}
@@ -83,7 +83,7 @@ const columns = [
         })
       }}
       >
-        Ver información
+        Ver
       </Button>
   }
 }

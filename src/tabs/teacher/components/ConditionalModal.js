@@ -76,7 +76,7 @@ export default class ConditionalModal extends Component{
         dataIndex:'alumno.prioridad'
       },
       {
-        title:'Accion',
+        title:'Acción',
         index:'accion',
         render:(value,row,idx)=>{
           const name = row.alumno.apellido+','+row.alumno.nombre

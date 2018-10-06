@@ -17,7 +17,7 @@ class ConditionalTable extends Component {
     this.setState({
       visible: false,
     });
-    TeacherService.addConditionalStudent('dsads','dsadasd').then(()=>{
+    TeacherService.addConditionalStudent('José','Pérez').then(()=>{
       console.log('salio bien');
     }).catch((e)=>{
       console.log('salio mal');
@@ -40,11 +40,11 @@ class ConditionalTable extends Component {
     const dataSource = [
       {
         padron:'98745',
-        nombre:'Martin Aguilar',
+        nombre:'Martín Aguilar',
         prioridad:2
       },{
         padron:'95482',
-        nombre:'Mariela Garcia',
+        nombre:'Mariela García',
         prioridad:4
       }
     ];

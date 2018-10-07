@@ -35,7 +35,7 @@ export default class ConditionalModal extends Component{
     console.log(e);
     this.setState({confirmLoading:true})
     TeacherService.addConditionalStudent(this.state.idCourse,this.state.idAlumno).then(()=>{
-      message.success('El alumno fue agregado de manera correcta')
+      message.success('El alumno fue agregado exitosamente')
       this.setState({confirmLoading:false})
       setTimeout(()=>{this.setState({modalInscripcionAlumnoCondicional:false})},1000);
       this.props.update();
@@ -59,7 +59,7 @@ export default class ConditionalModal extends Component{
   render(){
     const columns = [
       {
-        title:'Padron',
+        title:'Padrón',
         index:'padron',
         dataIndex:'alumno.legajo'
       },
@@ -76,7 +76,7 @@ export default class ConditionalModal extends Component{
         dataIndex:'alumno.prioridad'
       },
       {
-        title:'Accion',
+        title:'Acción',
         index:'accion',
         render:(value,row,idx)=>{
           const name = row.alumno.apellido+','+row.alumno.nombre
@@ -115,7 +115,7 @@ export default class ConditionalModal extends Component{
         </Modal>
 
         <Modal
-          title="Inscripción alumno condicional"
+          title="Inscripción de alumno condicional"
           visible={this.state.modalInscripcionAlumnoCondicional}
           onOk={this.handleOkConditional}
           onCancel={this.handleCancelConditional}

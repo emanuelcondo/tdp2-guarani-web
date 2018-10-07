@@ -1,1 +1,1 @@
-web: react-app-rewired build && rm -rf dist && mv build dist && node index.js
+web: node index.js

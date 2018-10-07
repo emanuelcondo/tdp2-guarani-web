@@ -14,14 +14,14 @@ const columns = [
   title: 'Docente',
   key: 'name',
   render:(e,v,c)=>{
-    return <div key={c}>{v.docenteACargo.apellido+','+v.docenteACargo.nombre}</div>
+    return <div key={c}>{v.docenteACargo.apellido+', '+v.docenteACargo.nombre}</div>
   }
 }, {
   title: 'JTP',
   key: 'jtp',
   render:(e,v,c)=>{
     return v.ayudantes.map((ayudante,idx)=>{ 
-    return <div key={idx}>{ayudante.apellido+','+ayudante.nombre}</div>}
+    return <div key={idx}>{ayudante.apellido+', '+ayudante.nombre}</div>}
     )
   }
 },{
@@ -48,7 +48,7 @@ const columns = [
       onClick={()=>{
         const columns = [
           {
-            title:'Padron',
+            title:'Padrón',
             index:'padron',
             dataIndex:'alumno.legajo'
           },{
@@ -62,7 +62,7 @@ const columns = [
             index:'prioridad',
             dataIndex:'alumno.prioridad'
           },{
-            title:'Observacion',
+            title:'Observaciones',
             index:'siEsCondicional',
             render:(value,row,idx)=>{
               if (row.exCondicional){
@@ -84,7 +84,8 @@ const columns = [
                 rowKey={(row)=>(row.alumno.legajo)}
                 pagination={false}
                 style={{marginRight:'30px'}}
-                title={()=>{return <h1>Table de regulares</h1>}}
+                title={()=>{return <h1>Inscriptos Regulares</h1>}}
+                locale={{emptyText:'No hay alumnos regulares inscriptos'}}
             />
               </Col>
               <Col span={12}>
@@ -121,7 +122,7 @@ class MyCourses extends Component {
         title:'Horario',
         render:(e,row,idx)=>{
           console.log('row',row);
-          return row.horario_desde + '-'+ row.horario_hasta
+          return row.horario_desde + ' - '+ row.horario_hasta
         }
       },{
         title:'Sede',

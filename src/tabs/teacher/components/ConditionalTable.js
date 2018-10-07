@@ -17,7 +17,7 @@ class ConditionalTable extends Component {
     this.setState({
       visible: false,
     });
-    TeacherService.addConditionalStudent('dsads','dsadasd').then(()=>{
+    TeacherService.addConditionalStudent('José','Pérez').then(()=>{
       console.log('salio bien');
     }).catch((e)=>{
       console.log('salio mal');
@@ -40,18 +40,18 @@ class ConditionalTable extends Component {
     const dataSource = [
       {
         padron:'98745',
-        nombre:'Martin Aguilar',
+        nombre:'Martín Aguilar',
         prioridad:2
       },{
         padron:'95482',
-        nombre:'Mariela Garcia',
+        nombre:'Mariela García',
         prioridad:4
       }
     ];
     
 
     const columns = [{
-      title: 'Padron',
+      title: 'Padrón',
       dataIndex: 'padron',
       key: 'padron',
     }, {
@@ -74,12 +74,12 @@ class ConditionalTable extends Component {
           Inscribir
           </Button>
           <Modal
-          title="Inscribir a alumno condicional"
+          title="Inscribir alumno condicional"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-        ¿Estas seguro que queres inscribir a {row.nombre}? 
+        ¿Estás seguro que querés inscribir a {row.nombre}? 
         </Modal>
           </div>
       }
@@ -92,8 +92,8 @@ class ConditionalTable extends Component {
       columns={columns}
       dataSource={dataSource}
       pagination={false}
-      title={()=>{return <h1>Tabla de condicionales</h1>}}
-      locale={{emptyText:'No hay ningún alumno/a condicional'}}
+      title={()=>{return <h1>Inscriptos Condicionales</h1>}}
+      locale={{emptyText:'No hay alumnos condicionales'}}
       />
     </div>
   }

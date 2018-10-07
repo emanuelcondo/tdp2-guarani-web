@@ -92,8 +92,8 @@ class ConditionalTable extends Component {
       columns={columns}
       dataSource={dataSource}
       pagination={false}
-      title={()=>{return <h1>Tabla de condicionales</h1>}}
-      locale={{emptyText:'No hay ningún alumno condicional'}}
+      title={()=>{return <h1>Inscriptos Condicionales</h1>}}
+      locale={{emptyText:'No hay alumnos condicionales'}}
       />
     </div>
   }

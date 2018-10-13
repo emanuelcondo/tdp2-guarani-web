@@ -20,7 +20,10 @@ const columns = [
     title: 'JTP',
     key: 'jtp',
     render: (value, row, idx) => {
-      return <div key={idx}>{row.jtp.apellido + ', ' + row.jtp.nombre}</div>
+      if (row.jtp !== null) {
+        return <div key={idx}>{row.jtp.apellido + ', ' + row.jtp.nombre}</div>
+      }
+      return <div></div>
     }
   }, {
     title: 'Cantidad de Inscriptos',

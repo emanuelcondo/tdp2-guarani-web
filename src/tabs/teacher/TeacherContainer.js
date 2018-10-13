@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tabs, Layout, Menu, Icon, Select, Row, Col, Button } from 'antd';
 import * as TeacherService from './service/TeacherService'
 import MyCoursesContent from './components/MyCoursesContent';
+import FinalsContent from './components/FinalsContent'
 
 
 const TabPane = Tabs.TabPane;
@@ -15,6 +16,12 @@ class TeacherContainer extends Component {
 
   state = {
     teacherName: 'teacher name',
+    childrens: {
+      myCourses: <MyCoursesContent />,
+      finalsContent: <FinalsContent />
+    },
+    /**this value is for default */
+    children: <MyCoursesContent />
   }
 
   setModal = (value) => {
@@ -23,6 +30,11 @@ class TeacherContainer extends Component {
 
   callback = (key) => {
     console.log(key);
+  }
+
+
+  selectNewChilder = (childrenName) => {
+    this.setState({ children: this.state.childrens[childrenName] })
   }
 
   getTeacherName = () => {
@@ -35,9 +47,13 @@ class TeacherContainer extends Component {
   }
 
 
+
   componentDidMount() {
     this.getTeacherName()
   }
+
+
+
 
   render() {
     return (
@@ -53,11 +69,14 @@ class TeacherContainer extends Component {
                 defaultSelectedKeys={['1']}
                 style={{ lineHeight: '64px', backgroundColor: '#404040' }}
               >
-                <Menu.Item key="1">
+                <Menu.Item
+                  onClick={() => this.selectNewChilder('myCourses')}
+                  key="1"
+                >
                   <Icon type="database" />
                   Mis Cursos
             </Menu.Item>
-                <Menu.Item key="2" onClick={() => { console.log('click en mis cursos'); }}>
+                <Menu.Item key="2" onClick={() => this.selectNewChilder('finalsContent')}>
                   Examenes
             </Menu.Item>
               </Menu></Col>
@@ -81,8 +100,7 @@ class TeacherContainer extends Component {
         </div>
         <Layout>
           <Content style={{ backgroundColor: 'white' }}>
-            <MyCoursesContent
-            />
+            {this.state.children}
           </Content>
         </Layout>
       </Layout>

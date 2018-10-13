@@ -8,11 +8,13 @@ import AdminDepContainer from '../src/tabs/admin-dep/AdminDepContainer'
 import LoginContainer from './tabs/login/LoginContainer'
 import server from './Server'
 
+
+
 class App extends Component {
 
   state = {
     childrens: {
-      teacher: <TeacherContainer
+      docente: <TeacherContainer
         update={this.update}
       />,
       admin: <AdminContainer />
@@ -28,7 +30,9 @@ class App extends Component {
 
   getContainer = (rol) => {
     console.log('getContainer rol', rol);
-    return this.state.childrens[rol];
+    if (rol === 'docente') {
+      return <TeacherContainer update={this.update} />
+    } return <AdminContainer />
   }
 
 

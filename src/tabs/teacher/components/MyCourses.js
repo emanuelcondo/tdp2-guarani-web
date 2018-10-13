@@ -50,7 +50,10 @@ const columns = [
           {
             title:'Padrón',
             index:'padron',
-            dataIndex:'alumno.legajo'
+            dataIndex:'alumno.legajo',
+            render:(value,row,idx) =>{
+              return <div style={{padding:'6px'}}>{row.alumno.legajo}</div>
+            }
           },{
             title:'Nombre y Apellido',
             index:'nombre',
@@ -86,7 +89,7 @@ const columns = [
                 style={{marginRight:'30px'}}
                 title={()=>{return <h1>Inscriptos Regulares</h1>}}
                 locale={{emptyText:'No hay alumnos regulares inscriptos'}}
-            />
+              />
               </Col>
               <Col span={12}>
               <ConditionalTable/>

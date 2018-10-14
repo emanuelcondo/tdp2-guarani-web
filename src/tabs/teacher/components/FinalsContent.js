@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Button, Row, Select } from 'antd';
+import {Button, Row, Select, Modal } from 'antd';
 import MyFinals from './MyFinalsTable'
+import NewFinalModal from './NewFinalModal';
 
 
 const Option = Select.Option;
@@ -77,6 +78,10 @@ export default class FinalsContent extends Component {
         onClick={() => {
           
           // TODO : Mostrar NewFinalModal
+          Modal.info({
+            content:
+              <NewFinalModal/>
+          })
         }}
       >
         Nueva fecha de examen

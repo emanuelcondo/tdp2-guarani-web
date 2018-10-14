@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import { Form, Input, DatePicker, Col, TimePicker, Select, Cascader, InputNumber } from 'antd';
 
 const FormItem = Form.Item;
@@ -17,7 +18,7 @@ const formItemLayout = {
 export default class NewFinalModal extends Component{
   
   state = { visible: false }
-  
+
   handleOk = (e) => {
     console.log(e);
     this.props.show(false)
@@ -29,16 +30,7 @@ export default class NewFinalModal extends Component{
   }
   
   render(){
-    return
-    (
-      <div>
-      <Modal
-        title="Alta fecha final"
-        visible={this.props.visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-        width='700px'
-      >
+    return( <div>
   <Form>
     <FormItem
       {...formItemLayout}
@@ -166,8 +158,8 @@ export default class NewFinalModal extends Component{
       <InputNumber style={{ width: '100%' }} />
     </FormItem>
   </Form>
-  </Modal>
   </div>
   )
+    }
 
 }

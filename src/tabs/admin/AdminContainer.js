@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Tabs ,Icon} from 'antd';
 import DefinePeriod from './DefinePeriod'
+import InitialLoadContainer from '../admin-load/InitialLoadContainer';
 const TabPane = Tabs.TabPane;
 
 class AdminContainer extends Component {
@@ -20,8 +21,14 @@ class AdminContainer extends Component {
           Content of Tab Pane 2
           </TabPane>
         <TabPane 
+          tab={<span><Icon type="rocket"/>Carga inicial</span>} 
+          key="3"
+        >
+          <InitialLoadContainer/>
+        </TabPane>
+        <TabPane 
           tab={<span><Icon type="rocket"/>Otra accion</span>} 
-          key="2"
+          key="4"
         >
           Content of Tab Pane 2
         </TabPane>

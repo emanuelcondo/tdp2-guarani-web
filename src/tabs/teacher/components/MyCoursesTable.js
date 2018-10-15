@@ -42,7 +42,7 @@ const columns = [
     title: 'Alumnos',
     render: (value, row, idx) => {
       console.log('row.inscriptos', row);
-      return <Button
+      return (<div><Button
         onClick={() => {
           const columns = [
             {
@@ -101,6 +101,10 @@ const columns = [
       >
         Ver
       </Button>
+        <Button style={{ marginLeft: '5px' }}>
+          Descargar
+        </Button>
+      </div>)
     }
   }
 ];

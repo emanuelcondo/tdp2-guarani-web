@@ -20,10 +20,10 @@ const columns = [
     title: 'JTP',
     key: 'jtp',
     render: (value, row, idx) => {
-      if (row.jtp === null) {
-        return <div></div>
+      if (row.jtp !== null) {
+        return <div key={idx}>{row.jtp.apellido + ', ' + row.jtp.nombre}</div>
       }
-      return <div key={idx}>{row.jtp.apellido + ', ' + row.jtp.nombre}</div>
+      return <div></div>
     }
   }, {
     title: 'Cantidad de Inscriptos',
@@ -45,7 +45,7 @@ const columns = [
     title: 'Alumnos',
     render: (value, row, idx) => {
       console.log('row.inscriptos', row);
-      return (<div><Button
+      return <Button
         onClick={() => {
           const columns = [
             {
@@ -104,10 +104,6 @@ const columns = [
       >
         Ver
       </Button>
-        <Button style={{ marginLeft: '5px' }}>
-          Descargar
-        </Button>
-      </div>)
     }
   }
 ];

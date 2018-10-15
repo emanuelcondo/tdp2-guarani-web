@@ -54,7 +54,7 @@ class AdminContainer extends Component {
                   <ButtonGroup style={{ padding: '16px' }}>
                     <Button style={{ cursor: 'text' }}>
                       <Icon type="user" theme="outlined" />
-                      algo
+                      Amarilla, Cristobal
                     </Button>
                     <Button
                       onClick={() => { localStorage.removeItem('rol'); localStorage.removeItem('token'); this.props.update() }}

@@ -8,7 +8,7 @@ const dataSource = [{
   address: '24-07-2017'
 }, {
   key: '2',
-  name: 'Periodo inscripcion',
+  name: 'Periodo inscripción',
   age: '27-07-2017',
   address: '03-08-2017'
 }];
@@ -18,11 +18,11 @@ const columns = [{
   dataIndex: 'name',
   key: 'name',
 }, {
-  title: 'Dia de arranque',
+  title: 'Día de inicio',
   dataIndex: 'age',
   key: 'age',
 }, {
-  title: 'Dia de finalización',
+  title: 'Día de finalización',
   dataIndex: 'address',
   key: 'address',
 }];

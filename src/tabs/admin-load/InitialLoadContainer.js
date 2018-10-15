@@ -88,32 +88,34 @@ const textos = [["Cargar Aulas", "🏫"],
 export default class InitialLoadContainer extends Component {
 
   render() {
-    return <div>
-      <Row type="flex" justify="space-around">{textos.slice(0, 3).map((i, idx) =>
-        <Col span={7} key={idx}>
-          <Dragger {...props1} >
-            <p className="ant-upload-drag-icon">
-              <font size="54"><span aria-label="Icon" role="img">{i[1]}</span></font>
-            </p>
-            <div className="ant-upload-text"><h1>{i[0]}</h1></div>
-            <p className="ant-upload-hint">Haga click o arraste un archivo .csv apropiado</p>
-          </Dragger>
-        </Col>)}
-      </Row>
-      <br />
-      <Row type="flex" justify="space-around">{textos.slice(3, 6).map((i, idx) =>
-        <Col span={7} key={idx}>
-          <Dragger {...props2}>
-            <p className="ant-upload-drag-icon">
-              <font size="54"><span aria-label="Icon" role="img">{i[1]}</span></font>
-            </p>
-            <div className="ant-upload-text"><h1>{i[0]}</h1></div>
-            <p className="ant-upload-hint">Haga click o arraste un archivo .csv apropiado</p>
-          </Dragger>
-        </Col>)}
-      </Row>
+    return <Row type="flex" justify="center" align="top" style={{ marginTop: '50px' }}>
+      <div>
+        <Row type="flex" justify="space-around">{textos.slice(0, 3).map((i, idx) =>
+          <Col span={7} key={idx}>
+            <Dragger {...props1} >
+              <p className="ant-upload-drag-icon">
+                <font size="54"><span aria-label="Icon" role="img">{i[1]}</span></font>
+              </p>
+              <div className="ant-upload-text"><h1>{i[0]}</h1></div>
+              <p className="ant-upload-hint">Haga click o arraste un archivo .csv apropiado</p>
+            </Dragger>
+          </Col>)}
+        </Row>
+        <br />
+        <Row type="flex" justify="space-around">{textos.slice(3, 6).map((i, idx) =>
+          <Col span={7} key={idx}>
+            <Dragger {...props2}>
+              <p className="ant-upload-drag-icon">
+                <font size="54"><span aria-label="Icon" role="img">{i[1]}</span></font>
+              </p>
+              <div className="ant-upload-text"><h1>{i[0]}</h1></div>
+              <p className="ant-upload-hint">Haga click o arraste un archivo .csv apropiado</p>
+            </Dragger>
+          </Col>)}
+        </Row>
 
-    </div>
+      </div>
+    </Row>
   }
 
 } 

@@ -1,39 +1,80 @@
-import React,{Component} from 'react';
-import { Tabs ,Icon} from 'antd';
+import React, { Component } from 'react';
+import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
+
+
 const TabPane = Tabs.TabPane;
+const ButtonGroup = Button.Group;
+const { Content } = Layout;
+
+
 
 class AdminContainer extends Component {
-  render(){
+
+  state = {
+    childrens: {
+      definePeriod: <DefinePeriod />,
+      initialLoad: <InitialLoadContainer />
+    },
+    currentChilder: <DefinePeriod />
+  }
+
+  selectNewChilder = (childrenName) => {
+    this.setState({ currentChilder: this.state.childrens[childrenName] })
+  }
+
+  render() {
     return (
-      <Tabs defaultActiveKey="1" onChange={this.callback}>
-        <TabPane 
-          tab={<span><Icon type="database"/>Definir periodos</span>} 
-          key="1"
-          >
-          <DefinePeriod/>
-        </TabPane>
-        <TabPane 
-          tab={<span><Icon type="plus"/>Agregar Alumno a Curso</span>} 
-          key="2"
-          >
-          Content of Tab Pane 2
-          </TabPane>
-        <TabPane 
-          tab={<span><Icon type="rocket"/>Carga inicial</span>} 
-          key="3"
-        >
-          <InitialLoadContainer/>
-        </TabPane>
-        <TabPane 
-          tab={<span><Icon type="rocket"/>Otra accion</span>} 
-          key="4"
-        >
-          Content of Tab Pane 2
-        </TabPane>
-      </Tabs>
-      )
+      <div>
+        <Layout>
+          <div style={{ backgroundColor: '#404040' }}>
+            <Row>
+              <Col span={1}>
+              </Col>
+              <Col span={17}>
+                <Menu
+                  theme="dark"
+                  mode="horizontal"
+                  defaultSelectedKeys={['1']}
+                  style={{ lineHeight: '64px', backgroundColor: '#404040' }}
+                >
+                  <Menu.Item
+                    onClick={() => this.selectNewChilder('definePeriod')}
+                    key="1"
+                  >
+                    Definir Periodos
+            </Menu.Item>
+                  <Menu.Item key="2" onClick={() => this.selectNewChilder('initialLoad')}>
+                    Carga Inicial
+            </Menu.Item>
+                </Menu></Col>
+              <Col span={6}>
+                <Row type="flex" justify="end">
+                  <ButtonGroup style={{ padding: '16px' }}>
+                    <Button style={{ cursor: 'text' }}>
+                      <Icon type="user" theme="outlined" />
+                      algo
+                    </Button>
+                    <Button
+                      onClick={() => { localStorage.removeItem('rol'); localStorage.removeItem('token'); this.props.update() }}
+                    >
+                      <Icon type="logout" theme="outlined" />
+                      Salir
+                </Button>
+                  </ButtonGroup>
+                </Row>
+              </Col>
+            </Row>
+          </div>
+          <Layout>
+            <Content style={{ backgroundColor: 'white' }}>
+              {this.state.currentChilder}
+            </Content>
+          </Layout>
+        </Layout>
+      </div>
+    )
   }
 }
 

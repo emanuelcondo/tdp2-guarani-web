@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Button, Row, DatePicker, Col, TimePicker, Select, Form, Input, Modal } from 'antd';
+import { Button, Row, DatePicker, Col, TimePicker, Select, Form, Input, Modal } from 'antd';
 import MyFinals from './MyFinalsTable'
+import locate from 'antd/lib/date-picker/locale/es_ES'
 
 const FormItem = Form.Item;
 
@@ -34,7 +35,7 @@ const CollectionCreateForm = Form.create()(
           sm: { span: 16 },
         },
       };
-      
+
 
       return (
         <Modal
@@ -45,44 +46,44 @@ const CollectionCreateForm = Form.create()(
           onCancel={onCancel}
           onOk={onCreate}
         >
-       
+
           <Form layout="vertical">
-            
+
             <FormItem
-            {...formItemLayout}
+              {...formItemLayout}
             //label="Curso"
             >
               <h2 align="right">Algoritmos II</h2>
             </FormItem>
             <FormItem
-            {...formItemLayout}
-            label="Curso"
+              {...formItemLayout}
+              label="Curso"
             >
               <span className="ant-form-text">1 - Calvo, Patricia</span>
             </FormItem>
 
 
-            <FormItem 
-            {...formItemLayout}
-            label="Día">
+            <FormItem
+              {...formItemLayout}
+              label="Día">
               {getFieldDecorator('dia', {
                 rules: [{ required: true, message: 'Por favor ingrese el día de examen' }],
               })(
-                <DatePicker />
+                <DatePicker locale={locate} />
               )}
             </FormItem>
-            <FormItem 
-            {...formItemLayout}
-            label="Horario">
+            <FormItem
+              {...formItemLayout}
+              label="Horario">
               {getFieldDecorator('horario', {
                 rules: [{ required: true, message: 'Por favor ingrese el horario del examen' }],
               })(
-                <TimePicker format={timeFormat} />
+                <TimePicker format={timeFormat} locale={locate} />
               )}
             </FormItem>
-            <FormItem 
-            {...formItemLayout}
-            label="Sede">
+            <FormItem
+              {...formItemLayout}
+              label="Sede">
               {getFieldDecorator('sede', {
                 rules: [{ required: true, message: 'Por favor ingrese la sede del examen' }],
               })(
@@ -90,16 +91,16 @@ const CollectionCreateForm = Form.create()(
                   //value={""}
                   size={size}
                   style={{ width: '50%' }}
-                  //onChange={this.handleCurrencyChange}
+                //onChange={this.handleCurrencyChange}
                 >
                   <Option value="pc">Paseo Colón</Option>
                   <Option value="lh">Las Heras</Option>
                 </Select>
               )}
             </FormItem>
-            <FormItem 
-            {...formItemLayout}
-            label="Aula">
+            <FormItem
+              {...formItemLayout}
+              label="Aula">
               {getFieldDecorator('aula', {
                 rules: [{ required: true, message: 'Por favor ingrese aula del examen' }],
               })(
@@ -107,14 +108,14 @@ const CollectionCreateForm = Form.create()(
                   //value={""}
                   size={size}
                   style={{ width: '38%' }}
-                  //onChange={this.handleCurrencyChange}
+                //onChange={this.handleCurrencyChange}
                 >
                   <Option value="203">Aula 203</Option>
                   <Option value="404">Aula 404</Option>
                 </Select>
               )}
             </FormItem>
-            
+
           </Form>
         </Modal>
       );
@@ -164,7 +165,7 @@ export default class FinalsContent extends Component {
 
   setFinalsToShow = () => {
     const finalsToShow = dataSource;
-    this.setState({buttonNewFinalDisabled:false})
+    this.setState({ buttonNewFinalDisabled: false })
     this.setState({ finalsToShow })
   }
 
@@ -224,9 +225,9 @@ export default class FinalsContent extends Component {
         data={this.state.finalsToShow}
       />
       <Row type="flex" justify="center">
-      <Button type='primary' size='large'  onClick={this.showModal}>Nueva fecha de examen</Button>
+        <Button type='primary' size='large' onClick={this.showModal}>Nueva fecha de examen</Button>
 
-      <CollectionCreateForm
+        <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
@@ -237,5 +238,5 @@ export default class FinalsContent extends Component {
 
   }
 
-  
+
 } 

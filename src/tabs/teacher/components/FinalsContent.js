@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Button, Row, DatePicker, Col, TimePicker, Select, Form, Input, Radio, Modal } from 'antd';
+import {Button, Row, DatePicker, Col, TimePicker, Select, Form, Input, Modal } from 'antd';
 import MyFinals from './MyFinalsTable'
-//import NewFinalModal from './NewFinalModal';
 
 const FormItem = Form.Item;
 
@@ -25,6 +24,18 @@ const CollectionCreateForm = Form.create()(
       const { getFieldDecorator } = form;
       const state = this.state;
 
+      const formItemLayout = {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 8 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 16 },
+        },
+      };
+      
+
       return (
         <Modal
           visible={visible}
@@ -36,24 +47,73 @@ const CollectionCreateForm = Form.create()(
         >
        
           <Form layout="vertical">
-            <h2>Algoritmos II</h2>
-            <h3>Curso 1 - Calvo, Patricia</h3>
             
-            <FormItem label="Día">
+            <FormItem
+            {...formItemLayout}
+            //label="Curso"
+            >
+              <h2 align="right">Algoritmos II</h2>
+            </FormItem>
+            <FormItem
+            {...formItemLayout}
+            label="Curso"
+            >
+              <span className="ant-form-text">1 - Calvo, Patricia</span>
+            </FormItem>
+
+
+            <FormItem 
+            {...formItemLayout}
+            label="Día">
               {getFieldDecorator('dia', {
                 rules: [{ required: true, message: 'Por favor ingrese el día de examen' }],
               })(
                 <DatePicker />
               )}
             </FormItem>
-            <FormItem label="Horario">
+            <FormItem 
+            {...formItemLayout}
+            label="Horario">
               {getFieldDecorator('horario', {
                 rules: [{ required: true, message: 'Por favor ingrese el horario del examen' }],
               })(
                 <TimePicker format={timeFormat} />
               )}
             </FormItem>
-            
+            <FormItem 
+            {...formItemLayout}
+            label="Sede">
+              {getFieldDecorator('sede', {
+                rules: [{ required: true, message: 'Por favor ingrese la sede del examen' }],
+              })(
+                <Select
+                  //value={""}
+                  size={size}
+                  style={{ width: '50%' }}
+                  //onChange={this.handleCurrencyChange}
+                >
+                  <Option value="pc">Paseo Colón</Option>
+                  <Option value="lh">Las Heras</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem 
+            {...formItemLayout}
+            label="Aula">
+              {getFieldDecorator('aula', {
+                rules: [{ required: true, message: 'Por favor ingrese aula del examen' }],
+              })(
+                <Select
+                  //value={""}
+                  size={size}
+                  style={{ width: '38%' }}
+                  //onChange={this.handleCurrencyChange}
+                >
+                  <Option value="203">Aula 203</Option>
+                  <Option value="404">Aula 404</Option>
+                </Select>
+              )}
+            </FormItem>
             
           </Form>
         </Modal>

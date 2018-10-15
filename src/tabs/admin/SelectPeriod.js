@@ -23,15 +23,15 @@ class SelectPeriod extends Component {
   return <Select
     showSearch
     style={{ width: 300 ,marginRight:'50px'}}
-    placeholder="Selecionar periodo"
+    placeholder="Seleccionar periodo"
     optionFilterProp="children"
     onChange={this.handleChange}
     onFocus={this.handleFocus}
     onBlur={this.handleBlur}
     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
   >
-    <Option value="inscripcion">Periodo de Inscripcion</Option>
-    <Option value="desincripcion">Periodo de Desinscripcion</Option>
+    <Option value="inscripcion">Periodo de Inscripción</Option>
+    <Option value="desincripcion">Periodo de Desinscripción</Option>
     <Option value="finales">Periodo de Finales</Option>
   </Select>
   }

@@ -78,7 +78,7 @@ const CollectionCreateForm = Form.create()(
               {getFieldDecorator('horario', {
                 rules: [{ required: true, message: 'Por favor ingrese el horario del examen' }],
               })(
-                <TimePicker format={timeFormat} locale={locate} />
+                <TimePicker format={timeFormat} placeholder='Selecciona la hora' style={{ width: '200px' }} />
               )}
             </FormItem>
             <FormItem
@@ -89,8 +89,9 @@ const CollectionCreateForm = Form.create()(
               })(
                 <Select
                   //value={""}
+                  placeholder='Seleccione una sede'
                   size={size}
-                  style={{ width: '50%' }}
+                  style={{ width: '55%' }}
                 //onChange={this.handleCurrencyChange}
                 >
                   <Option value="pc">Paseo Colón</Option>
@@ -105,9 +106,9 @@ const CollectionCreateForm = Form.create()(
                 rules: [{ required: true, message: 'Por favor ingrese aula del examen' }],
               })(
                 <Select
-                  //value={""}
+                  placeholder='Selecciona un aula'
                   size={size}
-                  style={{ width: '38%' }}
+                  style={{ width: '55%' }}
                 //onChange={this.handleCurrencyChange}
                 >
                   <Option value="203">Aula 203</Option>

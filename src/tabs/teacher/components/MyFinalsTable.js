@@ -34,7 +34,7 @@ class MyFinals extends Component {
         index: 'horario',
         dataIndex: 'hora'
       }, {
-        title: 'Aula',
+        title: 'Aula asignada',
         index: 'aula',
         dataIndex: 'aula'
       }, {

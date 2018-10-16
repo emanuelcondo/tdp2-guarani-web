@@ -51,7 +51,6 @@ const CollectionCreateForm = Form.create()(
 
             <FormItem
               {...formItemLayout}
-            //label="Curso"
             >
               <h2 align="right">Algoritmos II</h2>
             </FormItem>
@@ -99,23 +98,6 @@ const CollectionCreateForm = Form.create()(
                 </Select>
               )}
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="Aula">
-              {getFieldDecorator('aula', {
-                rules: [{ required: true, message: 'Por favor ingrese aula del examen' }],
-              })(
-                <Select
-                  placeholder='Selecciona un aula'
-                  size={size}
-                  style={{ width: '55%' }}
-                //onChange={this.handleCurrencyChange}
-                >
-                  <Option value="203">Aula 203</Option>
-                  <Option value="404">Aula 404</Option>
-                </Select>
-              )}
-            </FormItem>
 
           </Form>
         </Modal>
@@ -142,7 +124,7 @@ const dataSource = [{
   comision: '3',
   fecha: '08/12/2018',
   hora: '14:20',
-  aula: 'LB',
+  aula: null,
   docenteACargo: 'Calvo, Patricia'
 }];
 
@@ -153,7 +135,6 @@ export default class FinalsContent extends Component {
     asignatureSelected: '',
     buttonNewFinalDisabled: true,
     visible: false,
-    otroCampo: 'Algo',
     sede: 'Paseo Colón'
   }
 

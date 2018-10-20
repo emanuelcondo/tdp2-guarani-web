@@ -19,6 +19,10 @@ export default class MyCoursesContent extends Component {
 
   }
 
+  getConditionals = () => {
+    console.log('MyCoursesContent Get conditionals', this.state.conditionalStudents);
+    return this.state.conditionalStudents;
+  }
 
   getAsignaturesNamesOption = () => {
     return this.state.nombreMaterias.filter((value, idx) => this.state.nombreMaterias.indexOf(value) === idx).map((name, idx) => (<Option key={idx} value={name}> {name} </Option>))
@@ -38,7 +42,9 @@ export default class MyCoursesContent extends Component {
 
           course['regulares'] = response.data.data.regulares
           course['condicionales'] = response.data.data.condicionales
-          this.setState({ conditionalStudents: response.data.data.condicionales })
+          this.setState({ conditionalStudents: response.data.data.condicionales }, () => {
+            this.forceUpdate()
+          })
         })
       });
       console.log('TeacherContainers - allCursos', response.data.data.cursos[0]);
@@ -50,7 +56,12 @@ export default class MyCoursesContent extends Component {
     console.log('MyCoursesContent - setCoursesToShow');
     const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === this.state.asignatureSelected)
     console.log('courseToShow', courseToShow);
-    this.setState({ courseToShow, disableConditionalStudentButton: false })
+    this.setState({ courseToShow }, () => { this.forceUpdate() })
+  }
+
+  update = (callback) => {
+    console.log('Update courses');
+    this.getAsignatureNames()
   }
 
   componentDidMount() {
@@ -78,6 +89,8 @@ export default class MyCoursesContent extends Component {
       </Row>
       <MyCourses
         data={this.state.courseToShow}
+        update={this.update}
+        getConditionals={this.getConditionals}
       />
     </div>
 

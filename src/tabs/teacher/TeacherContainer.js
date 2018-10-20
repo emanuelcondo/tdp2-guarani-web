@@ -3,6 +3,7 @@ import { Tabs, Layout, Menu, Icon, Select, Row, Col, Button } from 'antd';
 import * as TeacherService from './service/TeacherService'
 import MyCoursesContent from './components/MyCoursesContent';
 import FinalsContent from './components/FinalsContent'
+import * as AuthService from '../login/service/AuthService'
 
 
 const TabPane = Tabs.TabPane;
@@ -38,13 +39,13 @@ class TeacherContainer extends Component {
   }
 
   getTeacherName = () => {
-    const token = localStorage.getItem('token');
-    TeacherService.getTeacherDataByToken(token).then((response) => {
-      console.log('response', response);
-      const teacherData = response.data.data.docente;
-      this.setState({ teacherName: teacherData.apellido + ',' + teacherData.nombre })
+    AuthService.getUserInformation().then((response) => {
+      console.log('user', response.data.data.usuario);
+      const user = response.data.data.usuario;
+      this.setState({ teacherName: user.apellido + ', ' + user.nombre })
     })
   }
+
 
 
 

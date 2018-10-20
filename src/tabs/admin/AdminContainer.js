@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
+import * as AuthService from '../login/service/AuthService'
 
 
 const TabPane = Tabs.TabPane;
@@ -17,11 +18,25 @@ class AdminContainer extends Component {
       definePeriod: <DefinePeriod />,
       initialLoad: <InitialLoadContainer />
     },
-    currentChilder: <DefinePeriod />
+    currentChilder: <DefinePeriod />,
+    userName: ''
   }
 
   selectNewChilder = (childrenName) => {
     this.setState({ currentChilder: this.state.childrens[childrenName] })
+  }
+
+  getUserInformation = () => {
+    AuthService.getUserInformation().then((response) => {
+      console.log('user', response.data.data.usuario);
+      const user = response.data.data.usuario;
+      this.setState({ userName: user.apellido + ', ' + user.nombre })
+    })
+  }
+
+
+  componentDidMount() {
+    this.getUserInformation()
   }
 
   render() {
@@ -54,7 +69,7 @@ class AdminContainer extends Component {
                   <ButtonGroup style={{ padding: '16px' }}>
                     <Button style={{ cursor: 'text' }}>
                       <Icon type="user" theme="outlined" />
-                      Amarilla, Cristobal
+                      {this.state.userName}
                     </Button>
                     <Button
                       onClick={() => { localStorage.removeItem('rol'); localStorage.removeItem('token'); this.props.update() }}

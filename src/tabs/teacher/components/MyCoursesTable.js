@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Button, Modal, Alert, Row, Col, Tag } from 'antd';
-import * as teacherService from '../service/TeacherService';
+import * as TeacherService from '../service/TeacherService';
 import ConditionalTable from './ConditionalTable'
+import fileDownload from 'js-file-download'
+
 
 
 const columns = [
@@ -104,7 +106,18 @@ const columns = [
       >
         Ver
       </Button>
-        <Button style={{ marginLeft: '10px' }}>Descargar</Button>
+        <Button
+          style={{ marginLeft: '10px' }}
+          onClick={() => {
+            console.log(row);
+            TeacherService.downloadCourseInformation(row._id).then((data) => {
+              console.log('data', data.data);
+              fileDownload(data.data, `${row.comision}.csv`)
+            })
+          }}
+        >
+          Descargar
+        </Button>
       </div>
     }
   }

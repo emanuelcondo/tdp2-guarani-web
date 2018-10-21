@@ -23,58 +23,34 @@ var onClickOKMock = () => {
   });
 }
 
-var onClickErrorMock = () => {
+var uploadResultError = (response) => {
   Modal.error({
     width: 800,
     title: <h2>Ha fallado la carga de alumnos</h2>,
     content: <div><b>Se han cargado 0 registros de alumnos.<br/><br/>
       Corrija los siguientes errores e intentelo nuevamente:</b><br/>
-      Linea 123: Se hallaron 6 campos. Se esperaban 5.<br/>
-      Linea 1357: El DNI "32q26723" contiene caracteres invalidos.<br/>
-      Linea 7513: El formato es incorrecto.<br/>
-      Linea 13047: El nombre "Juan6" contiene caracteres invalidos.<br/>
-      Linea 17894: El campo "nombre" se encuentra vacio.<br/>
-      Linea 20157: El padrón 85468 ya fue definido en la linea 3457.<br/>
-      Linea 22314: La carrera "49" no es valida.<br/>
-      Linea 27645: El campo "prioridad" se encuentra vacio.<br/></div>
+      {response.error.message}</div>
   });
 }
 
 const Dragger = Upload.Dragger;
 
 const props1 = {
+  accept: ".csv",
   showUploadList: false,
-  name: 'file',
-  multiple: true,
-  action: '/',
-  onChange(info) {
-    const status = info.file.status;
-    if (status !== 'uploading') {
-      //onClickLoadingMock();
-    }
-    if (status === 'done') {
-      onClickOKMock();
-    } else if (status === 'error') {
-      onClickOKMock();
-    }
+  action: 'http://localhost:3000/api/v1.0/importacion/alumnos',
+  headers: {
+    token : localStorage.getItem('token'),
   },
-};
-
-const props2 = {
-  showUploadList: false,
-  name: 'file',
-  multiple: true,
-  action: '/',
   onChange(info) {
     const status = info.file.status;
     if (status !== 'uploading') {
-      //onClickLoadingMock();
-
+      onClickLoadingMock();
     }
     if (status === 'done') {
-      onClickErrorMock();
+      onClickOKMock();
     } else if (status === 'error') {
-      onClickErrorMock();
+      uploadResultError(info.file.response);
     }
   },
 };
@@ -105,7 +81,7 @@ export default class InitialLoadContainer extends Component {
         <br />
         <Row type="flex" justify="space-around">{textos.slice(3, 6).map((i, idx) =>
           <Col span={7} key={idx}>
-            <Dragger {...props2}>
+            <Dragger {...props1}>
               <p className="ant-upload-drag-icon">
                 <font size="54"><span aria-label="Icon" role="img">{i[1]}</span></font>
               </p>

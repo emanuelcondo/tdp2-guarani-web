@@ -27,33 +27,14 @@ var uploadResultError = (response) => {
   Modal.error({
     width: 800,
     title: <h2>Ha fallado la carga de alumnos</h2>,
-    content: <div><b>Se han cargado 0 registros de alumnos.<br/><br/>
-      Corrija los siguientes errores e intentelo nuevamente:</b><br/>
+    content: <div><b>Se han cargado 0 registros de alumnos.<br /><br />
+      Corrija los siguientes errores e intentelo nuevamente:</b><br />
       {response.error.message}</div>
   });
 }
 
 const Dragger = Upload.Dragger;
 
-const props1 = {
-  accept: ".csv",
-  showUploadList: false,
-  action: 'http://localhost:3000/api/v1.0/importacion/alumnos',
-  headers: {
-    token : localStorage.getItem('token'),
-  },
-  onChange(info) {
-    const status = info.file.status;
-    if (status !== 'uploading') {
-      onClickLoadingMock();
-    }
-    if (status === 'done') {
-      onClickOKMock();
-    } else if (status === 'error') {
-      uploadResultError(info.file.response);
-    }
-  },
-};
 
 const textos = [["Cargar Aulas", "🏫"],
 ["Cargar Materias", "📚"],
@@ -65,6 +46,27 @@ const textos = [["Cargar Aulas", "🏫"],
 export default class InitialLoadContainer extends Component {
 
   render() {
+
+    const props1 = {
+      accept: ".csv",
+      showUploadList: false,
+      action: 'http://localhost:3000/api/v1.0/importacion/alumnos',
+      headers: {
+        token: localStorage.getItem('token')
+      },
+      onChange(info) {
+        const status = info.file.status;
+        if (status !== 'uploading') {
+          onClickLoadingMock();
+        }
+        if (status === 'done') {
+          onClickOKMock();
+        } else if (status === 'error') {
+          uploadResultError(info.file.response);
+        }
+      },
+    };
+
     return <Row type="flex" justify="center" align="top" style={{ marginTop: '50px' }}>
       <div>
         <Row type="flex" justify="space-around">{textos.slice(0, 3).map((i, idx) =>

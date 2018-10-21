@@ -25,3 +25,14 @@ export const addConditionalStudent = (idCourse, idStudent) => {
 export const downloadCourseInformation = (courseId) => {
   return server.get('/docentes/mis-cursos/' + courseId + '?exportar=true')
 }
+
+
+export const getExamenes = (courseId) => {
+  return server.get(`/docentes/mis-cursos/${courseId}/examenes`)
+}
+
+
+export const createExam = (courseId, date) => {
+  return server.post(`docentes/mis-cursos/${courseId}/examenes`, { 'fecha': date })
+}
+

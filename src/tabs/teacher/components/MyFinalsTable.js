@@ -23,16 +23,24 @@ class MyFinals extends Component {
     const columns = [
       {
         title: 'Número de Curso',
-        dataIndex: 'comision',
+        dataIndex: 'curso.comision',
         key: 'numero'
       }, {
         title: 'Día',
         index: 'dia',
-        dataIndex: 'fecha'
+        dataIndex: 'fecha',
+        render: (value, row, idx) => {
+          const date = new Date(row.fecha)
+          return date.getDay() + '-' + date.getMonth() + '-' + date.getFullYear()
+        }
       }, {
         title: 'Horario',
         index: 'horario',
-        dataIndex: 'hora'
+        dataIndex: 'hora',
+        render: (value, row, idx) => {
+          const date = new Date(row.fecha)
+          return date.getHours() + ':' + date.getMinutes()
+        }
       }, {
         title: 'Aula asignada',
         index: 'aula',
@@ -40,13 +48,17 @@ class MyFinals extends Component {
       }, {
         title: 'Docente',
         key: 'docente',
-        dataIndex: 'docenteACargo'
+        dataIndex: 'docenteACargo',
+        render: (value, row, idx) => {
+          return row.curso.docenteACargo.nombre + ', ' + row.curso.docenteACargo.apellido
+        }
+
       }, {
         title: 'Examen final',
         render: (value, row, idx) => {
-          return row.docenteACargo === 'Calvo, Patricia' ? <Button type='primary' onClick={this.warning} >
+          return <Button type='primary' onClick={this.warning} >
             Cancelar final
-          </Button> : <div />
+          </Button>
         }
       }
     ];

@@ -27,7 +27,7 @@ var uploadMysteryProblem = (response,name) => {
     width: 800,
     title: <h2>Ha fallado la carga de {name}</h2>,
     content: <div><b>Se han cargado 0 registros de {name}.<br /><br />
-      Se ha encontrado un error inesperado. Comunique a los desarrolladores lo siguiente:</b><br />
+      Se ha encontrado un error inesperado. Comuniquese con los desarrolladores</b><br />
       {JSON.stringify(response)}</div>
   });
 }
@@ -47,7 +47,7 @@ var genProp = (id) => {
     return {
       accept: ".csv",
       showUploadList: false,
-      action: "http://localhost:3000/api/v1.0/importacion/"+endpoints[id],
+      action: "http://localhost:3000/api/v1.0/"+"importacion/"+endpoints[id],
       headers: {
         token: localStorage.getItem('token')
       },
@@ -58,13 +58,13 @@ var genProp = (id) => {
         }
         else if (status === 'done') {
           varHideModal();
-          uploadResultOK(info.file.response, info.file.name);
-        } else if (status === 'error' ) {
+          uploadResultOK(info.file.response, endpoints[id]);
+        } else if (status === 'error' && !info && !info.file && !info.file.response && !info.file.response.error) {
           varHideModal();
-          uploadResultError(info.file.response, info.file.name);
+          uploadResultError(info.file.response, endpoints[id]);
         } else {
           varHideModal();
-          uploadMysteryProblem(info.file.response, info.file.name);
+          uploadMysteryProblem(info.file.response, endpoints[id]);
         }
       },
     };

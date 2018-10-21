@@ -90,7 +90,7 @@ export default class InitialLoadContainer extends Component {
       <div>
         <Modal
           visible={this.state.showLoading}
-          title={<h2>Cargando alumnos al sistema</h2>}
+          title={<h2>Cargando archivo al sistema</h2>}
           footer={[]}
         >
           <div>

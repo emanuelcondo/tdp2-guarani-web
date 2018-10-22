@@ -28,7 +28,7 @@ class MyFinals extends Component {
     TeacherService.getExamEnrolled(row.course, row._id).then(
       (response) => {
         //Data para la tabla
-        const dataSource = response.data.inscripciones;
+        const dataSource = response.data.data.inscripciones;
         const columns = [{
           title: 'Padrón',
           dataIndex: 'alumno.legajo',

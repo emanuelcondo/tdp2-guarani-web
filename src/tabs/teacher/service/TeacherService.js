@@ -31,10 +31,14 @@ export const createExam = (courseId, date) => {
   return server.post(`docentes/mis-cursos/${courseId}/examenes`, { 'fecha': date })
 }
 
-export const getExamEnrolled = (courseId,examId) => {
+export const getExamEnrolled = (courseId, examId) => {
   return server.get(`docentes/mis-cursos/${courseId}/examenes/${examId}/inscriptos`)
 }
 
 export const cancelExam = (courseId, examId) => {
   return server.delete(`docentes/mis-cursos/${courseId}/examenes/${examId}`)
 }
+export const updateExam = (courseId, examId, date) => {
+  return server.put(`docentes/mis-cursos/${courseId}/examenes/${examId}`, { 'fecha': date })
+}
+

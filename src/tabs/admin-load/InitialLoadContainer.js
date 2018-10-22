@@ -19,7 +19,7 @@ var uploadResultError = (response,name) => {
     title: <h2>Ha fallado la carga de {name}</h2>,
     content: <div><b>Se han cargado 0 registros de {name}.<br /><br />
       Corrija los siguientes errores e intentelo nuevamente:</b><br />
-      {response.error.message}</div>
+      Fila {response.error.row + 1}: {response.error.message}</div>
   });
 }
 

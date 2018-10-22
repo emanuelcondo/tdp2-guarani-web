@@ -32,6 +32,9 @@ export default class MyCoursesContent extends Component {
     console.log('TeacherContainer - getAsignaturesName');
     return TeacherService.getAsignatures().then((response) => {
       const asignatureNames = response.data.data.cursos.map((course) => course.materia.nombre);
+      const courseIds = response.data.data.cursos.map((course) => course.comision);
+      localStorage.setItem('courseIds', courseIds)
+      console.log('courseIds', courseIds);
       console.log('getAsignaturesName', asignatureNames);
       this.setState({ nombreMaterias: asignatureNames })
       localStorage.setItem('asignatureNames', asignatureNames)

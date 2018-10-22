@@ -1,8 +1,15 @@
 import server from '../../../Server'
 
-const className = "AUTH-SERVICE"
+
+const CLASS_NAME = "AuthService"
 
 export const authUser = (auth) => {
-  console.log(className+'login user',auth);
-  return server.post('/docentes/login',auth)
+  console.log(CLASS_NAME + 'login user', auth);
+  return server.post('/autogestion/login', auth)
+}
+
+
+export const getUserInformation = () => {
+  console.log(CLASS_NAME + 'get user information');
+  return server.get('/autogestion/mis-datos')
 }

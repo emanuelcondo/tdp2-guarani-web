@@ -1,10 +1,9 @@
 import axios from 'axios';
 
+export const SERVER_PATH = "http://guarani-server.herokuapp.com/api/v1.0";
+
 const server = axios.create({
-  baseURL:'https://guarani-server.herokuapp.com/api/v1.0',
+  baseURL : SERVER_PATH,
 })
-
-
-
 
 export default server;

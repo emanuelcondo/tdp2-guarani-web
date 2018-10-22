@@ -1,12 +1,12 @@
-import React,{Component} from 'react';
-import { Tabs ,Layout,Menu,Icon,Select,Row,Col,Button} from 'antd';
-import MyCourses from './components/MyCourses'
+import React, { Component } from 'react';
+import { Tabs, Layout, Menu, Icon, Select, Row, Col, Button } from 'antd';
 import * as TeacherService from './service/TeacherService'
-import logo from '../../resource/logo.png'
-import ConditionalModal from './components/ConditionalModal'
+import MyCoursesContent from './components/MyCoursesContent';
+import FinalsContent from './components/FinalsContent'
+import * as AuthService from '../login/service/AuthService'
+
 
 const TabPane = Tabs.TabPane;
-const Option = Select.Option;
 const ButtonGroup = Button.Group;
 
 
@@ -15,144 +15,96 @@ const { Content } = Layout;
 
 class TeacherContainer extends Component {
 
-  state={
-    teacherName:'teacher name',
-    nombreMaterias:[],
-    allCourses:[],
-    courseToShow:[],
-    disableConditionalStudentButton:true,
-    conditionalModal:false,
-    conditionalStudents:[],
-    asignatureSelected : ''
+  state = {
+    teacherName: 'teacher name',
+    childrens: {
+      myCourses: <MyCoursesContent />,
+      finalsContent: <FinalsContent />
+    },
+    /**this value is for default */
+    children: <MyCoursesContent />
   }
-  
-
-
 
   setModal = (value) => {
-    this.setState({conditionalModal:value})
+    this.setState({ conditionalModal: value })
   }
 
   callback = (key) => {
     console.log(key);
   }
-  
+
+
+  selectNewChilder = (childrenName) => {
+    this.setState({ children: this.state.childrens[childrenName] })
+  }
+
   getTeacherName = () => {
-    const token = localStorage.getItem('token');
-    TeacherService.getTeacherDataByToken(token).then((response)=>{
-      console.log('response',response);
-      const teacherData = response.data.data.docente;
-      this.setState({teacherName:teacherData.apellido+','+teacherData.nombre})
+    AuthService.getUserInformation().then((response) => {
+      console.log('user', response.data.data.usuario);
+      const user = response.data.data.usuario;
+      this.setState({ teacherName: user.apellido + ', ' + user.nombre })
     })
   }
 
-  getAsignatureNames = () => {
-    console.log('TeacherContainer - getAsignaturesName');
-    return TeacherService.getAsignatures().then((response)=>{
-      const asignatureNames = response.data.data.cursos.map((course)=>course.materia.nombre);
-      this.setState({nombreMaterias:asignatureNames})
-      console.log('TeacherContainer - courses',response.data.data.cursos);
-      response.data.data.cursos.forEach(course => {
-         TeacherService.getMoreInformationFromCourseById(course._id).then((response)=>{
-           console.log('response,obtener infor curso',response.data.data);
-           
-           course['regulares'] = response.data.data.regulares
-           course['condicionales'] = response.data.data.condicionales
-           this.setState({conditionalStudents:response.data.data.condicionales})
-        })
-      });
-      console.log('TeacherContainers - allCursos',response.data.data.cursos[0]);
-      this.setState({allCourses:response.data.data.cursos},this.setCoursesToShow)
-    })
-  }
-
-  getAsignaturesNamesOption = () => {
-    return this.state.nombreMaterias.filter((value,idx)=> this.state.nombreMaterias.indexOf(value)===idx).map((name,idx)=>(<Option key={idx} value={name}> {name} </Option>) )
-  }
 
 
-  setCoursesToShow = () => {
-    console.log('TeacherContainer - setCoursesToShow');
-    const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === this.state.asignatureSelected)
-    console.log('courseToShow',courseToShow);
-    this.setState({courseToShow,disableConditionalStudentButton:false})
-  }
-  
-  getNumerosDeCursos = () => {
-    console.log('getNumerosDeCursos',this.state.courseToShow);
-    return this.state.courseToShow.map((course)=>{return {
-      'numero':course.comision,
-      'id':course._id
-    }})
-  }
-  componentDidMount(){
+
+  componentDidMount() {
     this.getTeacherName()
-    this.getAsignatureNames();
   }
 
-  render(){
+
+
+
+  render() {
     return (
-        <Layout>
-          <div style={{backgroundColor:'#404040'}}>
+      <Layout>
+        <div style={{ backgroundColor: '#404040' }}>
           <Row>
             <Col span={1}>
             </Col>
             <Col span={17}>
-            <Menu
-            theme="dark"
-             mode="horizontal"
-            defaultSelectedKeys={['1']}
-            style={{ lineHeight: '64px' ,backgroundColor:'#404040'}}
-          >
-            <Menu.Item key="1">
-              <Icon type="database" />
-              Mis Cursos
+              <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['1']}
+                style={{ lineHeight: '64px', backgroundColor: '#404040' }}
+              >
+                <Menu.Item
+                  onClick={() => this.selectNewChilder('myCourses')}
+                  key="1"
+                >
+                  <Icon type="database" />
+                  Mis Cursos
             </Menu.Item>
-            <Menu.Item key="2">Examenes</Menu.Item>
-          </Menu></Col>
+                <Menu.Item key="2" onClick={() => this.selectNewChilder('finalsContent')}>
+                  Examenes
+            </Menu.Item>
+              </Menu></Col>
             <Col span={6}>
-            <Row type="flex" justify="end">
-              <ButtonGroup style={{padding:'16px'}}>
-                <Button style={{cursor:'text'}}>
-                  <Icon type="user" theme="outlined" />
-                  {this.state.teacherName}
+              <Row type="flex" justify="end">
+                <ButtonGroup style={{ padding: '16px' }}>
+                  <Button style={{ cursor: 'text' }}>
+                    <Icon type="user" theme="outlined" />
+                    {this.state.teacherName}
+                  </Button>
+                  <Button
+                    onClick={() => { localStorage.removeItem('rol'); localStorage.removeItem('token'); this.props.update() }}
+                  >
+                    <Icon type="logout" theme="outlined" />
+                    Salir
                 </Button>
-                <Button
-                  onClick={()=> {localStorage.removeItem('rol');localStorage.removeItem('token');this.props.update()}}
-                >
-                <Icon type="logout" theme="outlined" />
-                  Salir
-                </Button>
-              </ButtonGroup>
-            </Row>  
+                </ButtonGroup>
+              </Row>
             </Col>
-           </Row>
-          </div>
-          <Layout>
-            <Content style={{backgroundColor:'white'}}>
-            <Row type="flex" justify="space-around" align="middle">
-              <div style={{margin:'25px'}}>
-                <Select
-                  placeholder="Selecciona una materia"
-                  style={{width:'300px'}}
-                  onSelect={(value)=>{
-                    this.setState({asignatureSelected:value},this.setCoursesToShow)
-                  }
-                }
-                >
-                  {this.getAsignaturesNamesOption()}
-                </Select>
-
-              </div>
-            </Row>
-            <Row type="flex" justify="end">
-            </Row>
-              <MyCourses
-                data={this.state.courseToShow}
-              />
-            </Content>
-          </Layout>
+          </Row>
+        </div>
+        <Layout>
+          <Content style={{ backgroundColor: 'white' }}>
+            {this.state.children}
+          </Content>
         </Layout>
+      </Layout>
     )
   }
 }

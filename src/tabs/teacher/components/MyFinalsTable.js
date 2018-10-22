@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, Row, Col } from 'antd';
-
-
-
+import { Table, Button, Modal, Row, Col, message } from 'antd';
+import * as TeacherService from '../service/TeacherService'
 
 class MyFinals extends Component {
 
@@ -10,22 +8,42 @@ class MyFinals extends Component {
     tableMessage: 'Seleccione una materia por favor'
   }
 
-
-  warning = () => {
+  confirm = (row) => () => {
     Modal.confirm({
       title: 'Cancelar fecha de final',
       content: '¿Esta seguro que desea cancelar este fecha de final?',
       okText : "Si",
-      onOk : this.cancelExam,
-      okText : "No",
-      onCancel : {},
+      okType: 'danger',
+      onOk : this.cancelExam(row),
+      cancelText : "No",
+      onCancel : () => {},
     });
-
   }
 
-  cancelExam = () => {
-    console.log("Aca va el post");
-    console.log(this.props.data);
+  inscriptos = (row) => () => {
+    TeacherService.getExamEnrolled(row.course, row._id).then( 
+      (response) => {
+        Modal.info({
+          title: 'Inscriptos',
+          content: (
+            <div>
+              {JSON.stringify(response)}
+            </div>
+          ),
+          onOk() {},
+        });
+    }).catch((e) => {
+      message.error('La información no esta disponible');
+    })
+  }
+
+  cancelExam = (row) => () => {
+    TeacherService.cancelExam(row.course, row._id).then( 
+      (response) => {
+      message.success('La fecha de examen fue cancelada');
+    }).catch((e) => {
+      message.error('La fecha no pudo ser cancelada');
+    })
   }
 
   render() {
@@ -40,8 +58,8 @@ class MyFinals extends Component {
         index: 'dia',
         dataIndex: 'fecha',
         render: (value, row, idx) => {
-          const date = new Date(row.fecha)
-          return date.getDay() + '-' + date.getMonth() + '-' + date.getFullYear()
+          const date = new Date(row.fecha);
+          return date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear()
         }
       }, {
         title: 'Horario',
@@ -64,9 +82,16 @@ class MyFinals extends Component {
         }
 
       }, {
+        title: 'Inscriptos',
+        render: (value, row, idx) => {
+          return <Button type='primary' onClick={this.inscriptos(row)} >
+            Ver Inscriptos
+          </Button>
+        }
+      }, {
         title: 'Examen final',
         render: (value, row, idx) => {
-          return <Button type='primary' onClick={this.warning} >
+          return <Button type='primary' onClick={this.confirm(row)} >
             Cancelar final
           </Button>
         }

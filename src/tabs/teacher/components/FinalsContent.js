@@ -126,7 +126,6 @@ const dataSource = []
 
 
 export default class FinalsContent extends Component {
-
   state = {
     finalsToShow: [],
     asignatureSelected: '',
@@ -135,6 +134,7 @@ export default class FinalsContent extends Component {
     sede: 'Paseo Colón',
     courses: []
   }
+
 
   componentDidMount() {
     if (this.state.asignatureSelected !== '') {
@@ -153,6 +153,7 @@ export default class FinalsContent extends Component {
       return TeacherService.getExamenes(courseId).then((response) => {
         console.log('response', response.data.data.examenes);
         const finals = response.data.data.examenes
+        finals.forEach( (final) => final.course = courseId )
         const finalsToShow = [...this.state.finalsToShow]
         this.setState({ finalsToShow: finalsToShow.concat(finals) }, () => {
           console.log('finalsToShow', this.state.finalsToShow);
@@ -271,6 +272,5 @@ export default class FinalsContent extends Component {
     </div>
 
   }
-
 
 } 

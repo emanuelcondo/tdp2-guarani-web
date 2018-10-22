@@ -4,6 +4,7 @@ import MyFinals from './MyFinalsTable'
 import locate from 'antd/lib/date-picker/locale/es_ES'
 import * as TeacherService from '../service/TeacherService'
 import { loadavg } from 'os';
+import { stringify } from 'querystring';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -37,7 +38,7 @@ const CollectionCreateForm = Form.create()(
     }
 
     getCourseOption = () => {
-      return this.state.courses.map((course) => <Option value={course.id} key={course.id}>{course.comision}</Option>)
+      return this.state.courses.map( (course) => <Option value={course.id} key={course.id}>{course.comision}</Option>)
     }
 
     componentDidMount() {
@@ -211,7 +212,7 @@ export default class FinalsContent extends Component {
       TeacherService.createExam(values.curso, dateToSend).then((response) => {
         message.success('La fecha de examen fue creada')
       }).catch((e) => {
-        message.error('La fecha no pudo ser ingresada')
+        message.error('La fecha no pudo ser ingresada: '+e.response.data.error.message)
       })
       form.resetFields();
       this.setState({ visible: false });

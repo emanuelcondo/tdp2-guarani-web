@@ -27,7 +27,7 @@ class MyFinals extends Component {
           title: 'Inscriptos',
           content: (
             <div>
-              {JSON.stringify(response)}
+              {JSON.stringify(response.data.inscripciones)}
             </div>
           ),
           onOk() {},

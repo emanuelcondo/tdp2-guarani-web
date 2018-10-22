@@ -3,6 +3,7 @@ import { Table, Button, Modal, Alert, Row, Col, Tag } from 'antd';
 import * as TeacherService from '../service/TeacherService';
 import ConditionalTable from './ConditionalTable'
 import fileDownload from 'js-file-download'
+import ButtonGroup from 'antd/lib/button/button-group';
 
 class MyCourses extends Component {
 
@@ -76,92 +77,98 @@ class MyCourses extends Component {
         }
 
       }, {
-        title: 'Ayudantes de Primera',
+        title: 'Ayudantes',
         dataIndex: 'ayudantesDePrimera',
-        key: 'ayudantesDePrimera'
-      }, {
-        title: 'Ayudantes de Segunda',
-        dataIndex: 'ayudantesDeSegunda',
-        key: 'ayudantesDeSegunda'
+        key: 'ayudantesDePrimera',
+        render: (value, row, idx) => {
+          return row.ayudantes.map((ayudante) => (<div>{ayudante.apellido}, {ayudante.nombre}</div>))
+        }
       }, {
         title: 'Alumnos',
         render: (value, row, idx) => {
-          console.log('row.inscriptos', row);
-          return <div><Button
-            onClick={() => {
-              const columns = [
-                {
-                  title: 'Padrón',
-                  index: 'padron',
-                  dataIndex: 'alumno.legajo',
-                  render: (value, row, idx) => {
-                    return <div style={{ padding: '6px' }}>{row.alumno.legajo}</div>
-                  }
-                }, {
-                  title: 'Nombre y Apellido',
-                  index: 'nombre',
-                  render: (value, row, index) => {
-                    return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
-                  }
-                }, {
-                  title: 'Prioridad',
-                  index: 'prioridad',
-                  dataIndex: 'alumno.prioridad'
-                }, {
-                  title: 'Observaciones',
-                  index: 'siEsCondicional',
-                  render: (value, row, idx) => {
-                    if (row.exCondicional) {
-                      return <Tag color="blue" key={idx}>Condicional</Tag>
-                    } return <div></div>
-                  }
-                }
-              ]
+          console.log('row.regulares', row.regulares);
+          return <div>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  const columns = [
+                    {
+                      title: 'Padrón',
+                      index: 'padron',
+                      dataIndex: 'alumno.legajo',
+                      render: (value, row, idx) => {
+                        return <div style={{ padding: '6px' }}>{row.alumno.legajo}</div>
+                      }
+                    }, {
+                      title: 'Nombre y Apellido',
+                      index: 'nombre',
+                      render: (value, row, index) => {
+                        return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+                      }
+                    }, {
+                      title: 'Prioridad',
+                      index: 'prioridad',
+                      dataIndex: 'alumno.prioridad'
+                    }, {
+                      title: 'Observaciones',
+                      index: 'siEsCondicional',
+                      render: (value, row, idx) => {
+                        if (row.exCondicional) {
+                          return <Tag color="blue" key={idx}>Condicional</Tag>
+                        } return <div></div>
+                      }
+                    }
+                  ]
 
-              Modal.info({
-                title: 'Alumnos',
-                content:
-                  <div>
-                    <Row>
-                      <Col span={12}>
-                        <Table
-                          columns={columns}
-                          dataSource={row.regulares}
-                          rowKey={(row) => (row.alumno.legajo)}
-                          pagination={false}
-                          style={{ marginRight: '30px' }}
-                          title={() => { return <h1>Inscriptos Regulares</h1> }}
-                          locale={{ emptyText: 'No hay alumnos regulares inscriptos' }}
-                        />
-                      </Col>
-                      <Col span={12}>
-                        <ConditionalTable
-                          getConditionals={this.props.getConditionals}
-                          courseId={row._id}
-                          update={() => { this.props.update() }}
-                        />
-                      </Col>
-                    </Row>
-                  </div>
-                ,
-                width: '1500px'
-              })
-            }}
-          >
-            Ver
+                  Modal.info({
+                    title: 'Alumnos',
+                    content:
+                      <div>
+                        <Row>
+                          <Col span={12}>
+                            <Table
+                              columns={columns}
+                              dataSource={row.regulares}
+                              rowKey={(row) => (row.alumno.legajo)}
+                              pagination={false}
+                              style={{ marginRight: '30px' }}
+                              title={() => { return <h1>Inscriptos Regulares</h1> }}
+                              locale={{ emptyText: 'No hay alumnos regulares inscriptos' }}
+                            />
+                          </Col>
+                          <Col span={12}>
+                            <ConditionalTable
+                              getConditionals={this.props.getConditionals}
+                              courseId={row._id}
+                              update={() => { this.props.update() }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ,
+                    width: '1500px'
+                  })
+                }}
+                disabled={row.regulares.lenght !== 0}
+                icon='eye'
+              >
+                Ver
           </Button>
-            <Button
-              style={{ marginLeft: '10px' }}
-              onClick={() => {
-                console.log(row);
-                TeacherService.downloadCourseInformation(row._id).then((data) => {
-                  console.log('data', data.data);
-                  fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
-                })
-              }}
-            >
-              Descargar
+              <Button
+                onClick={() => {
+                  console.log(row);
+                  TeacherService.downloadCourseInformation(row._id).then((data) => {
+                    console.log('data', data.data);
+                    fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
+                  })
+                }}
+                disabled={row.regulares.lenght !== 0}
+                icon='cloud-download'
+              >
+                Descargar
             </Button>
+            </ButtonGroup>
+
           </div>
         }
       }

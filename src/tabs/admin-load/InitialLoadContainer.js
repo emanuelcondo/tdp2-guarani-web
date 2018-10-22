@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Spin, Row, Col, Upload } from 'antd';
+import { SERVER_PATH } from '../../Server';
 
 var varShowModal;
 var varHideModal;
@@ -47,7 +48,7 @@ var genProp = (id) => {
     return {
       accept: ".csv",
       showUploadList: false,
-      action: "http://localhost:3000/api/v1.0/"+"importacion/"+endpoints[id],
+      action: SERVER_PATH+"/importacion/"+endpoints[id],
       headers: {
         token: localStorage.getItem('token')
       },
@@ -59,7 +60,7 @@ var genProp = (id) => {
         else if (status === 'done') {
           varHideModal();
           uploadResultOK(info.file.response, endpoints[id]);
-        } else if (status === 'error' && !info && !info.file && !info.file.response && !info.file.response.error) {
+        } else if (status === 'error' && info !== null && info.file != null && info.file.response !== null && info.file.response.error !== null) {
           varHideModal();
           uploadResultError(info.file.response, endpoints[id]);
         } else {

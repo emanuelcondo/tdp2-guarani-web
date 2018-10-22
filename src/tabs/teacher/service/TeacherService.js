@@ -32,7 +32,7 @@ export const createExam = (courseId, date) => {
 }
 
 export const getExamEnrolled = (courseId,examId) => {
-  return server.get(`docentes/mis-cursos/${courseId}/examenes/${examId}?exportar=true`)
+  return server.get(`docentes/mis-cursos/${courseId}/examenes/${examId}/inscriptos`)
 }
 
 export const cancelExam = (courseId, examId) => {

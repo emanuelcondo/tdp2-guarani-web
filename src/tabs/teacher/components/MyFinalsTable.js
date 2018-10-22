@@ -12,10 +12,20 @@ class MyFinals extends Component {
 
 
   warning = () => {
-    Modal.warning({
+    Modal.confirm({
       title: 'Cancelar fecha de final',
       content: '¿Esta seguro que desea cancelar este fecha de final?',
+      okText : "Si",
+      onOk : this.cancelExam,
+      okText : "No",
+      onCancel : {},
     });
+
+  }
+
+  cancelExam = () => {
+    console.log("Aca va el post");
+    console.log(this.props.data);
   }
 
   render() {

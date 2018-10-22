@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const server = axios.create({
-  baseURL:'https://guarani-server.herokuapp.com/api/v1.0',
+  baseURL:'http://localhost:3000/api/v1.0',
 })
 
 

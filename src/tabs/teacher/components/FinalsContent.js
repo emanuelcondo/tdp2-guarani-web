@@ -126,6 +126,7 @@ const dataSource = []
 
 
 export default class FinalsContent extends Component {
+
   state = {
     finalsToShow: [],
     asignatureSelected: '',
@@ -134,7 +135,6 @@ export default class FinalsContent extends Component {
     sede: 'Paseo Colón',
     courses: []
   }
-
 
   componentDidMount() {
     if (this.state.asignatureSelected !== '') {

@@ -36,3 +36,8 @@ export const createExam = (courseId, date) => {
   return server.post(`docentes/mis-cursos/${courseId}/examenes`, { 'fecha': date })
 }
 
+export const cancelExam = (courseId, examId) => {
+  return server.delete(`docentes/mis-cursos/${courseId}/examenes/${examId}`)
+}
+
+

@@ -45,9 +45,10 @@ class MyFinals extends Component {
         //Modal
         Modal.info({
           title: 'Inscriptos',
+          width: '500px',
           content: (
             <div>
-              <Table dataSource={dataSource} columns={columns} />
+              <Table dataSource={dataSource} columns={columns} style={{ width: '100%' }} locale={{ emptyText: 'No hay ningún inscripto' }} />
             </div>
           ),
           onOk() { },

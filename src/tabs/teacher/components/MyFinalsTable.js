@@ -8,6 +8,7 @@ class MyFinals extends Component {
     tableMessage: 'Seleccione una materia por favor'
   }
 
+  //Muestra el modal para confirmar cancelar un examen. Hecho con currying porque me salió así
   confirm = (row) => () => {
     Modal.confirm({
       title: 'Cancelar fecha de final',
@@ -20,23 +21,41 @@ class MyFinals extends Component {
     });
   }
 
+  //Muestra el modal de inscriptos. Hecho con currying porque me salió así
   inscriptos = (row) => () => {
     TeacherService.getExamEnrolled(row.course, row._id).then( 
       (response) => {
+        //Data para la tabla
+        const dataSource = response.data.inscripciones;
+        const columns = [{
+          title: 'Padrón',
+          dataIndex: 'alumno.legajo',
+          key: 'alumno.legajo',
+        }, {
+          title: 'Nombre',
+          dataIndex: 'alumno.nombre',
+          key: 'alumno.nombre',
+        }, {
+          title: 'Apellido',
+          dataIndex: 'alumno.apellido',
+          key: 'alumno.apellido',
+        }];
+        //Modal
         Modal.info({
           title: 'Inscriptos',
           content: (
             <div>
-              {JSON.stringify(response.data.inscripciones)}
+              <Table dataSource={dataSource} columns={columns} />
             </div>
           ),
           onOk() {},
-        });
-    }).catch((e) => {
-      message.error('La información no esta disponible');
+        });    
+      }).catch((e) => {
+        message.error('La información no esta disponible');
     })
   }
 
+  //Funcion a llamar al cancelar un examen. Hecho con currying porque me salió así
   cancelExam = (row) => () => {
     TeacherService.cancelExam(row.course, row._id).then( 
       (response) => {

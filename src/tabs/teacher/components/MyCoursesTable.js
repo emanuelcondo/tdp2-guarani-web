@@ -149,7 +149,7 @@ class MyCourses extends Component {
                     width: '1500px'
                   })
                 }}
-                disabled={row.regulares.lenght !== 0}
+                disabled={row.regulares.length === 0}
                 icon='eye'
               >
                 Ver
@@ -162,7 +162,7 @@ class MyCourses extends Component {
                     fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
                   })
                 }}
-                disabled={row.regulares.lenght !== 0}
+                disabled={row.regulares.length === 0}
                 icon='cloud-download'
               >
                 Descargar

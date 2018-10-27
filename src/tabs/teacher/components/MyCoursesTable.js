@@ -96,22 +96,26 @@ class MyCourses extends Component {
                       title: 'Padrón',
                       index: 'padron',
                       dataIndex: 'alumno.legajo',
+                      width: 70,
                       render: (value, row, idx) => {
                         return <div style={{ padding: '6px' }}>{row.alumno.legajo}</div>
                       }
                     }, {
                       title: 'Nombre y Apellido',
                       index: 'nombre',
+                      width: 170,
                       render: (value, row, index) => {
                         return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
                       }
                     }, {
                       title: 'Prioridad',
                       index: 'prioridad',
-                      dataIndex: 'alumno.prioridad'
+                      dataIndex: 'alumno.prioridad',
+                      width: 70
                     }, {
                       title: 'Observaciones',
                       index: 'siEsCondicional',
+                      width: 110,
                       render: (value, row, idx) => {
                         if (row.exCondicional) {
                           return <Tag color="blue" key={idx}>Condicional</Tag>
@@ -146,7 +150,7 @@ class MyCourses extends Component {
                         </Row>
                       </div>
                     ,
-                    width: '1500px'
+                    width: '1200px'
                   })
                 }}
                 disabled={row.regulares.length === 0}

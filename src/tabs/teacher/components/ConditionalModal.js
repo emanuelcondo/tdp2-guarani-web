@@ -61,19 +61,22 @@ export default class ConditionalModal extends Component{
       {
         title:'Padrón',
         index:'padron',
-        dataIndex:'alumno.legajo'
+        dataIndex:'alumno.legajo',
+        width: 70
       },
       {
         title:'Nombre',
         index:'nombre',
         dataIndex:'nombre',
+        width: 170,
         render:(value,row,index)=>{
           return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
         }
       },{
         title:'Prioridad',
         index:'prioridad',
-        dataIndex:'alumno.prioridad'
+        dataIndex:'alumno.prioridad',
+        width: 70
       },
       {
         title:'Acción',

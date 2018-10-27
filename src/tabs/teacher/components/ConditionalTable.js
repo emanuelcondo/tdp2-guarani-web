@@ -53,10 +53,12 @@ class ConditionalTable extends Component {
       title: 'Padrón',
       dataIndex: 'alumno.legajo',
       key: 'padron',
+      width: 70
     }, {
       title: 'Nombre y Apellido',
       dataIndex: 'nombre',
       key: 'nombre',
+      width: 170,
       render: (value, row, index) => {
         return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
       }
@@ -64,6 +66,7 @@ class ConditionalTable extends Component {
       title: 'Prioridad',
       dataIndex: 'alumno.prioridad',
       key: 'prioridad',
+      width: 70
     }, {
       title: 'Inscribir',
       key: 'inscribir',

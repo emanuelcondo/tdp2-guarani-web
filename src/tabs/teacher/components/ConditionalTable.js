@@ -60,7 +60,7 @@ class ConditionalTable extends Component {
       key: 'nombre',
       width: 170,
       render: (value, row, index) => {
-        return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+        return <div> {row.alumno.apellido}, {row.alumno.nombre}</div>
       }
     }, {
       title: 'Prioridad',
@@ -84,7 +84,7 @@ class ConditionalTable extends Component {
             onOk={() => { this.handleOk(this.props.courseId, row.alumno._id) }}
             onCancel={this.handleCancel}
           >
-            ¿Estás seguro que querés inscribir a {row.nombre}?
+            ¿Estás seguro que querés inscribir a {row.alumno.apellido}, {row.alumno.nombre}?
         </Modal>
         </div>
       }

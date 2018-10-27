@@ -105,7 +105,7 @@ class MyCourses extends Component {
                       index: 'nombre',
                       width: 170,
                       render: (value, row, index) => {
-                        return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+                        return <div> {row.alumno.apellido}, {row.alumno.nombre}</div>
                       }
                     }, {
                       title: 'Prioridad',

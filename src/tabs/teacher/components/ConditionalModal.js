@@ -70,7 +70,7 @@ export default class ConditionalModal extends Component{
         dataIndex:'nombre',
         width: 170,
         render:(value,row,index)=>{
-          return <div> {row.alumno.apellido},{row.alumno.nombre}</div>
+          return <div> {row.alumno.apellido}, {row.alumno.nombre}</div>
         }
       },{
         title:'Prioridad',
@@ -82,7 +82,7 @@ export default class ConditionalModal extends Component{
         title:'Acción',
         index:'accion',
         render:(value,row,idx)=>{
-          const name = row.alumno.apellido+','+row.alumno.nombre
+          const name = row.alumno.apellido+', '+row.alumno.nombre
           return <Button 
           key={idx}
           onClick={()=>{

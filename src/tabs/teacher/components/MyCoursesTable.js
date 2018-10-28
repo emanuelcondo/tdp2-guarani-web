@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, Alert, Row, Col, Tag } from 'antd';
+import { Table, Button, Modal, Row, Col, Tag } from 'antd';
 import * as TeacherService from '../service/TeacherService';
 import ConditionalTable from './ConditionalTable'
 import fileDownload from 'js-file-download'
 import ButtonGroup from 'antd/lib/button/button-group';
+import CalificationTable from './MyCourseCalificationTable';
+
 
 class MyCourses extends Component {
 
   state = {
     tableMessage: 'Seleccione una materia por favor'
   }
+
+  /** Muestra los alumnos para que el docente asigne las calificaciones de la cursada */
+  showAlumnosCalificar = (paramRegulares) => {
+    
+    Modal.info({
+      title: 'Calificación de la cursada de los Alumnos',
+      content:
+        <CalificationTable
+          data= {paramRegulares}
+        />
+      ,
+      width: '700px'
+    })
+  }
+
+
 
   expandedRowRender = (row, idx, indent, expanded) => {
     const columns = [
@@ -49,7 +67,7 @@ class MyCourses extends Component {
   render() {
     const columns = [
       {
-        title: 'Número de Curso',
+        title: 'Curso',
         dataIndex: 'comision',
         key: 'numero'
       },
@@ -157,7 +175,14 @@ class MyCourses extends Component {
                 icon='eye'
               >
                 Ver
-          </Button>
+              </Button>
+              <Button
+                onClick={() => { this.showAlumnosCalificar(row.regulares); }}
+                disabled={row.regulares.length === 0}
+                icon='ordered-list'
+              >
+                Calificar
+              </Button>
               <Button
                 onClick={() => {
                   console.log(row);
@@ -170,7 +195,7 @@ class MyCourses extends Component {
                 icon='cloud-download'
               >
                 Descargar
-            </Button>
+               </Button>
             </ButtonGroup>
 
           </div>

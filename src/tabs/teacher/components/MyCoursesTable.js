@@ -1,15 +1,91 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, Alert, Row, Col, Tag } from 'antd';
+import { Table, Button, Modal, Row, Col, Tag } from 'antd';
 import * as TeacherService from '../service/TeacherService';
 import ConditionalTable from './ConditionalTable'
 import fileDownload from 'js-file-download'
 import ButtonGroup from 'antd/lib/button/button-group';
+import CalificationTable from './MyCourseCalificationTable';
+
 
 class MyCourses extends Component {
 
   state = {
     tableMessage: 'Seleccione una materia por favor'
   }
+
+  /** Muestra los alumnos para que el docente asigne las calificaciones de la cursada */
+  showAlumnosCalificar = (paramRegulares) => {
+    console.log('Mostrar alumnos para calificar');
+    /*const columns = [
+      {
+        title: 'Padrón',
+        index: 'padron',
+        dataIndex: 'alumno.legajo',
+        width: 70,
+        render: (value, row, idx) => {
+          return <div style={{ padding: '6px' }}>{row.alumno.legajo}</div>
+        }
+      }, {
+        title: 'Nombre y Apellido',
+        index: 'nombre',
+        width: 170,
+        render: (value, row, index) => {
+          return <div> {row.alumno.apellido}, {row.alumno.nombre}</div>
+        }
+      }, {
+        title: 'Nota de cursada',
+        index: 'nota',
+        width: 100,
+        render: (value, row, idx) => {
+          <FormItem style={{ margin: 0 }}>
+            {form.getFieldDecorator(dataIndex, {
+              rules: [{
+                required: true,
+                message: `${title} is required.`,
+              }],
+            })(
+              <Input type="number"
+              />
+            )}
+          </FormItem>
+        }
+      }, {
+        title: 'Observaciones',
+        index: 'siEsCondicional',
+        width: 110,
+        render: (value, row, idx) => {
+          if (row.exCondicional) {
+            return <Tag color="blue" key={idx}>Condicional</Tag>
+          } return <div></div>
+        }
+      }
+    ]*/
+
+    Modal.info({
+      title: 'Alumnos',
+      content:
+        /*<div>
+              <Table
+                columns={columns}
+                dataSource={paramRegulares}
+                rowKey={(row) => (row.alumno.legajo)}
+                pagination={false}
+                style={{ marginRight: '30px' }}
+                title={() => { return <h1>Inscriptos Regulares</h1> }}
+                locale={{ emptyText: 'No hay alumnos regulares inscriptos' }}
+              />
+
+        </div>*/
+        <CalificationTable
+          data= {paramRegulares}
+        />
+
+      ,
+      width: '1000px'
+    })
+  }
+
+
 
   expandedRowRender = (row, idx, indent, expanded) => {
     const columns = [
@@ -157,7 +233,14 @@ class MyCourses extends Component {
                 icon='eye'
               >
                 Ver
-          </Button>
+              </Button>
+              <Button
+                onClick={() => { this.showAlumnosCalificar(row.regulares); }}
+                disabled={row.regulares.length === 0}
+                icon='ordered-list'
+              >
+                Calificar
+              </Button>
               <Button
                 onClick={() => {
                   console.log(row);
@@ -170,7 +253,7 @@ class MyCourses extends Component {
                 icon='cloud-download'
               >
                 Descargar
-            </Button>
+               </Button>
             </ButtonGroup>
 
           </div>

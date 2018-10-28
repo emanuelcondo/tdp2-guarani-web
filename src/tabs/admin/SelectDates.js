@@ -7,7 +7,7 @@ const { RangePicker, MonthPicker } = DatePicker;
 
 class SelectDates extends Component {
   render(){
-    return <RangePicker style={{marginRight:'20px'}} renderExtraFooter={() => 'extra footer'} />
+    return <RangePicker style={{marginRight:'20px'}}  />
   }
 }
 

@@ -32,7 +32,7 @@ class SelectPeriod extends Component {
   >
     <Option value="inscripcion">Periodo de Inscripción</Option>
     <Option value="desincripcion">Periodo de Desinscripción</Option>
-    <Option value="finales">Periodo de Finales</Option>
+    {/* <Option value="finales">Periodo de Finales</Option>*/}
   </Select>
   }
 }

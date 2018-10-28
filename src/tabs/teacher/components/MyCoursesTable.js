@@ -15,73 +15,15 @@ class MyCourses extends Component {
 
   /** Muestra los alumnos para que el docente asigne las calificaciones de la cursada */
   showAlumnosCalificar = (paramRegulares) => {
-    console.log('Mostrar alumnos para calificar');
-    /*const columns = [
-      {
-        title: 'Padrón',
-        index: 'padron',
-        dataIndex: 'alumno.legajo',
-        width: 70,
-        render: (value, row, idx) => {
-          return <div style={{ padding: '6px' }}>{row.alumno.legajo}</div>
-        }
-      }, {
-        title: 'Nombre y Apellido',
-        index: 'nombre',
-        width: 170,
-        render: (value, row, index) => {
-          return <div> {row.alumno.apellido}, {row.alumno.nombre}</div>
-        }
-      }, {
-        title: 'Nota de cursada',
-        index: 'nota',
-        width: 100,
-        render: (value, row, idx) => {
-          <FormItem style={{ margin: 0 }}>
-            {form.getFieldDecorator(dataIndex, {
-              rules: [{
-                required: true,
-                message: `${title} is required.`,
-              }],
-            })(
-              <Input type="number"
-              />
-            )}
-          </FormItem>
-        }
-      }, {
-        title: 'Observaciones',
-        index: 'siEsCondicional',
-        width: 110,
-        render: (value, row, idx) => {
-          if (row.exCondicional) {
-            return <Tag color="blue" key={idx}>Condicional</Tag>
-          } return <div></div>
-        }
-      }
-    ]*/
-
+    
     Modal.info({
-      title: 'Alumnos',
+      title: 'Calificación de la cursada de los Alumnos',
       content:
-        /*<div>
-              <Table
-                columns={columns}
-                dataSource={paramRegulares}
-                rowKey={(row) => (row.alumno.legajo)}
-                pagination={false}
-                style={{ marginRight: '30px' }}
-                title={() => { return <h1>Inscriptos Regulares</h1> }}
-                locale={{ emptyText: 'No hay alumnos regulares inscriptos' }}
-              />
-
-        </div>*/
         <CalificationTable
           data= {paramRegulares}
         />
-
       ,
-      width: '1000px'
+      width: '700px'
     })
   }
 
@@ -125,7 +67,7 @@ class MyCourses extends Component {
   render() {
     const columns = [
       {
-        title: 'Número de Curso',
+        title: 'Curso',
         dataIndex: 'comision',
         key: 'numero'
       },

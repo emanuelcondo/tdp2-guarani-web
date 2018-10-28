@@ -79,7 +79,7 @@ class EditableCell extends React.Component {
                     {form.getFieldDecorator(dataIndex, {
                       rules: [{
                         required: true,
-                        message: `${title} is required.`,
+                        message: `${title} es obligatoria.`,
                       }],
                       initialValue: record[dataIndex],
                     })(
@@ -110,31 +110,7 @@ class EditableCell extends React.Component {
 class CalificationTable extends React.Component {
   constructor(props) {
     super(props);
-    /*this.columns = [{
-      title: 'name',
-      dataIndex: 'name',
-      width: '30%',
-      editable: true,
-    }, {
-      title: 'age',
-      dataIndex: 'age',
-    }, {
-      title: 'address',
-      dataIndex: 'address',
-    }, {
-      title: 'operation',
-      dataIndex: 'operation',
-      render: (text, record) => {
-        return (
-          this.state.dataSource.length >= 1
-            ? (
-              <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                <a href="javascript:;">Delete</a>
-              </Popconfirm>
-            ) : null
-        );
-      },
-    }];*/
+
     this.columns = [
         {
           title: 'Padrón',
@@ -154,10 +130,12 @@ class CalificationTable extends React.Component {
         }, {
           title: 'Nota de cursada',
           index: 'nota',
+          dataIndex: 'alumno.prioridad',
           width: 100,
           editable: true
         }
       ];
+
   }
 
 /*
@@ -173,7 +151,6 @@ class CalificationTable extends React.Component {
   }*/
 
   render() {
-    const { dataSource } = this.props.data;
     
     const components = {
       body: {
@@ -181,6 +158,7 @@ class CalificationTable extends React.Component {
         cell: EditableCell,
       },
     };
+
     const columns = this.columns.map((col) => {
       if (!col.editable) {
         return col;
@@ -196,13 +174,14 @@ class CalificationTable extends React.Component {
         }),
       };
     });
+
     return (
       <div>
         <Table
           components={components}
           rowClassName={() => 'editable-row'}
           bordered
-          dataSource={dataSource}
+          dataSource={this.props.data}
           columns={columns}
         />
       </div>

@@ -15,8 +15,8 @@ class MyFinals extends Component {
   confirm = (row) => () => {
     Modal.confirm({
       title: 'Cancelar fecha de final',
-      content: '¿Esta seguro que desea cancelar este fecha de final?',
       okText: "Si",
+      content: 'Esta acción enviará una notificación a los alumnos inscriptos. ¿Esta seguro que desea cancelar esta fecha de final?  ',
       okType: 'danger',
       onOk: this.cancelExam(row),
       cancelText: "No",

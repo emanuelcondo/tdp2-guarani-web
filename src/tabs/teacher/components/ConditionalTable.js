@@ -14,28 +14,41 @@ class ConditionalTable extends Component {
   }
 
 
+  /* usar para actualizar
   updateConditionals = () => {
     console.log('ConditionalGreed - get conditionals')
-    this.setState({ conditionals: this.props.getConditionals() })
+    this.setState({ conditionals: this.props.conditionals })
   }
+  */
 
   componentDidMount() {
-    this.updateConditionals()
+    //this.updateConditionals()
+    this.setState({ conditionals: this.props.conditionals });
   }
 
   handleOk = (courseId, studentId) => {
     console.log(`courseId ${courseId} studentId ${studentId}`);
+    const newConditionals = this.state.conditionals.filter((inscription) => inscription.alumno._id != studentId);
     this.setState({
       visible: false,
+      conditionals: newConditionals
     });
+    console.log('New conds ', this.state.conditionals);
+    
+    /*
     TeacherService.addConditionalStudent(courseId, studentId).then(() => {
       message.success('El alumno se pudo agregar de manera exitosa');
-      this.props.update()
-      this.updateConditionals()
+      const newConditionals = this.state.conditionals.filter((inscription) => inscription.alumno._id != studentId);
+      
+      this.setState({
+        conditionals: newConditionals
+      });
+      
     }).catch((e) => {
       console.log('salio mal');
       message.error('No se pudo agregar al alumno');
     })
+    */
   }
 
   handleCancel = (e) => {

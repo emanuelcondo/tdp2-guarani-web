@@ -27,8 +27,6 @@ class MyCourses extends Component {
     })
   }
 
-
-
   expandedRowRender = (row, idx, indent, expanded) => {
     const columns = [
       {
@@ -65,6 +63,7 @@ class MyCourses extends Component {
   }
 
   render() {
+    this.updateData();
     const columns = [
       {
         title: 'Curso',
@@ -104,7 +103,7 @@ class MyCourses extends Component {
       }, {
         title: 'Alumnos',
         render: (value, row, idx) => {
-          console.log('row.regulares', row.regulares);
+          //console.log(JSON.stringify(row, null, 4));
           return <div>
             <ButtonGroup>
               <Button
@@ -160,9 +159,9 @@ class MyCourses extends Component {
                           </Col>
                           <Col span={12}>
                             <ConditionalTable
-                              getConditionals={this.props.getConditionals}
+                              conditionals={row.condicionales}
                               courseId={row._id}
-                              update={() => { this.props.update() }}
+                              //update={() => { this.props.update() }}
                             />
                           </Col>
                         </Row>
@@ -178,7 +177,7 @@ class MyCourses extends Component {
               </Button>
               <Button
                 onClick={() => { this.showAlumnosCalificar(row.regulares); }}
-                disabled={row.regulares.length === 0}
+                //disabled={row.regulares.length === 0}
                 icon='ordered-list'
               >
                 Calificar
@@ -191,7 +190,7 @@ class MyCourses extends Component {
                     fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
                   })
                 }}
-                disabled={row.regulares.length === 0}
+                //disabled={row.regulares.length === 0}
                 icon='cloud-download'
               >
                 Descargar

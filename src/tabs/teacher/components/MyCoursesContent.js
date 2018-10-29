@@ -14,15 +14,17 @@ export default class MyCoursesContent extends Component {
     courseToShow: [],
     disableConditionalStudentButton: true,
     conditionalModal: false,
-    conditionalStudents: [],
+    //conditionalStudents: [],
     asignatureSelected: ''
 
   }
 
+  /*
   getConditionals = () => {
     console.log('MyCoursesContent Get conditionals', this.state.conditionalStudents);
     return this.state.conditionalStudents;
   }
+  */
 
   getAsignaturesNamesOption = () => {
     return this.state.nombreMaterias.filter((value, idx) => this.state.nombreMaterias.indexOf(value) === idx).map((name, idx) => (<Option key={idx} value={name}> {name} </Option>))
@@ -34,36 +36,38 @@ export default class MyCoursesContent extends Component {
       const asignatureNames = response.data.data.cursos.map((course) => course.materia.nombre);
       const courseIds = response.data.data.cursos.map((course) => course.comision);
       localStorage.setItem('courseIds', courseIds)
-      console.log('courseIds', courseIds);
-      console.log('getAsignaturesName', asignatureNames);
+      //console.log('courseIds', courseIds);
+      //console.log('getAsignaturesName', asignatureNames);
       this.setState({ nombreMaterias: asignatureNames })
       localStorage.setItem('asignatureNames', asignatureNames)
-      console.log('TeacherContainer - courses', response.data.data.cursos);
+      //console.log('TeacherContainer - courses', response.data.data.cursos);
       response.data.data.cursos.forEach(course => {
         TeacherService.getMoreInformationFromCourseById(course._id).then((response) => {
-          console.log('response,obtener infor curso', response.data.data);
+          //console.log('response,obtener infor curso', response.data.data);
 
           course['regulares'] = response.data.data.regulares
           course['condicionales'] = response.data.data.condicionales
+          /*
           this.setState({ conditionalStudents: response.data.data.condicionales }, () => {
             this.forceUpdate()
           })
+          */
         })
       });
-      console.log('TeacherContainers - allCursos', response.data.data.cursos[0]);
+      //console.log('TeacherContainers - allCursos', response.data.data.cursos);
       this.setState({ allCourses: response.data.data.cursos }, this.setCoursesToShow)
     })
   }
 
   setCoursesToShow = () => {
-    console.log('MyCoursesContent - setCoursesToShow');
+    //console.log('MyCoursesContent - setCoursesToShow');
     const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === this.state.asignatureSelected)
     console.log('courseToShow', courseToShow);
     this.setState({ courseToShow }, () => { this.forceUpdate() })
   }
 
   update = (callback) => {
-    console.log('Update courses');
+    //console.log('Update courses');
     this.getAsignatureNames()
   }
 
@@ -92,8 +96,8 @@ export default class MyCoursesContent extends Component {
       </Row>
       <MyCourses
         data={this.state.courseToShow}
-        update={this.update}
-        getConditionals={this.getConditionals}
+        update={() => { this.update() }}
+        //getConditionals={this.state.conditionalStudents}
       />
     </div>
 

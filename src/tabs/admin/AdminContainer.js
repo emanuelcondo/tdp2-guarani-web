@@ -3,6 +3,8 @@ import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
 import * as AuthService from '../login/service/AuthService'
+import CourseABMContent from './CourseABMContent'
+import BookABMContent from './BookABMContent'
 
 
 const TabPane = Tabs.TabPane;
@@ -16,9 +18,11 @@ class AdminContainer extends Component {
   state = {
     childrens: {
       definePeriod: <DefinePeriod />,
-      initialLoad: <InitialLoadContainer />
+      initialLoad: <InitialLoadContainer />,
+      books: <BookABMContent />,
+      courses: <CourseABMContent />
     },
-    currentChilder: <DefinePeriod />,
+    currentChilder: <BookABMContent />,
     userName: ''
   }
 
@@ -51,7 +55,7 @@ class AdminContainer extends Component {
                 <Menu
                   theme="dark"
                   mode="horizontal"
-                  defaultSelectedKeys={['1']}
+                  defaultSelectedKeys={['4']}
                   style={{ lineHeight: '64px', backgroundColor: '#404040' }}
                 >
                   <Menu.Item
@@ -59,11 +63,29 @@ class AdminContainer extends Component {
                     key="1"
                   >
                     Definir Periodos
-            </Menu.Item>
-                  <Menu.Item key="2" onClick={() => this.selectNewChilder('initialLoad')}>
+                    </Menu.Item>
+                  <Menu.Item
+                    key="2"
+                    onClick={() => this.selectNewChilder('initialLoad')}
+                  >
                     Carga Inicial
-            </Menu.Item>
-                </Menu></Col>
+                  </Menu.Item>
+
+                  <Menu.Item
+                    key="3"
+                    onClick={() => this.selectNewChilder('courses')}
+                  >
+                    Cursos
+                  </Menu.Item>
+                  <Menu.Item
+                    key="4"
+                    onClick={() => this.selectNewChilder('books')}
+                  >
+                    Libros
+                  </Menu.Item>
+
+                </Menu>
+              </Col>
               <Col span={6}>
                 <Row type="flex" justify="end">
                   <ButtonGroup style={{ padding: '16px' }}>

@@ -84,7 +84,15 @@ export default class BookABMContent extends Component {
             placeholder="numero de libro"
             onSearch={value => console.log(value)}
             style={{ width: 200 }}
-          /></Col>
+          />
+        </Col>
+        <Col span={4}>
+          <Search
+            placeholder="padron"
+            onSearch={value => console.log(value)}
+            style={{ width: 200 }}
+          />
+        </Col>
       </Row>
       <Row type="flex" justify="end">
         <Col>

@@ -1,8 +1,52 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, Row, Col, message } from 'antd';
+import { Table, Button, Modal, Row, Col, message, Input } from 'antd';
 import * as TeacherService from '../service/TeacherService'
 
 import EditFinalModal from './EditFinalModal'
+
+var mockDataSource = [
+  {    
+    "_id": "5bcbbdf69be2db250c178fdd",
+    "alumno": {
+      "legajo": 100000,
+      "nombre": "Juan",
+      "apellido": "Perez",
+    },
+    "condicion": "Regular",
+    "oportunidad" : 2,
+    "notaCursada" : 6,    
+    "notaExamen" : 4,    
+    "notaCierre" : 5, 
+    "timestamp": "2018-10-20T23:44:54.625Z",
+  },
+  {    
+    "_id": "5bcbbdf63be2db250c178fdd",
+    "alumno": {
+      "legajo": 100001,
+      "nombre": "Adrian",
+      "apellido": "Suar",
+    },
+    "condicion": "Regular",
+    "oportunidad" : 1,
+    "notaCursada" : 6,   
+    "notaExamen" : null,    
+    "notaCierre" : null,    
+    "timestamp": "2018-10-20T23:44:51.625Z",
+  },
+  {    
+    "_id": "5bcabdf63be2db250c178fdd",
+    "alumno": {
+      "legajo": 100002,
+      "nombre": "Ernesto",
+      "apellido": "Guevara",
+    },
+    "condicion": "Libre",
+    "oportunidad" : null,
+    "notaCursada" : null,   
+    "notaExamen" : 7,    
+    "notaCierre" : null,    
+    "timestamp": "2018-10-20T23:44:51.625Z",
+  }];
 
 class MyFinals extends Component {
 
@@ -28,7 +72,8 @@ class MyFinals extends Component {
     TeacherService.getExamEnrolled(row.course, row._id).then(
       (response) => {
         //Data para la tabla
-        const dataSource = response.data.data.inscripciones;
+        //const dataSource = response.data.data.inscripciones;
+        const dataSource = mockDataSource;
         const columns = [{
           title: 'Padrón',
           dataIndex: 'alumno.legajo',
@@ -41,14 +86,61 @@ class MyFinals extends Component {
           title: 'Apellido',
           dataIndex: 'alumno.apellido',
           key: 'alumno.apellido',
+        }, {
+          title: 'Condicion',
+          dataIndex: 'condicion',
+          key: 'condicion',
+        }, {
+          title: 'Oportunidad',
+          dataIndex: 'oportunidad',
+          key: 'oportunidad',
+          align: 'center',
+        }, {
+          title: 'Nota de Cursada',
+          dataIndex: 'notaCursada',
+          key: 'notaCursada',
+          align: 'center',
+        }, {
+          title: 'Nota de Examen',
+          dataIndex: 'notaExamen',
+          key: 'notaExamen',
+          align: 'center',
+          render: notaExamen => {
+            if (notaExamen != null) {
+              return notaExamen;
+            }
+            else {
+              return <span>
+              <Input style={{ width: '20%' }}/><Button type='primary'>OK</Button>
+            </span>
+            }
+          },
+        }, {
+          title: 'Nota de Cierre',
+          dataIndex: 'notaCierre',
+          key: 'notaCierre',
+          align: 'center',
+          render: (text, record) => {
+            if (record.notaCierre != null) {
+              return record.notaCierre;
+            }
+            else {
+              var button;
+              if (record.notaExamen != null) { button = <Button type='primary'>OK</Button> }
+              else { button = <Button type='primary' disabled>OK</Button> }
+              return <span>
+              <Input style={{ width: '20%' }}/>{button}
+            </span>
+            }
+          },
         }];
         //Modal
         Modal.info({
           title: 'Inscriptos',
-          width: '500px',
+          width: '80%',
           content: (
             <div>
-              <Table dataSource={dataSource} columns={columns} style={{ width: '100%' }} locale={{ emptyText: 'No hay ningún inscripto' }} />
+              <Table rowKey="_id" dataSource={dataSource} columns={columns} style={{ width: '100%' }} locale={{ emptyText: 'No hay ningún inscripto' }} />
             </div>
           ),
           onOk() { },

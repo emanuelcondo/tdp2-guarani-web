@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Row, DatePicker, Col, TimePicker, Select, Form, message, Modal, Popover } from 'antd';
+import { Button, Row, DatePicker, TimePicker, Select, Form, message, Modal, Popover } from 'antd';
 import MyFinals from './MyFinalsTable'
 import locate from 'antd/lib/date-picker/locale/es_ES'
 import * as TeacherService from '../service/TeacherService'
-import { loadavg } from 'os';
-import { stringify } from 'querystring';
+//import { loadavg } from 'os';
+//import { stringify } from 'querystring';
 
 const FormItem = Form.Item;
 const Option = Select.Option;

@@ -15,7 +15,8 @@ class App extends Component {
   state = {
     childrens: {
       docente: <TeacherContainer update={this.update} />,
-      admin: <AdminContainer update={this.update} />
+      admin: <AdminContainer update={this.update} />,
+      departamento: <AdminDepContainer update={this.update} />
     }
   }
 
@@ -30,6 +31,8 @@ class App extends Component {
     console.log('getContainer rol', rol);
     if (rol === 'docente') {
       return <TeacherContainer update={this.update} />
+    } else if (rol === 'departamento') {
+      return <AdminDepContainer update={this.update} />
     } return <AdminContainer update={this.update} />
   }
 

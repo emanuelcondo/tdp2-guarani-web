@@ -1,8 +1,7 @@
 import React,{Component} from 'react';
 import PeriodTable from './PeriodTable';
-import SelectPeriod from './SelectPeriod';
-import SelectDates from './SelectDates';
-import AddNewPeriod from './AddNewPeriod';
+import NewPeriodModal from './NewPeriodModal'
+import { Button, Row, Col } from 'antd'
 
 class DefinePeriod extends Component {
   
@@ -33,16 +32,28 @@ class DefinePeriod extends Component {
   
   render(){
     return <div>
-      <div style={{margin:'20px'}}> 
-        <span style={{marginRight:'20px'}}>Agregar periodo </span> 
-        <SelectPeriod/>
-        <SelectDates/>
-        <AddNewPeriod/>
-
-      </div>
+      <Row type="flex" justify="end">
+        <Col>
+          <Button
+            type='primary'
+            icon='plus'
+            style={{ marginRight: '25px', marginTop: '25px' }}
+            onClick={() => { this.setState({ editPeriodModalVisible: true }) }}
+          >
+            Agregar Periodo
+          </Button>
+        </Col>
+      </Row>
       <PeriodTable
         setEditPeriodModalVisible={this.setEditPeriodModalVisible}
       />
+
+      <NewPeriodModal
+                visible={this.state.editPeriodModalVisible}
+                handleCancel={this.onCancel}
+                handleOk={this.onOk}
+                >
+                </NewPeriodModal>
     </div>
   }
 }

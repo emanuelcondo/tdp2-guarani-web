@@ -16,7 +16,7 @@ const formItemLayout = {
   },
 };
 
-const CreatePeriodForm = Form.create()(
+const CreateEditPeriodForm = Form.create()(
   class extends Component {
 
     render() {
@@ -117,4 +117,4 @@ const CreatePeriodForm = Form.create()(
   }
 );
 
-export default CreatePeriodForm;
+export default CreateEditPeriodForm;

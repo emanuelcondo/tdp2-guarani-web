@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Modal } from 'antd';
-import CreateEditPeriodForm from './PeriodForm'
+import CreateNewPeriodForm from './NewPeriodForm'
 
 
-class EditPeriodModal extends Component {
+class NewPeriodModal extends Component {
 
   showModal = () => {
     this.setState({
@@ -24,15 +24,6 @@ class EditPeriodModal extends Component {
       }
       console.log('values', values);
       
-      /*
-      const dateToSend = new Date(values.dia._d)
-      const hour = new Date(values.horario._d)
-      dateToSend.setHours(hour.getHours())
-      dateToSend.setMinutes(hour.getMinutes())
-      dateToSend.setSeconds(0)
-      console.log('date to send the server', dateToSend);
-      */
-
     })
 
     this.setState({
@@ -48,7 +39,7 @@ class EditPeriodModal extends Component {
 
   render() {
     return <Modal
-      title="Editar período"
+      title="Nuevo período"
       visible={this.props.visible
       }
       onOk={this.handleOk}
@@ -56,13 +47,13 @@ class EditPeriodModal extends Component {
       onCancel={this.props.handleCancel}
       cancelText='Cancelar'
     >
-      <CreateEditPeriodForm
+      <CreateNewPeriodForm
         wrappedComponentRef={this.saveFormRef}
         rowdata={this.props.rowdata}
         onCreate={this.handleOk}
-      ></CreateEditPeriodForm>
+      ></CreateNewPeriodForm>
     </Modal >
   }
 }
 
-export default EditPeriodModal;
+export default NewPeriodModal;

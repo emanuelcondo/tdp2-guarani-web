@@ -1,38 +1,251 @@
-import React,{Component} from 'react';
-import {Table} from 'antd';
+import React, {Component} from 'react';
+import {Table, Button, Modal} from 'antd';
+import EditPeriodModal from './EditPeriodModal'
 
-const dataSource = [{
-  key: '1',
-  name: 'Periodo de finales',
-  age: '19-07-2017',
-  address: '24-07-2017'
-}, {
-  key: '2',
-  name: 'Periodo inscripción',
-  age: '27-07-2017',
-  address: '03-08-2017'
-}];
+const dataSource = [
+  {
+      cuatrimestre: 2,
+      anio: 2018,
+      inscripcionCurso: {
+          inicio: '2018-08-10T03:00:00.877Z',
+          fin: '2018-08-15T03:00:00.877Z'
+      },
+      desinscripcionCurso: {
+          inicio: '2018-08-17T03:00:00.877Z',
+          fin: '2018-08-22T03:00:00.877Z'
+      },
+      cursada: {
+          inicio: '2018-08-22T03:00:00.877Z',
+          fin: '2018-12-03T03:00:00.877Z'
+      },
+      consultaPrioridad: {
+          inicio: '2018-08-07T03:00:00.877Z',
+          fin: '2018-12-03T03:00:00.877Z'
+      }
+  },
+  {
+      cuatrimestre: 1,
+      anio: 2018,
+      inscripcionCurso: {
+          inicio: '2018-02-10T03:00:00.877Z',
+          fin: '2018-02-15T03:00:00.877Z'
+      },
+      desinscripcionCurso: {
+          inicio: '2018-02-17T03:00:00.877Z',
+          fin: '2018-02-22T03:00:00.877Z'
+      },
+      cursada: {
+          inicio: '2018-02-22T03:00:00.877Z',
+          fin: '2018-07-03T03:00:00.877Z'
+      },
+      consultaPrioridad: {
+          inicio: '2018-02-07T03:00:00.877Z',
+          fin: '2018-07-03T03:00:00.877Z'
+      }
+  },
+  {
+      cuatrimestre: 1,
+      anio: 2016,
+      inscripcionCurso: {
+          inicio: '2016-02-10T03:00:00.877Z',
+          fin: '2016-02-15T03:00:00.877Z'
+      },
+      desinscripcionCurso: {
+          inicio: '2016-02-17T03:00:00.877Z',
+          fin: '2016-02-22T03:00:00.877Z'
+      },
+      cursada: {
+          inicio: '2016-02-22T03:00:00.877Z',
+          fin: '2016-07-03T03:00:00.877Z'
+      },
+      consultaPrioridad: {
+          inicio: '2016-02-07T03:00:00.877Z',
+          fin: '2016-07-03T03:00:00.877Z'
+      }
+  },
+  {
+      cuatrimestre: 1,
+      anio: 2015,
+      inscripcionCurso: {
+          inicio: '2015-02-10T03:00:00.877Z',
+          fin: '2015-02-15T03:00:00.877Z'
+      },
+      desinscripcionCurso: {
+          inicio: '2015-02-17T03:00:00.877Z',
+          fin: '2015-02-22T03:00:00.877Z'
+      },
+      cursada: {
+          inicio: '2015-02-22T03:00:00.877Z',
+          fin: '2015-07-03T03:00:00.877Z'
+      },
+      consultaPrioridad: {
+          inicio: '2015-02-07T03:00:00.877Z',
+          fin: '2015-07-03T03:00:00.877Z'
+      }
+  }
+];
 
-const columns = [{
-  title: 'Periodo',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: 'Día de inicio',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Día de finalización',
-  dataIndex: 'address',
-  key: 'address',
-}];
+function Transformar(date) {
+    var month = date.substring(5, 7);
+    var day = date.substring(8, 10);
+    var monthLabel;
+    switch(month) {
+     case "01":
+         monthLabel = "Ene";
+         break;
+     case "02":
+         monthLabel = "Feb";
+         break;
+     case "03":
+         monthLabel = "Mar";
+         break;
+     case "04":
+         monthLabel = "Abr";
+         break;
+     case "05":
+         monthLabel = "May";
+         break;
+     case "06":
+         monthLabel = "Jun";
+         break;
+     case "07":
+         monthLabel = "Jul";
+         break;
+     case "08":
+         monthLabel = "Ago";
+         break;
+     case "09":
+         monthLabel = "Sep";
+         break;
+     case "10":
+         monthLabel = "Oct";
+         break;
+     case "11":
+         monthLabel = "Nov";
+         break;
+     default:
+         monthLabel = "Dic";
+    }
+
+    return day + '-' + monthLabel;
+}
+
+function MostrarRango(rango) {
+   return Transformar(rango.inicio) + '  a  ' + Transformar(rango.fin)
+}
+
 
 
 class PeriodTable extends Component {
-  render(){
-    return <Table dataSource={dataSource} columns={columns} />
+    
+    state = {
+        showEditModal: false
+      }
+
+    showWarningModal = (row) => {
+        Modal.confirm({
+            title: 'Eliminar período ' + row.anio + ' - ' + row.cuatrimestre + '° Cuatrimestre',
+            content: '¿Está seguro que desea eliminar este período? ',
+            okText:'Si',
+            cancelText:'Cancelar'
+        });
+    }
+
+    handleCancel = (e) => {
+        this.setState({showEditModal: false});
+    }
+    
+    render(){
+
+        //var { setEditPeriodModalVisible } = this.props;
+
+        const columns = [{
+            title: 'Cuatrimestre',
+            dataIndex: 'cuatrimestre',
+            key: 'cuatrimestre',
+        }, {
+            title: 'Año',
+            dataIndex: 'anio',
+            key: 'anio',
+        }, {
+            title: 'Inscripción',
+            key: 'inscripcionCurso',
+            render: (value, row, idx) => {
+                return <div key={idx}>
+                    {MostrarRango(row.inscripcionCurso)}
+                    </div>
+            }
+        }, {
+            title: 'Desinscripción',
+            key: 'desinscripcionCurso',
+            render: (value, row, idx) => {
+                return <div key={idx}>
+                    {MostrarRango(row.desinscripcionCurso)}
+                    </div>
+            }
+        }, {
+            title: 'Cursada',
+            key: 'cursada',
+            render: (value, row, idx) => {
+                return <div key={idx}>
+                    {MostrarRango(row.cursada)}
+                    </div>
+            }
+        }, {
+            title: 'Consulta Prioridad',
+            key: 'consultaPrioridad',
+            render: (value, row, idx) => {
+                return <div key={idx}>
+                    {MostrarRango(row.consultaPrioridad)}
+                    </div>
+            }
+        }, {
+            title: 'Acciones',
+            dataIndex: 'acciones',
+            key: 'acciones',
+            render: (value, row, idx) => {
+            return <div> <Button.Group>
+                <Button
+                type='primary'
+                icon='edit'
+                onClick={() => { this.setState({ showEditModal: true }) }}
+                >
+                Editar
+                </Button>
+                <Button
+                type='primary'
+                icon='delete'
+                onClick={() => this.showWarningModal(row)}
+                >
+                Eliminar
+                </Button>
+            </Button.Group>
+            <EditPeriodModal
+                visible={this.state.showEditModal}
+                handleCancel={this.handleCancel}
+                handleOk={this.handleOk}
+                /*insCurIni={row.inscripcionCurso.inicio}
+                insCurFin={row.inscripcionCurso.fin}
+                desCurIni={row.desinscripcionCurso.inicio}
+                desCurFin={row.desinscripcionCurso.fin}
+                cursadaIni={row.cursada.inicio}
+                cursadaFin={row.cursada.fin}
+                conPrioIni={row.consultaPrioridad.inicio}
+                conPrioFin={row.consultaPrioridad.fin}
+                cuatrimestre={row.cuatrimestre}
+                anio={row.anio}*/
+                rowdata={row}
+                >
+                </EditPeriodModal>
+            
+            </div>
+            }
+        }];
+
+        return <div styles={{margin: '50', padding: '50'}}><h1 styles={{margin: '50', padding: '50'}}>Períodos</h1>
+                <Table dataSource={dataSource} columns={columns} size="small" />
+                </div>
   }
 }
-
 
 export default PeriodTable;

@@ -1,10 +1,36 @@
 import React,{Component} from 'react';
-import PeriodTable from './PeriodTable'
-import SelectPeriod from './SelectPeriod'
+import PeriodTable from './PeriodTable';
+import SelectPeriod from './SelectPeriod';
 import SelectDates from './SelectDates';
-import AddNewPeriod from './AddNewPeriod'
+import AddNewPeriod from './AddNewPeriod';
 
 class DefinePeriod extends Component {
+  
+  constructor (props){
+    super(props);
+  
+    this.state = {
+        editPeriodModalVisible: false,
+      };
+  
+    this.setEditPeriodModalVisible = this.setEditPeriodModalVisible.bind(this);
+  
+  }
+
+  setEditPeriodModalVisible() {
+    this.setState({editPeriodModalVisible: true});
+  }
+
+  onOk = (e) => {
+    this.setState({editPeriodModalVisible: false});
+  }
+
+  onCancel = (e) => {
+    this.setState({editPeriodModalVisible: false});
+  }
+
+  
+  
   render(){
     return <div>
       <div style={{margin:'20px'}}> 
@@ -14,7 +40,9 @@ class DefinePeriod extends Component {
         <AddNewPeriod/>
 
       </div>
-      <PeriodTable/>
+      <PeriodTable
+        setEditPeriodModalVisible={this.setEditPeriodModalVisible}
+      />
     </div>
   }
 }

@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import { DatePicker, TimePicker, Select, Form } from 'antd';
+import { DatePicker, Form, Row, Col } from 'antd';
 import locate from 'antd/lib/date-picker/locale/es_ES'
 
 
 const FormItem = Form.Item;
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
-};
+const { RangePicker } = DatePicker;
 
 const CreateEditPeriodForm = Form.create()(
   class extends Component {
@@ -24,93 +14,62 @@ const CreateEditPeriodForm = Form.create()(
       const { getFieldDecorator } = form;
       const state = this.state;
 
-      return <Form layout="vertical">
+      return <Form layout="inline">
         <FormItem
-          {...formItemLayout}
         >
           <h2 align="right">{this.props.rowdata.cuatrimestre}° Cuatrimestre {this.props.rowdata.anio}</h2>
         </FormItem>
 
-        <h3 align="center">Inscripción a cursos</h3>
+        <Row type="flex" justify="center" >
+          <Col span={12} xs="2">
+            <FormItem
+              label="Inscripción a cursos"
+            >
+              {getFieldDecorator('r1', {
+                rules: [{ required: true, message: 'Ingrese el período de inscripción' }],
+              })(
+                <RangePicker locale={locate} />
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12} xs="2">
+            <FormItem
+              label="Desinscripción a cursos">
+              {getFieldDecorator('r2', {
+                rules: [{ required: true, message: 'Ingrese el período de desinscripción' }],
+              })(
+                <RangePicker locale={locate} />
+              )}
+            </FormItem>
+          </Col>
 
-        <FormItem
-          {...formItemLayout}
-          label="Desde">
-          {getFieldDecorator('desde', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de inicio' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Hasta">
-          {getFieldDecorator('hasta', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de fin' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <h3 align="center">Desinscripción a cursos</h3>
+        </Row>
 
-        <FormItem
-          {...formItemLayout}
-          label="Desde">
-          {getFieldDecorator('desde', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de inicio' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Hasta">
-          {getFieldDecorator('hasta', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de fin' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <h3 align="center">Cursada</h3>
+        <Row type="flex" justify="center" >
+          <Col span={12} xs="2">
+            <FormItem
+              label="Consulta de Prioridad">
+              {getFieldDecorator('r4', {
+                rules: [{ required: true, message: 'Ingrese el período de Consulta de Prioridad' }],
+              })(
+                <RangePicker locale={locate} />
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12} xs="2">
+            <FormItem
+              label="Cursada">
+              {getFieldDecorator('r3', {
+                rules: [{ required: true, message: 'Ingrese el período de cursada' }],
+              })(
+                <RangePicker locale={locate} />
+              )}
+            </FormItem>
+          </Col>
 
-        <FormItem
-          {...formItemLayout}
-          label="Desde">
-          {getFieldDecorator('desde', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de inicio' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Hasta">
-          {getFieldDecorator('hasta', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de fin' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <h3 align="center">Consulta de Prioridad</h3>
+        </Row>
 
-        <FormItem
-          {...formItemLayout}
-          label="Desde">
-          {getFieldDecorator('desde', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de inicio' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Hasta">
-          {getFieldDecorator('hasta', {
-            rules: [{ required: true, message: 'Por favor ingrese el día de fin' }],
-          })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
-          )}
-        </FormItem>
+
       </Form>
 
     }

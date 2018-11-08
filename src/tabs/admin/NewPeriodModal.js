@@ -40,8 +40,8 @@ class NewPeriodModal extends Component {
   render() {
     return <Modal
       title="Nuevo período"
-      visible={this.props.visible
-      }
+      visible={this.props.visible}
+      width={1000}
       onOk={this.handleOk}
       okText='Grabar'
       onCancel={this.props.handleCancel}

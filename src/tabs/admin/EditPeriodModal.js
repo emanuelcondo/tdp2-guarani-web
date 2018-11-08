@@ -52,6 +52,7 @@ class EditPeriodModal extends Component {
       visible={this.props.visible
       }
       onOk={this.handleOk}
+      width={1000}
       okText='Grabar'
       onCancel={this.props.handleCancel}
       cancelText='Cancelar'

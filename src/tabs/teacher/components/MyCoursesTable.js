@@ -6,6 +6,9 @@ import fileDownload from 'js-file-download'
 import ButtonGroup from 'antd/lib/button/button-group';
 import CalificationTable from './MyCourseCalificationTable';
 
+import store from '../../../store'
+import { changeTeacherContainerChildren, changeCurrentCourse } from '../../../actionCreators'
+
 
 class MyCourses extends Component {
 
@@ -15,18 +18,17 @@ class MyCourses extends Component {
 
   /** Muestra los alumnos para que el docente asigne las calificaciones de la cursada */
   showAlumnosCalificar = (paramRegulares) => {
-    
+
     Modal.info({
       title: 'Calificación de la cursada de los Alumnos',
       content:
         <CalificationTable
-          data= {paramRegulares}
+          data={paramRegulares}
         />
       ,
       width: '700px'
     })
   }
-
 
 
   expandedRowRender = (row, idx, indent, expanded) => {
@@ -177,25 +179,15 @@ class MyCourses extends Component {
                 Ver
               </Button>
               <Button
-                onClick={() => { this.showAlumnosCalificar(row.regulares); }}
+                onClick={() => {
+                  store.dispatch(changeTeacherContainerChildren('courseInformation'));
+                  store.dispatch(changeCurrentCourse(row))
+                }}
                 disabled={row.regulares.length === 0}
                 icon='ordered-list'
               >
                 Calificar
               </Button>
-              <Button
-                onClick={() => {
-                  console.log(row);
-                  TeacherService.downloadCourseInformation(row._id).then((data) => {
-                    console.log('data', data.data);
-                    fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
-                  })
-                }}
-                disabled={row.regulares.length === 0}
-                icon='cloud-download'
-              >
-                Descargar
-               </Button>
             </ButtonGroup>
 
           </div>

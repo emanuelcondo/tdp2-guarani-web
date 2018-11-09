@@ -4,7 +4,11 @@ import * as TeacherService from './service/TeacherService'
 import MyCoursesContent from './components/MyCoursesContent';
 import FinalsContent from './components/FinalsContent'
 import * as AuthService from '../login/service/AuthService'
+import CourseInfo from './components/CourseInfo'
+import { connect } from 'react-redux'
 
+import store from '../../store'
+import { changeTeacherContainerChildren } from '../../actionCreators'
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.Group;
@@ -19,11 +23,14 @@ class TeacherContainer extends Component {
     teacherName: 'teacher name',
     childrens: {
       myCourses: <MyCoursesContent />,
-      finalsContent: <FinalsContent />
+      finalsContent: <FinalsContent />,
+      courseInformation: <CourseInfo />
     },
     /**this value is for default */
-    children: <MyCoursesContent />
+    children: <MyCoursesContent />,
   }
+
+
 
   setModal = (value) => {
     this.setState({ conditionalModal: value })
@@ -31,11 +38,6 @@ class TeacherContainer extends Component {
 
   callback = (key) => {
     console.log(key);
-  }
-
-
-  selectNewChilder = (childrenName) => {
-    this.setState({ children: this.state.childrens[childrenName] })
   }
 
   getTeacherName = () => {
@@ -71,13 +73,13 @@ class TeacherContainer extends Component {
                 style={{ lineHeight: '64px', backgroundColor: '#404040' }}
               >
                 <Menu.Item
-                  onClick={() => this.selectNewChilder('myCourses')}
+                  onClick={() => store.dispatch(changeTeacherContainerChildren('myCourses'))}
                   key="1"
                 >
                   <Icon type="database" />
                   Mis Cursos
             </Menu.Item>
-                <Menu.Item key="2" onClick={() => this.selectNewChilder('finalsContent')}>
+                <Menu.Item key="2" onClick={() => store.dispatch(changeTeacherContainerChildren('finalsContent'))}>
                   Examenes
             </Menu.Item>
               </Menu></Col>
@@ -101,12 +103,20 @@ class TeacherContainer extends Component {
         </div>
         <Layout>
           <Content style={{ backgroundColor: 'white' }}>
-            {this.state.children}
+            {this.state.childrens[this.props.currentChildren]}
           </Content>
         </Layout>
-      </Layout>
+      </Layout >
     )
   }
 }
 
-export default TeacherContainer;
+
+const mapStateToProps = state => {
+  return {
+    data: state.data,
+    currentChildren: state.teacherContainerChildren
+  }
+}
+
+export default connect(mapStateToProps, null)(TeacherContainer);

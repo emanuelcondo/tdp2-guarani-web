@@ -11,7 +11,6 @@ import server from './Server'
 
 
 class App extends Component {
-
   state = {
     childrens: {
       docente: <TeacherContainer update={this.update} />,

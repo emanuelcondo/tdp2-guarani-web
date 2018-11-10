@@ -22,7 +22,12 @@ const CreateNewPeriodForm = Form.create()(
           <Col span={12}>
             <FormItem label="Año">
               {getFieldDecorator('anio', {initialValue: '2018'})(
-                  <Select defaultValue='2018' style={{ width: 120 }}>
+                  <Select defaultValue={2018} style={{ width: 120 }}>
+                    <Option value='2011'>2016</Option>
+                    <Option value='2012'>2016</Option>
+                    <Option value='2013'>2016</Option>
+                    <Option value='2014'>2016</Option>
+                    <Option value='2015'>2016</Option>
                     <Option value='2016'>2016</Option>
                     <Option value='2017'>2017</Option>
                     <Option value='2018'>2018</Option>
@@ -38,10 +43,10 @@ const CreateNewPeriodForm = Form.create()(
               {getFieldDecorator('cuatri', {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
-                <RadioGroup defaultValue="1" size="large">
-                  <RadioButton value="1"> 1° </RadioButton>
-                  <RadioButton value="2"> 2° </RadioButton>
-                  <RadioButton value="0">Verano</RadioButton>
+                <RadioGroup defaultValue={1} size="large">
+                  <RadioButton value={1}> 1° </RadioButton>
+                  <RadioButton value={2}> 2° </RadioButton>
+                  <RadioButton value={0}>Verano</RadioButton>
                 </RadioGroup>
               )}
             </FormItem>

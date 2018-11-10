@@ -89,6 +89,13 @@ class MyCourses extends Component {
           return <div></div>
         }
       }, {
+        title: 'Ayudantes',
+        dataIndex: 'ayudantesDePrimera',
+        key: 'ayudantesDePrimera',
+        render: (value, row, idx) => {
+          return row.ayudantes.map((ayudante) => (<div>{ayudante.apellido}, {ayudante.nombre}</div>))
+        }
+      }, {
         title: 'Cantidad de Inscriptos',
         dataIndex: 'cantidadDeInscriptos',
         key: 'cantidadAlumno',
@@ -96,13 +103,6 @@ class MyCourses extends Component {
           return row.cantidadInscriptos
         }
 
-      }, {
-        title: 'Ayudantes',
-        dataIndex: 'ayudantesDePrimera',
-        key: 'ayudantesDePrimera',
-        render: (value, row, idx) => {
-          return row.ayudantes.map((ayudante) => (<div>{ayudante.apellido}, {ayudante.nombre}</div>))
-        }
       }, {
         title: 'Alumnos',
         render: (value, row, idx) => {

@@ -8,7 +8,6 @@ export const createPeriod = (auth) => {
   return server.post('/periodos', auth)
 }
 
-
 export const getPeriods = () => {
   console.log(CLASS_NAME + 'get periods information');
   return server.get('/periodos?page=1&limit=20')

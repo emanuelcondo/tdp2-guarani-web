@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Modal } from 'antd';
 import CreateNewPeriodForm from './NewPeriodForm'
+import * as AdminService from './service/AdminService'
 
 
 class NewPeriodModal extends Component {
@@ -84,6 +85,19 @@ class NewPeriodModal extends Component {
     this.setState({
       visible: false,
     });
+  }
+
+  createPeriod = (periodInfo) => {
+    AdminService.createPeriod(periodInfo).then((response) => {
+      console.log('NormalLogin - the user is logged');
+      console.log('NormalLogin - response', response);
+      //display success
+      
+    }).catch((e) => {
+      console.log('NormalLogin -  the is not logged');
+      console.log('NormalLogin -  error', e);
+      //display error
+    })
   }
 
   render() {

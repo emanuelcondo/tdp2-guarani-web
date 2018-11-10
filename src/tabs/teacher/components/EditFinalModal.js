@@ -54,11 +54,11 @@ export default class EditFinalModal extends Component {
   render() {
     return <Modal
       title="Editar fecha de final"
-      visible={this.props.visible
-      }
-      onOk={this.handleOk}
+      visible={this.props.visible}
+      onOk={this.handleOK}
       onCancel={this.props.handleCancel}
     >
+    <p>Esta acción enviará una notificación a los alumnos inscriptos.</p>
       <CollectionCreateForm
         wrappedComponentRef={this.saveFormRef}
         curso={this.props.curso}

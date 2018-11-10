@@ -6,8 +6,6 @@ import moment from 'moment';
 
 const FormItem = Form.Item;
 
-const timeFormat = 'HH:mm';
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -19,22 +17,25 @@ const formItemLayout = {
   },
 };
 
+const formatTime = "HH:mm";
+const formatDate = "YYYY-MM-DD"
+
 const CollectionCreateForm = Form.create()(
   class extends Component {
 
-
+    getMoment = () => {
+      return moment(this.props.date);
+    }
 
     getDate = () => {
       const date = new Date(this.props.date)
       const dateStringToReturn = date.getUTCDate() + '/' + (date.getUTCMonth()) + '/' + date.getFullYear()
-      console.log('dateStringToReturn', dateStringToReturn);
       return dateStringToReturn
     }
 
     getTime = () => {
       const date = new Date(this.props.date)
       const timeStringToReturn = `${date.getHours()}:${date.getMinutes()}`
-      console.log('dateStringToReturn', timeStringToReturn);
       return timeStringToReturn
     }
 
@@ -78,8 +79,9 @@ const CollectionCreateForm = Form.create()(
           label="Día">
           {getFieldDecorator('dia', {
             rules: [{ required: true, message: 'Por favor ingrese el día de examen' }],
+            initialValue : this.getMoment()
           })(
-            <DatePicker locale={locate} style={{ width: '50%' }} />
+            <DatePicker locale={locate} style={{ width: '50%' }} format={formatDate} />
           )}
         </FormItem>
         <FormItem
@@ -87,8 +89,9 @@ const CollectionCreateForm = Form.create()(
           label="Horario">
           {getFieldDecorator('horario', {
             rules: [{ required: true, message: 'Por favor ingrese el horario del examen' }],
+            initialValue : this.getMoment()
           })(
-            <TimePicker defaultValue={moment('12:08', 'HH:mm')} format={'HH:mm'} />
+            <TimePicker format={formatTime} />
           )}
         </FormItem>
       </Form>

@@ -18,7 +18,7 @@ class NewPeriodModal extends Component {
 
   handleOk = () => {
     
-    console.log('newfinalmodal handleOk');
+    console.log('new_period_modal handleOk');
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -30,20 +30,20 @@ class NewPeriodModal extends Component {
           cuatrimestre: values.cuatri,
           anio: values.anio,
           inscripcionCurso: {
-              inicio: '2018-08-10T03:00:00.877Z',
-              fin: '2018-08-15T03:00:00.877Z'
+              inicio: values.ins_cur[0]._d,
+              fin: values.ins_cur[1]._d
           },
           desinscripcionCurso: {
-              inicio: '2018-08-17T03:00:00.877Z',
-              fin: '2018-08-22T03:00:00.877Z'
+            inicio: values.des_cur[0]._d,
+            fin: values.des_cur[1]._d
           },
           cursada: {
-              inicio: '2018-08-22T03:00:00.877Z',
-              fin: '2018-12-03T03:00:00.877Z'
+            inicio: values.cursad[0]._d,
+            fin: values.cursad[1]._d
           },
           consultaPrioridad: {
-              inicio: '2018-08-07T03:00:00.877Z',
-              fin: '2018-12-03T03:00:00.877Z'
+            inicio: values.con_pri[0]._d,
+            fin: values.con_pri[1]._d
           }
       }
 

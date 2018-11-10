@@ -14,7 +14,7 @@ const CreateEditPeriodForm = Form.create()(
       const { getFieldDecorator } = form;
       const state = this.state;
 
-      return <Form layout="inline">
+      return <Form layout="inline" key={this.props.rowdata._id}>
         <FormItem>
           <h2 align="right">{this.props.rowdata.cuatrimestre}° Cuatrimestre {this.props.rowdata.anio}</h2>
         </FormItem>

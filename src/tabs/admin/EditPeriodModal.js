@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import CreateEditPeriodForm from './PeriodForm'
+import * as AdminService from './service/AdminService'
 
 
 class EditPeriodModal extends Component {
@@ -16,22 +17,40 @@ class EditPeriodModal extends Component {
   }
 
   handleOk = () => {
-    console.log('editfinalmodal handleOk');
+    
+    console.log('edit_period_modal handleOk');
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
       console.log('values', values);
-      
-      /*
-      const dateToSend = new Date(values.dia._d)
-      const hour = new Date(values.horario._d)
-      dateToSend.setHours(hour.getHours())
-      dateToSend.setMinutes(hour.getMinutes())
-      dateToSend.setSeconds(0)
-      console.log('date to send the server', dateToSend);
-      */
+
+      //TODO: how to get _id to update?
+
+      const period = {
+          _id: this.formRef.props.rowdata._id,
+          cuatrimestre: this.formRef.props.rowdata.cuatrimestre,
+          anio: this.formRef.props.rowdata.anio,
+          inscripcionCurso: {
+              inicio: values.ins_cur[0]._d,
+              fin: values.ins_cur[1]._d
+          },
+          desinscripcionCurso: {
+            inicio: values.des_cur[0]._d,
+            fin: values.des_cur[1]._d
+          },
+          cursada: {
+            inicio: values.cursad[0]._d,
+            fin: values.cursad[1]._d
+          },
+          consultaPrioridad: {
+            inicio: values.con_pri[0]._d,
+            fin: values.con_pri[1]._d
+          }
+      }
+
+      this.updatePeriod(period);
 
     })
 
@@ -39,6 +58,37 @@ class EditPeriodModal extends Component {
       visible: false,
     });
   }
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  updatePeriod = (periodInfo) => {
+    AdminService.updatePeriod(periodInfo).then((response) => {
+      console.log('Period updated');
+      console.log('Period update - response', response);
+      //display success, hide modal and refresh list of periods
+      message.success('Se ha actualizado el periodo');
+      this.setState({
+        visible: false,
+      });
+
+      this.props.handleCancel();
+      
+    }).catch((e) => {
+      console.log('Period update - failed');
+      console.log('Period update - error', e);
+      console.log('Period update - response', e.response);
+      console.log('Error:', e.response.data.error.message);
+
+      //display error
+      message.error(e.response.data.error.message);
+      
+    })
+  }
+
 
   handleCancel = (e) => {
     this.setState({

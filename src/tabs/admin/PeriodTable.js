@@ -4,7 +4,8 @@ import EditPeriodModal from './EditPeriodModal'
 
 const dataSource = [
   {
-      cuatrimestre: 2,
+    _id: "5be6d493fc5a1c0cdd40b068",
+    cuatrimestre: 2,
       anio: 2018,
       inscripcionCurso: {
           inicio: '2018-08-10T03:00:00.877Z',
@@ -24,7 +25,8 @@ const dataSource = [
       }
   },
   {
-      cuatrimestre: 1,
+    _id: "5be6d493fc5a1c0cdd40b069",
+    cuatrimestre: 1,
       anio: 2018,
       inscripcionCurso: {
           inicio: '2018-02-10T03:00:00.877Z',
@@ -44,7 +46,8 @@ const dataSource = [
       }
   },
   {
-      cuatrimestre: 1,
+    _id: "5be6d493fc5a1c0cdd40b070",  
+    cuatrimestre: 1,
       anio: 2016,
       inscripcionCurso: {
           inicio: '2016-02-10T03:00:00.877Z',
@@ -64,7 +67,8 @@ const dataSource = [
       }
   },
   {
-      cuatrimestre: 1,
+    _id: "5be6d493fc5a1c0cdd40b071",  
+    cuatrimestre: 1,
       anio: 2015,
       inscripcionCurso: {
           inicio: '2015-02-10T03:00:00.877Z',
@@ -242,9 +246,15 @@ class PeriodTable extends Component {
             }
         }];
 
-        return <div styles={{margin: '50', padding: '50'}}><h1 styles={{margin: '50', padding: '50'}}>Períodos</h1>
-                <Table dataSource={dataSource} columns={columns} size="small" />
-                </div>
+        return <div styles={{margin: '50', padding: '50'}}>
+                <h1 styles={{margin: '50', padding: '50'}}>Períodos</h1>
+                <Table 
+                   dataSource={dataSource} 
+                   columns={columns} 
+                   rowKey={record => record._id} 
+                   size="small"
+                />
+               </div>
   }
 }
 

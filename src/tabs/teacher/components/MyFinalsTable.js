@@ -216,15 +216,16 @@ class MyFinals extends Component {
         title: 'Acciones',
         render: (value, row, idx) => {
           return <Button.Group>
-            <Button type='primary' onClick={this.confirm(row)} >
+            {console.log("ROW",row)}
+            <Button type='primary' icon='ordered-list' onClick={this.inscriptos(row)} >
+              Inscriptos
+            </Button>
+            <Button type='primary' icon='edit' onClick={() => { this.setState({ showEditModal: true }) }}>
+              Editar
+            </Button>
+            <Button type='primary' icon='delete' onClick={this.confirm(row)} >
               Cancelar
             </Button>
-            <Button type='primary' onClick={this.inscriptos(row)} >
-              Ver Inscriptos
-          </Button>
-            <Button type='primary' onClick={() => { this.setState({ showEditModal: true }) }}>
-              Editar
-              </Button>
             <EditFinalModal
               visible={this.state.showEditModal}
               handleCancel={this.handleCancel}

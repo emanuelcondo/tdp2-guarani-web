@@ -171,14 +171,14 @@ class MyCourses extends Component {
                     width: '1200px'
                   })
                 }}
-                disabled={row.regulares.length === 0}
+                disabled={ row.regulares === undefined || row.regulares.length === 0}
                 icon='eye'
               >
                 Ver
               </Button>
               <Button
                 onClick={() => { this.showAlumnosCalificar(row.regulares); }}
-                disabled={row.regulares.length === 0}
+                disabled={row.regulares === undefined || row.regulares.length === 0}
                 icon='ordered-list'
               >
                 Calificar
@@ -191,7 +191,7 @@ class MyCourses extends Component {
                     fileDownload(data.data, `${row.materia.codigo}-${row.comision}.csv`)
                   })
                 }}
-                disabled={row.regulares.length === 0}
+                disabled={row.regulares === undefined || row.regulares.length === 0}
                 icon='cloud-download'
               >
                 Descargar

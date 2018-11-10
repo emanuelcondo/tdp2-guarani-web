@@ -72,8 +72,8 @@ class NewPeriodModal extends Component {
         visible: false,
       });
 
-      this.props.handleRefresh().then((this) => {this.props.handleCancel()})
-      //this.props.handleCancel();
+      //this.props.handleRefresh().then((this) => {this.props.handleCancel()})
+      this.props.handleCancel();
       
     }).catch((e) => {
       console.log('Period creation - failed');

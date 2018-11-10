@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Table, Button, Modal} from 'antd';
+import {Table, Button, Modal, message} from 'antd';
 import EditPeriodModal from './EditPeriodModal'
+import * as AdminService from './service/AdminService'
 
 
 const dataSource = [
@@ -142,7 +143,7 @@ function MostrarRango(rango) {
 
 
 class PeriodTable extends Component {
-    
+
     state = {
         showEditModal: false
       }
@@ -152,6 +153,22 @@ class PeriodTable extends Component {
             title: 'Eliminar período ' + row.anio + ' - ' + row.cuatrimestre + '° Cuatrimestre',
             content: '¿Está seguro que desea eliminar este período? ',
             okText:'Si',
+            onOk(){ 
+                console.log('deletePeriod');
+                AdminService.deletePeriod(row).then((response) => {
+                    console.log('Period deleted', response);
+                    message.success('Periodo eliminado');
+                }).catch((e) => {
+                    console.log('Period delete - failed');
+                    console.log('Period delete - error', e);
+                    console.log('Period delete - response', e.response);
+                    console.log('Error:', e.response.data.error.message);
+                
+                    //display error
+                    message.error(e.response.data.error.message);
+                
+                })
+            },
             cancelText:'Cancelar'
         });
     }
@@ -159,7 +176,7 @@ class PeriodTable extends Component {
     handleCancel = (e) => {
         this.setState({showEditModal: false});
     }
-    
+
     render(){
 
         //var { setEditPeriodModalVisible } = this.props;
@@ -211,37 +228,29 @@ class PeriodTable extends Component {
             render: (value, row, idx) => {
             return <div> <Button.Group>
                 <Button
-                type='primary'
-                icon='edit'
-                onClick={() => { this.setState({ showEditModal: true }) }}
+                    disabled={row.anio == '2018' && row.cuatrimestre =='2'}
+                    type='primary'
+                    icon='edit'
+                    onClick={() => { this.setState({ showEditModal: true }) }}
                 >
                 Editar
                 </Button>
-                <Button
-                type='primary'
-                icon='delete'
-                onClick={() => this.showWarningModal(row)}
+                <Button 
+                    disabled={row.anio == '2018' && row.cuatrimestre =='2'}
+                    type='primary'
+                    icon='delete'
+                    onClick={() => this.showWarningModal(row)}
                 >
-                Eliminar
+                    Eliminar
                 </Button>
             </Button.Group>
             <EditPeriodModal
                 visible={this.state.showEditModal}
                 handleCancel={this.handleCancel}
                 handleOk={this.handleOk}
-                /*insCurIni={row.inscripcionCurso.inicio}
-                insCurFin={row.inscripcionCurso.fin}
-                desCurIni={row.desinscripcionCurso.inicio}
-                desCurFin={row.desinscripcionCurso.fin}
-                cursadaIni={row.cursada.inicio}
-                cursadaFin={row.cursada.fin}
-                conPrioIni={row.consultaPrioridad.inicio}
-                conPrioFin={row.consultaPrioridad.fin}
-                cuatrimestre={row.cuatrimestre}
-                anio={row.anio}*/
                 rowdata={row}
-                >
-                </EditPeriodModal>
+            >
+            </EditPeriodModal>
             
             </div>
             }

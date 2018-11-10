@@ -17,3 +17,8 @@ export const updatePeriod = (period) => {
   console.log(CLASS_NAME + ' - update period', period);
   return server.put('/periodos/' + period._id, period)
 }
+
+export const deletePeriod = (period) => {
+  console.log(CLASS_NAME + ' - delete period', period);
+  return server.delete('/periodos/' + period._id, period)
+}

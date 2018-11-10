@@ -140,7 +140,21 @@ function MostrarRango(rango) {
    return Transformar(rango.inicio) + '  a  ' + Transformar(rango.fin)
 }
 
-
+function MostrarCuatrimestre(id) {
+    var cuatr
+    switch(id) {
+        case 1:
+            cuatr = "1°";
+            break;
+        case 2:
+            cuatr = "2°";
+            break;
+        default:
+            cuatr = "Verano";
+       }
+    
+    return cuatr
+}
 
 class PeriodTable extends Component {
 
@@ -183,8 +197,12 @@ class PeriodTable extends Component {
 
         const columns = [{
             title: 'Cuatrimestre',
-            dataIndex: 'cuatrimestre',
             key: 'cuatrimestre',
+            render: (value, row, idx) => {
+                return <div key={idx}>
+                    {MostrarCuatrimestre(row.cuatrimestre)}
+                    </div>
+            }
         }, {
             title: 'Año',
             dataIndex: 'anio',

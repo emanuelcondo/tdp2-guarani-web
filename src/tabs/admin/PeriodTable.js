@@ -159,7 +159,8 @@ function MostrarCuatrimestre(id) {
 class PeriodTable extends Component {
 
     state = {
-        showEditModal: false
+        showEditModal: false,
+        indexToEdit: -1
       }
 
     showWarningModal = (row) => {
@@ -249,7 +250,12 @@ class PeriodTable extends Component {
                     disabled={row.anio == '2018' && row.cuatrimestre =='2'}
                     type='primary'
                     icon='edit'
-                    onClick={() => { this.setState({ showEditModal: true }) }}
+                    onClick={
+                        () => { 
+                            this.setState({ showEditModal: true }) 
+                            this.setState({ indexToEdit: idx })
+                        }
+                    }
                 >
                 Editar
                 </Button>
@@ -266,7 +272,8 @@ class PeriodTable extends Component {
                 visible={this.state.showEditModal}
                 handleCancel={this.handleCancel}
                 handleOk={this.handleOk}
-                rowdata={row}
+                dataSource={this.props.dataSource}
+                index={this.state.indexToEdit}
             >
             </EditPeriodModal>
             

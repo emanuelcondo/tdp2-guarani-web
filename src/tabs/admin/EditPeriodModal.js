@@ -109,7 +109,7 @@ class EditPeriodModal extends Component {
     >
       <CreateEditPeriodForm
         wrappedComponentRef={this.saveFormRef}
-        rowdata={this.props.rowdata}
+        rowdata={this.props.dataSource[this.props.index]}
         onCreate={this.handleOk}
       ></CreateEditPeriodForm>
     </Modal >

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Table, Button, Modal} from 'antd';
 import EditPeriodModal from './EditPeriodModal'
 
+
 const dataSource = [
   {
     _id: "5be6d493fc5a1c0cdd40b068",
@@ -249,7 +250,7 @@ class PeriodTable extends Component {
         return <div styles={{margin: '50', padding: '50'}}>
                 <h1 styles={{margin: '50', padding: '50'}}>Períodos</h1>
                 <Table 
-                   dataSource={dataSource} 
+                   dataSource={this.props.dataSource} 
                    columns={columns} 
                    rowKey={record => record._id} 
                    size="small"

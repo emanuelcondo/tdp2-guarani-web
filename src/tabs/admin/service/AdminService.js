@@ -9,11 +9,11 @@ export const createPeriod = (period) => {
 }
 
 export const getPeriods = () => {
-  console.log(CLASS_NAME + 'get periods information');
+  console.log(CLASS_NAME + ' - get periods information');
   return server.get('/periodos?page=1&limit=20')
 }
 
 export const updatePeriod = (period) => {
-  console.log(CLASS_NAME + 'update period', period);
+  console.log(CLASS_NAME + ' - update period', period);
   return server.put('/periodos/' + period._id, period)
 }

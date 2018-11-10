@@ -31,14 +31,14 @@ const CollectionCreateForm = Form.create()(
 
     getTeacherCourse = () => {
       TeacherService.getAsignatures().then((response) => {
-        const courses = response.data.data.cursos.map((course) => { return { 'comision': course.comision, 'id': course._id } });
+        const courses = response.data.data.cursos.map((course) => { return { 'comision': course.comision, 'id': course._id, "materia" : course.materia } });
         console.log('courses', courses);
         this.setState({ courses })
       })
     }
 
     getCourseOption = () => {
-      return this.state.courses.map((course) => <Option value={course.id} key={course.id}>{course.comision}</Option>)
+      return this.state.courses.filter((course) => course.materia.nombre === this.props.asignatureSelected).map((course) => <Option value={course.id} key={course.id}>{course.comision}</Option>)
     }
 
     componentDidMount() {
@@ -176,7 +176,8 @@ export default class FinalsContent extends Component {
     TeacherService.getAsignatures().then((response) => {
       console.log('Materia elegida', this.state.asignatureSelected);
       console.log('Obteniendo los cursos del docente', response);
-      const courses = response.data.data.cursos.filter((course) => course.materia.nombre === this.state.asignatureSelected).map((course) => { return { 'comision': course.comision, 'id': course._id } });
+      const courses = response.data.data.cursos.filter((course) => course.materia.nombre === this.state.asignatureSelected).map((course) => { return { 'comision': course.comision, 'id': course._id} });
+      console.log('course', response.data.data.cursos);
       console.log('courses', courses);
       this.setState({ courses }, () => {
         console.log('llamando..');

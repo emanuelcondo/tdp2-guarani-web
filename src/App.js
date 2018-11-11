@@ -11,7 +11,6 @@ import server from './Server'
 
 
 class App extends Component {
-
   state = {
     childrens: {
       docente: <TeacherContainer update={this.update} />,
@@ -28,7 +27,6 @@ class App extends Component {
   }
 
   getContainer = (rol) => {
-    console.log('getContainer rol', rol);
     if (rol === 'docente') {
       return <TeacherContainer update={this.update} />
     } else if (rol === 'departamento') {

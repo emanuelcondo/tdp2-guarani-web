@@ -6,12 +6,6 @@ import * as AdminService from './service/AdminService'
 
 class NewPeriodModal extends Component {
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
@@ -51,15 +45,6 @@ class NewPeriodModal extends Component {
 
     })
 
-    this.setState({
-      visible: false,
-    });
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
   }
 
   createPeriod = (periodInfo) => {
@@ -68,11 +53,8 @@ class NewPeriodModal extends Component {
       console.log('Period creation - response', response);
       //display success, hide modal and refresh list of periods
       message.success('Se ha creado el periodo');
-      this.setState({
-        visible: false,
-      });
 
-      this.props.handleCancel();
+      this.props.handleOk();
       
     }).catch((e) => {
       console.log('Period creation - failed');
@@ -99,7 +81,6 @@ class NewPeriodModal extends Component {
       <CreateNewPeriodForm
         wrappedComponentRef={this.saveFormRef}
         rowdata={this.props.rowdata}
-        onCreate={this.handleOk}
       ></CreateNewPeriodForm>
     </Modal >
   }

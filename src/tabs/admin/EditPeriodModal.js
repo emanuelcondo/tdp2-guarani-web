@@ -26,8 +26,6 @@ class EditPeriodModal extends Component {
       }
       console.log('values', values);
 
-      //TODO: how to get _id to update?
-
       const period = {
           _id: this.formRef.props.rowdata._id,
           cuatrimestre: this.formRef.props.rowdata.cuatrimestre,
@@ -54,9 +52,6 @@ class EditPeriodModal extends Component {
 
     })
 
-    this.setState({
-      visible: false,
-    });
   }
 
   handleCancel = (e) => {
@@ -71,11 +66,8 @@ class EditPeriodModal extends Component {
       console.log('Period update - response', response);
       //display success, hide modal and refresh list of periods
       message.success('Se ha actualizado el periodo');
-      this.setState({
-        visible: false,
-      });
 
-      this.props.handleCancel();
+      this.props.handleOk();
       
     }).catch((e) => {
       console.log('Period update - failed');
@@ -90,17 +82,11 @@ class EditPeriodModal extends Component {
   }
 
 
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
-  }
 
   render() {
     return <Modal
       title="Editar período"
-      visible={this.props.visible
-      }
+      visible={this.props.visible}
       onOk={this.handleOk}
       width={1000}
       okText='Grabar'
@@ -109,9 +95,9 @@ class EditPeriodModal extends Component {
     >
       <CreateEditPeriodForm
         wrappedComponentRef={this.saveFormRef}
-        rowdata={this.props.rowdata}
-        onCreate={this.handleOk}
-      ></CreateEditPeriodForm>
+        rowdata={this.props.dataSource[this.props.index]}
+      >
+      </CreateEditPeriodForm>
     </Modal >
   }
 }

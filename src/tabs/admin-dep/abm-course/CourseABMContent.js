@@ -308,7 +308,7 @@ export default class CoursesABMContent extends Component {
       footer={null}
        >
         <CreateNewCourseForm
-          materias={this.nombresMaterias}
+          materias={this.state.materias}
           //wrappedComponentRef={this.saveFormRef}
           //rowdata={this.props.rowdata}
         ></CreateNewCourseForm>

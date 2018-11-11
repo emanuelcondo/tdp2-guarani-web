@@ -171,9 +171,12 @@ const CreateNewCourseForm = Form.create()(
                 rules: [{ required: true, message: 'Ingrese la materia' }],
               })(
                 <Select>
-                  <Option value='5ba6cf168b7931ac3e21de27'>Alritmos y Programación I</Option>
-                  <Option value='5ba705601dabf8854f11ddfd'>Alritmos y Programación II</Option>
-                  <Option value='5ba706661dabf8854f11de22'>Alritmos y Programación III</Option>
+                  {this.props.materias.map( 
+                      (materia)=> {
+                        return <Option value={materia._id}>{materia.codigo} - {materia.nombre}</Option>;
+                      }
+                    )
+                  }
               </Select>
               )}
             </FormItem>

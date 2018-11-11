@@ -192,6 +192,10 @@ class PeriodTable extends Component {
         this.setState({showEditModal: false});
     }
 
+    handleOk = (e) => {
+        this.setState({showEditModal: false});
+    }
+
     render(){
 
         //var { setEditPeriodModalVisible } = this.props;

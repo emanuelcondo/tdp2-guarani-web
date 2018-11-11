@@ -10,6 +10,7 @@ class DefinePeriod extends Component {
     super(props);
   
     this.state = {
+        newPeriodModalVisible: false,
         editPeriodModalVisible: false,
         existingPeriods: []
       };
@@ -22,17 +23,26 @@ class DefinePeriod extends Component {
     this.setState({editPeriodModalVisible: true});
   }
 
-  onOk = (e) => {
-    this.setState({editPeriodModalVisible: false});
+  setNewPeriodModalVisible = (e) => {
+    this.setState({newPeriodModalVisible: true});
+  }
+
+  setNewPeriodModalNotVisible = (e) => {
+    this.setState({newPeriodModalVisible: false});
+  }
+
+  onRefresh = (e) => {
+    this.setState({newPeriodModalVisible: false});
+    this.getPeriods();
   }
 
   onCancel = (e) => {
-    this.setState({editPeriodModalVisible: false});
+    this.setState({newPeriodModalVisible: false});
   }
 
   /*
   onRefresh = (e) => {
-    this.getPeriods().then((this)=> {this.setState({editPeriodModalVisible: false})});
+    this.getPeriods().then((this)=> {this.setState({newPeriodModalVisible: false})});
   }
   */
 
@@ -67,7 +77,7 @@ class DefinePeriod extends Component {
             type='primary'
             icon='plus'
             style={{ marginRight: '25px', marginTop: '25px' }}
-            onClick={() => { this.setState({ editPeriodModalVisible: true }) }}
+            onClick={() => { this.setState({ newPeriodModalVisible: true }) }}
           >
             Agregar Periodo
           </Button>
@@ -79,10 +89,9 @@ class DefinePeriod extends Component {
       />
 
       <NewPeriodModal
-        visible={this.state.editPeriodModalVisible}
-        handleCancel={this.onCancel}
-        handleOk={this.onOk}
-        handleRefresh={this.getPeriods}
+        visible={this.state.newPeriodModalVisible}
+        handleCancel={this.setNewPeriodModalNotVisible}
+        handleOk={this.onRefresh}
       >
       </NewPeriodModal>
     </div>

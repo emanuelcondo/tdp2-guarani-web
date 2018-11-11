@@ -52,22 +52,43 @@ class MyCourses extends Component {
       pagination={false}
     />
   }
+  AsignaturesNameFilters = (data) => {
+    return data.map(item => { const asignatureName = item.materia.nombre; return { text: asignatureName, value: asignatureName } })
+  }
+
+  yearFilters = (data) => {
+    var list = [];
+    const lowEnd = 1995;
+    const highEnd = 2019;
+    for (var i = 2019; i >= lowEnd; i--) {
+      list.push(i);
+    }
+
+    return list.map(item => { const year = item; return { text: year, value: year } });
+  }
 
   render() {
     return <Table
       dataSource={this.props.data}
-      rowKey={record => record.comision}
+      rowKey={record => record._id}
       expandedRowRender={this.expandedRowRender}
       pagination={false}
       locale={{ emptyText: this.state.tableMessage }}
     >
-      <Column title='Materia' dataIndex='materia.nombre' key='materia' />
+      <Column title='Materia' dataIndex='materia.nombre' key='materia'
+        filters={this.AsignaturesNameFilters(this.props.data)}
+        onFilter={(value, record) => record.materia.nombre === value}
+      />
       <Column title='Año' dataIndex='anio' key='anio'
-        filters={[{ text: 'Joe', value: 'Joe' }, { text: 'Jim', value: 'Jim' },
-        ]} />
+        filters={this.yearFilters(this.props.data)}
+        onFilter={(value, record) => record.anio.toString() === value}
+      />
       <Column title='Cuatrimestre' dataIndex='cuatrimestre' key='cuatrimestre'
-        filters={[{ text: '1° Cuatrimestre', value: '1' }, { text: '2° Cuatrimestre', value: '2' }, { text: 'Curso Verano', value: 'cursoVerano' }
-        ]} />
+        filters={[{ text: '1° Cuatrimestre', value: '1' }, { text: '2° Cuatrimestre', value: 2 }, { text: 'Curso Verano', value: 'cursoVerano' }
+        ]}
+        onFilter={(value, record) => record.cuatrimestre.toString() === value
+        }
+      />
       <Column title='Curso' dataIndex='comision' key='numero' />
       <Column title='Docente' key='docente'
         render={(row, value, idx) => (<div key={idx}>{value.docenteACargo.apellido + ', ' + value.docenteACargo.nombre}</div>)
@@ -81,8 +102,9 @@ class MyCourses extends Component {
       }} />
       <Column
         title='Ayudantes' key='ayudantesDePrimera'
+        key='ayudantes'
         render={(value, row, idx) => {
-          return row.ayudantes.map((ayudante) => (<div>{ayudante.apellido}, {ayudante.nombre}</div>))
+          return row.ayudantes.map((ayudante) => (<div key={idx} >{ayudante.apellido}, {ayudante.nombre}</div>))
         }}
       />
 

@@ -62,6 +62,19 @@ class StudentGrid extends Component {
           </div>
         }}
       />
+
+      <Column
+        title="Nota Cierre"
+        key="notaCierre"
+        editable={true}
+        render={(row) => {
+          return <div
+          >
+            2
+          </div>
+        }}
+      />
+
       <Column
         title="Observaciones"
         key="observaciones"

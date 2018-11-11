@@ -4,6 +4,8 @@ import EditCourseModal from '../../admin/EditCourseModal'
 import * as DepartmentService from '../service/DepartmentService'
 import CreateNewCourseForm from './NewCourseForm'
 
+const ITEMS_PER_PAGE = 9;
+
 export default class CoursesABMContent extends Component {
 
   state = {
@@ -17,7 +19,11 @@ export default class CoursesABMContent extends Component {
     nombresMaterias : new Set(),
     docentes : new Set(),
     jtps : new Set(),
-    newCourseModalVisible : true
+    newCourseModalVisible : true,
+    pagination: {
+      pageSize: ITEMS_PER_PAGE,
+      total: 0
+    }
   }
 
   componentDidMount() {
@@ -54,15 +60,12 @@ export default class CoursesABMContent extends Component {
    */
   async loadCursesFromServer () {
     let depto = this.state.departamento_id;
-    DepartmentService.getCoursesByDepartamentID(depto)
+    DepartmentService.getCoursesByDepartamentID(depto, { limit: 100 })
       .then((response) => {
         let data = response.data.data;
-
-        let pagination = { // TODO podría ser útil
-          page: data.page,
-          totalcount: data.totalcount,
-          totalpages: data.totalpages
-        }
+        this.setState({
+          pagination: { pageSize: ITEMS_PER_PAGE, total: data.totalcount }
+        });
 
         let cursos = data.cursos;
         cursos.forEach((curso) => {
@@ -191,6 +194,11 @@ export default class CoursesABMContent extends Component {
     });
   }
 
+  updateTable = (pagination, filters) => {
+    console.log(pagination);
+    console.log(filters);
+  }
+
   render() {
 
     const dataSource = this.state.cursos;
@@ -287,7 +295,8 @@ export default class CoursesABMContent extends Component {
         style={{ marginTop: '50px', whiteSpace: 'pre'}}
         dataSource={dataSource}
         columns={columns}
-        pagination={false}
+        pagination={this.state.pagination}
+        onChange={this.updateTable}
       />
 
       <Modal

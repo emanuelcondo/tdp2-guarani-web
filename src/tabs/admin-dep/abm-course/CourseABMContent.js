@@ -303,8 +303,9 @@ export default class CoursesABMContent extends Component {
       title="Nuevo curso"
       visible={this.state.newCourseModalVisible}
       width="80%"
-      onOk={this.onOk}
+      //onOk={this.onOk}
       onCancel={this.onCancel}
+      footer={null}
        >
         <CreateNewCourseForm
           materias={this.nombresMaterias}

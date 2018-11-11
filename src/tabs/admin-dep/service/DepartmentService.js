@@ -22,6 +22,11 @@ export const getCoursesByDepartamentID = (departamentID, params) => {
     return server.get(`/departamentos/${departamentID}/cursos${query_string}`)
 }
 
+export const searchProfessors = (text) => {
+    let query_string = (text && text.trim()) ? ('?search='+text) : '';
+    return server.get(`/docentes${query_string}`)
+}
+
 export const deleteCourseByID = (materiaID, courseID) => {
     return server.delete(`/materias/${materiaID}/cursos/${courseID}`)
 }

@@ -17,7 +17,7 @@ const CreateNewPeriodForm = Form.create()(
       const { getFieldDecorator } = form;
       const state = this.state;
 
-      return <Form className="" layout="inline">
+      return <Form className="" layout="vertical">
         <Row type="flex" justify="center" >
           <Col span={12}>
             <FormItem label="Año">

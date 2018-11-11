@@ -33,7 +33,7 @@ const CreateEditPeriodForm = Form.create()(
       const { getFieldDecorator } = form;
       const state = this.state;
 
-      return <Form layout="inline">
+      return <Form layout="vertical">
         <FormItem>
           <h2 align="right">{MostrarCuatrimestre(this.props.rowdata.cuatrimestre)}  {this.props.rowdata.anio}</h2>
         </FormItem>

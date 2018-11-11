@@ -8,6 +8,7 @@ export default class CoursesABMContent extends Component {
 
   state = {
     editCourseModalVisible: false,
+    departamento_id: null,
     codigo : null,
     materias : [],
     cursos : [],
@@ -41,7 +42,7 @@ export default class CoursesABMContent extends Component {
     return DepartmentService.getDepartmentDataByToken().then(
       (response) => {
         let depto = response.data.data.departamentos[0];
-        this.setState({ codigo : depto.codigo, materias: depto.materias });
+        this.setState({ departamento_id: depto._id, codigo : depto.codigo, materias: depto.materias });
       }
     )
   }
@@ -52,6 +53,34 @@ export default class CoursesABMContent extends Component {
    * parece que js es single threaded y no pasa nada
    */
   async loadCursesFromServer () {
+    let depto = this.state.departamento_id;
+    DepartmentService.getCoursesByDepartamentID(depto)
+      .then((response) => {
+        let data = response.data.data;
+
+        let pagination = { // TODO podría ser útil
+          page: data.page,
+          totalcount: data.totalcount,
+          totalpages: data.totalpages
+        }
+
+        let cursos = data.cursos;
+        cursos.forEach((curso) => {
+          this.aplanarCurso(curso);
+          let nuevoArray = this.state.cursos.concat(curso);
+          this.setState({ 
+            cursos : nuevoArray, 
+            anios : this.state.anios.add(curso.anio),
+            cuatrimestres : this.state.cuatrimestres.add(curso.cuatrimestre),
+            nombresMaterias : this.state.nombresMaterias.add(curso.materia.nombre),
+            docentes : this.state.docentes.add(curso.docenteACargo.nombreYApellido),
+            jtps : this.state.jtps.add(curso.jtp.nombreYApellido)
+          });
+          console.log("ESTADO: ",this.state)
+        });
+      })
+
+    /*
     return this.state.materias.forEach( 
       (materia) => {
         DepartmentService.getCoursesByMateriaID(materia._id).then(
@@ -74,6 +103,7 @@ export default class CoursesABMContent extends Component {
         )
       } 
     );
+    */
   }
 
   /**

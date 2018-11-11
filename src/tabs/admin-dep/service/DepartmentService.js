@@ -4,7 +4,11 @@ export const getDepartmentDataByToken = () => {
   return server.get('/departamentos/gestion')
 }
 
-export const getCursosByMateriaID = (materiaID) => {
+export const getCoursesByMateriaID = (materiaID) => {
     return server.get(`/materias/${materiaID}/cursos`)
+}
+
+export const deleteCourseByID = (materiaID, courseID) => {
+    return server.delete(`/materias/${materiaID}/cursos/${courseID}`)
 }
   

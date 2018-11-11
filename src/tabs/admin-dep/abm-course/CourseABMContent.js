@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, Col, Row } from 'antd'
+import { Table, Button, Modal, Col, Row, message } from 'antd'
 import EditCourseModal from '../../admin/EditCourseModal'
 import * as DepartmentService from '../service/DepartmentService'
 
@@ -12,10 +12,14 @@ export default class CoursesABMContent extends Component {
     cursos : [],
   }
 
+  componentDidMount() {
+    this.update();
+  }
+
   /**
-   * Carga los datos al entrar a la pantalla
+   * Carga los datos
    */
-  async componentDidMount() {
+  async update() {
     await this.loadMateriasFromServer();
     console.log("Materias recibidas: ", this.state.materias)
     this.loadCursesFromServer();
@@ -42,7 +46,7 @@ export default class CoursesABMContent extends Component {
   loadCursesFromServer () {
     this.state.materias.forEach( 
       (materia) => {
-        DepartmentService.getCursosByMateriaID(materia._id).then(
+        DepartmentService.getCoursesByMateriaID(materia._id).then(
           (response) => {
             response.data.data.cursos.forEach(
               (curso) => {
@@ -91,10 +95,38 @@ export default class CoursesABMContent extends Component {
     });
   }
 
-  showWarningModal = () => {
-    Modal.warning({
-      title: 'Eliminar curso nro X de profesor Y',
-      content: '¿Está seguro que desea eliminar este curso? Este curso tiene x cantidad de alumnos',
+  /**
+   * Devuelve una funcion que Intenta eliminar un curso, y de tener exito actualiza el estado
+   * Hay un currying aca para poder setear el curso de antemano
+   */
+  eliminarCurso (curso) {
+    return () => {
+      DepartmentService.deleteCourseByID(curso.materia._id, curso._id).then(
+        (response) => {
+          let nuevoArray = this.state.cursos.filter( 
+            (elem) => { return curso._id != elem._id; }
+          )
+          this.setState({ cursos : nuevoArray });
+          message.success('Se ha eliminado el curso con éxito.');
+        }
+      ).catch(
+        (e) => {
+          message.error('No se pudo eliminar el curso:\n'+e.response.data.error.message);
+        }
+      )
+    }
+  }
+
+  warningEliminarCurso = (row) => {
+    let self = this;
+    Modal.confirm({
+      title: `Eliminar curso ${row.comision} de ${row.materia.nombre} del profesor ${row.docenteACargo.nombreYApellido} del año ${row.anio} cuatrimestre ${row.cuatrimestre}`,
+      content: `¿Está seguro que desea eliminar este curso? Este curso tiene ${row.cupos - row.vacantes} alumnos`,
+      width: '80%',
+      okText:'Si',
+      okType: 'danger',
+      onOk: this.eliminarCurso(row),
+      cancelText:'No'
     });
   }
 
@@ -116,6 +148,14 @@ export default class CoursesABMContent extends Component {
     }];*/
 
     const columns = [{
+      title: 'Año',
+      dataIndex: 'anio',
+      key: 'anio',
+    },{
+      title: 'Cuatrimestre',
+      dataIndex: 'cuatrimestre',
+      key: 'cuatrimestre',
+    },{
       title: 'Materia',
       dataIndex: 'materia.nombre',
       key: 'materia.nombre',
@@ -156,7 +196,7 @@ export default class CoursesABMContent extends Component {
           <Button
             type='primary'
             icon='delete'
-            onClick={() => this.showWarningModal()}
+            onClick={() => this.warningEliminarCurso(row)}
           >
             Eliminar
           </Button>

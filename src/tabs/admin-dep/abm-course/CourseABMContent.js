@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Modal, Col, Row, message } from 'antd'
 import EditCourseModal from '../../admin/EditCourseModal'
 import * as DepartmentService from '../service/DepartmentService'
+import CreateNewCourseForm from './NewCourseForm'
 
 export default class CoursesABMContent extends Component {
 
@@ -15,6 +16,7 @@ export default class CoursesABMContent extends Component {
     nombresMaterias : new Set(),
     docentes : new Set(),
     jtps : new Set(),
+    newCourseModalVisible : true
   }
 
   componentDidMount() {
@@ -56,7 +58,6 @@ export default class CoursesABMContent extends Component {
           (response) => {
             response.data.data.cursos.forEach(
               (curso) => {
-                console.log("QUE ONDA: ", curso)
                 this.aplanarCurso(curso);
                 let nuevoArray = this.state.cursos.concat(curso);
                 this.setState({ 
@@ -110,16 +111,19 @@ export default class CoursesABMContent extends Component {
 
   onOk = (e) => {
     console.log(e);
-    this.setState({
-      editCourseModalVisible: false,
-    });
+    this.setState({newCourseModalVisible : false});
   }
 
   onCancel = (e) => {
     console.log(e);
-    this.setState({
-      editCourseModalVisible: false,
-    });
+    this.setState({newCourseModalVisible : false});
+  }
+
+  /**
+   * Funcion a llamar cuando se clickea el boton para agregar un nuevo curso
+   */
+  onClickNewCourse() {
+    this.setState({newCourseModalVisible : true});
   }
 
   /**
@@ -158,6 +162,7 @@ export default class CoursesABMContent extends Component {
   }
 
   render() {
+
     const dataSource = this.state.cursos;
 
     const columns = [{
@@ -240,6 +245,7 @@ export default class CoursesABMContent extends Component {
             type='primary'
             icon='plus'
             style={{ marginRight: '25px', marginTop: '25px' }}
+            onClick={this.onClickNewCourse.bind(this)}
           >
             Agregar Curso
           </Button>
@@ -253,6 +259,20 @@ export default class CoursesABMContent extends Component {
         columns={columns}
         pagination={false}
       />
+
+      <Modal
+      title="Nuevo curso"
+      visible={this.state.newCourseModalVisible}
+      width="80%"
+      onOk={this.onOk}
+      onCancel={this.onCancel}
+       >
+        <CreateNewCourseForm
+          materias={this.nombresMaterias}
+          //wrappedComponentRef={this.saveFormRef}
+          //rowdata={this.props.rowdata}
+        ></CreateNewCourseForm>
+      </Modal >
     </div>
 
   }

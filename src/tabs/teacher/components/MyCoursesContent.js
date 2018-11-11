@@ -51,15 +51,8 @@ export default class MyCoursesContent extends Component {
         })
       });
       console.log('TeacherContainers - allCursos', response.data.data.cursos[0]);
-      this.setState({ allCourses: response.data.data.cursos }, this.setCoursesToShow)
+      this.setState({ allCourses: response.data.data.cursos })
     })
-  }
-
-  setCoursesToShow = () => {
-    console.log('MyCoursesContent - setCoursesToShow');
-    const courseToShow = this.state.allCourses.filter((course) => course.materia.nombre === this.state.asignatureSelected)
-    console.log('courseToShow', courseToShow);
-    this.setState({ courseToShow }, () => { this.forceUpdate() })
   }
 
   update = (callback) => {
@@ -72,26 +65,11 @@ export default class MyCoursesContent extends Component {
   }
 
   render() {
-    return <div>
-      <Row type="flex" justify="space-around" align="middle">
-        <div style={{ margin: '25px' }}>
-          <Select
-            placeholder="Selecciona una materia"
-            style={{ width: '300px' }}
-            onSelect={(value) => {
-              this.setState({ asignatureSelected: value }, this.setCoursesToShow)
-            }
-            }
-          >
-            {this.getAsignaturesNamesOption()}
-          </Select>
-
-        </div>
-      </Row>
-      <Row type="flex" justify="end">
-      </Row>
+    return <div
+      style={{ marginTop: '100px' }}
+    >
       <MyCourses
-        data={this.state.courseToShow}
+        data={this.state.allCourses}
         update={this.update}
         getConditionals={this.getConditionals}
       />

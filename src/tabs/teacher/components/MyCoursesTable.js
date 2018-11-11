@@ -43,7 +43,6 @@ class MyCourses extends Component {
         dataIndex: 'tipo'
       }
     ]
-    console.log('row.cursada', row.cursada);
     row.cursada.forEach(element => {
       element['sede'] = row.sede.nombre
     });
@@ -62,6 +61,7 @@ class MyCourses extends Component {
       pagination={false}
       locale={{ emptyText: this.state.tableMessage }}
     >
+      <Column title='Materia' dataIndex='materia.nombre' key='materia' />
       <Column title='Año' dataIndex='anio' key='anio'
         filters={[{ text: 'Joe', value: 'Joe' }, { text: 'Jim', value: 'Jim' },
         ]} />
@@ -164,7 +164,7 @@ class MyCourses extends Component {
                 store.dispatch(changeTeacherContainerChildren({ myCourse: false, finalsContent: false, courseInformation: true }));
                 store.dispatch(changeCurrentCourse(row))
               }}
-              disabled={row.regulares.length === 0}
+              disabled={row.regulares !== undefined && row.regulares.length === 0}
               icon='ordered-list'
             >
               Calificar

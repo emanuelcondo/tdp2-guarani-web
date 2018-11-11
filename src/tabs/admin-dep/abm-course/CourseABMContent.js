@@ -10,6 +10,11 @@ export default class CoursesABMContent extends Component {
     codigo : null,
     materias : [],
     cursos : [],
+    anios : new Set(),
+    cuatrimestres : new Set(),
+    nombresMaterias : new Set(),
+    docentes : new Set(),
+    jtps : new Set(),
   }
 
   componentDidMount() {
@@ -22,7 +27,8 @@ export default class CoursesABMContent extends Component {
   async update() {
     await this.loadMateriasFromServer();
     console.log("Materias recibidas: ", this.state.materias)
-    this.loadCursesFromServer();
+    await this.loadCursesFromServer();
+    console.log("Cursos recibidos: ", this.state.cursos)
   }
 
   /**
@@ -43,8 +49,8 @@ export default class CoursesABMContent extends Component {
    * Si bien uno esperaria tener problemas de concurrencia con estos requests->array, 
    * parece que js es single threaded y no pasa nada
    */
-  loadCursesFromServer () {
-    this.state.materias.forEach( 
+  async loadCursesFromServer () {
+    return this.state.materias.forEach( 
       (materia) => {
         DepartmentService.getCoursesByMateriaID(materia._id).then(
           (response) => {
@@ -53,7 +59,14 @@ export default class CoursesABMContent extends Component {
                 console.log("QUE ONDA: ", curso)
                 this.aplanarCurso(curso);
                 let nuevoArray = this.state.cursos.concat(curso);
-                this.setState({ cursos : nuevoArray });
+                this.setState({ 
+                  cursos : nuevoArray, 
+                  anios : this.state.anios.add(curso.anio),
+                  cuatrimestres : this.state.cuatrimestres.add(curso.cuatrimestre),
+                  nombresMaterias : this.state.nombresMaterias.add(curso.materia.nombre),
+                  docentes : this.state.docentes.add(curso.docenteACargo.nombreYApellido),
+                  jtps : this.state.jtps.add(curso.jtp.nombreYApellido)});
+                console.log("ESTADO: ",this.state)
               }
             )
           }
@@ -66,6 +79,7 @@ export default class CoursesABMContent extends Component {
    * Dado el JSON de curso que recibo del server, lo transforma un poco para que sea
    * más comodo de mostrar.
    * No retorna nada, se hace in place
+   * @param {*} curso El curso como viene en el JSON
    */
   aplanarCurso (curso) {
     console.log("ESTADO: ", curso)
@@ -78,7 +92,20 @@ export default class CoursesABMContent extends Component {
 
       }
     );
+  }
 
+  /**
+   * Dado un set devuelve un array de objetos con los items del set como text y value
+   * @param {*} set El set
+   */
+  setToFilter (set) {
+    let filter = [];
+    set.forEach( 
+      (item) => {
+        filter.push({text : item.toString(), value : item})
+      }
+    )
+    return filter;
   }
 
   onOk = (e) => {
@@ -131,34 +158,26 @@ export default class CoursesABMContent extends Component {
   }
 
   render() {
-    const dataSource = this.state.cursos;/*[{
-      key: '1',
-      name: 'Algortimos I',
-      age: 1,
-      address: 'Menendez, Martin',
-      cantidadDeAlumnos: 14,
-      jtp: 'Gomez, Juan Pablo'
-    }, {
-      key: '2',
-      name: 'Algortimos I',
-      age: 2,
-      address: 'Menendez, Martin',
-      cantidadDeAlumnos: 10,
-      jtp: 'Davalos, Sulma'
-    }];*/
+    const dataSource = this.state.cursos;
 
     const columns = [{
       title: 'Año',
       dataIndex: 'anio',
       key: 'anio',
+      filters: this.setToFilter(this.state.anios),
+      onFilter: (value, record) => { return record.anio == value }
     },{
       title: 'Cuatrimestre',
       dataIndex: 'cuatrimestre',
       key: 'cuatrimestre',
+      filters: this.setToFilter(this.state.cuatrimestres),
+      onFilter: (value, record) => { return record.cuatrimestre == value }
     },{
       title: 'Materia',
       dataIndex: 'materia.nombre',
       key: 'materia.nombre',
+      filters: this.setToFilter(this.state.nombresMaterias),
+      onFilter: (value, record) => { return record.materia.nombre == value }
     }, {
       title: 'Nro Curso',
       dataIndex: 'comision',
@@ -167,10 +186,14 @@ export default class CoursesABMContent extends Component {
       title: 'Docente',
       dataIndex: 'docenteACargo.nombreYApellido',
       key: 'docenteACargo.nombreYApellido',
+      filters: this.setToFilter(this.state.docentes),
+      onFilter: (value, record) => { return record.docenteACargo.nombreYApellido == value }
     }, {
       title: 'JTP',
       dataIndex: 'jtp.nombreYApellido',
       key: 'jtp.nombreYApellido',
+      filters: this.setToFilter(this.state.jtps),
+      onFilter: (value, record) => { return record.jtp.nombreYApellido == value }
     }, {
       title: 'Ayudantes',
       dataIndex: 'ayudantesPlanos',

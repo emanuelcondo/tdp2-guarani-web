@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import PeriodTable from './PeriodTable';
 import NewPeriodModal from './NewPeriodModal'
+import EditPeriodModal from './EditPeriodModal'
 import { Button, Row, Col, message } from 'antd'
 import * as AdminService from './service/AdminService'
 
@@ -12,14 +13,15 @@ class DefinePeriod extends Component {
     this.state = {
         newPeriodModalVisible: false,
         editPeriodModalVisible: false,
-        existingPeriods: []
+        existingPeriods: [],
+        indexToEdit: -1
       };
   
     this.setEditPeriodModalVisible = this.setEditPeriodModalVisible.bind(this);
   
   }
 
-  setEditPeriodModalVisible() {
+  setEditPeriodModalVisible = (e) => {
     this.setState({editPeriodModalVisible: true});
   }
 
@@ -31,8 +33,17 @@ class DefinePeriod extends Component {
     this.setState({newPeriodModalVisible: false});
   }
 
+  setEditPeriodModalNotVisible = (e) => {
+    this.setState({editPeriodModalVisible: false});
+  }
+
+  setIndexToEdit = (idx) => {
+    this.setState({indexToEdit: idx});
+  }
+
   onRefresh = (e) => {
     this.setState({newPeriodModalVisible: false});
+    this.setState({editPeriodModalVisible: false});
     this.getPeriods();
   }
 
@@ -86,6 +97,8 @@ class DefinePeriod extends Component {
       <PeriodTable
         setEditPeriodModalVisible={this.setEditPeriodModalVisible}
         dataSource={this.state.existingPeriods}
+        setIndexToEdit={this.setIndexToEdit}
+        onEdit={this.setEditPeriodModalVisible}
       />
 
       <NewPeriodModal
@@ -94,6 +107,14 @@ class DefinePeriod extends Component {
         handleOk={this.onRefresh}
       >
       </NewPeriodModal>
+      <EditPeriodModal
+                visible={this.state.editPeriodModalVisible}
+                handleCancel={this.setEditPeriodModalNotVisible}
+                handleOk={this.onRefresh}
+                dataSource={this.state.existingPeriods}
+                index={this.state.indexToEdit}
+            >
+      </EditPeriodModal>
     </div>
   }
 }

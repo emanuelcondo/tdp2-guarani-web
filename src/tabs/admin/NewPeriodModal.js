@@ -81,7 +81,6 @@ class NewPeriodModal extends Component {
       <CreateNewPeriodForm
         wrappedComponentRef={this.saveFormRef}
         rowdata={this.props.rowdata}
-        onCreate={this.handleOk}
       ></CreateNewPeriodForm>
     </Modal >
   }

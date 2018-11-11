@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Table, Button, Modal, message} from 'antd';
-import EditPeriodModal from './EditPeriodModal'
 import * as AdminService from './service/AdminService'
 
 
@@ -158,11 +157,6 @@ function MostrarCuatrimestre(id) {
 
 class PeriodTable extends Component {
 
-    state = {
-        showEditModal: false,
-        indexToEdit: -1
-      }
-
     showWarningModal = (row) => {
         Modal.confirm({
             title: 'Eliminar período ' + row.anio + ' - ' + row.cuatrimestre + '° Cuatrimestre',
@@ -186,14 +180,6 @@ class PeriodTable extends Component {
             },
             cancelText:'Cancelar'
         });
-    }
-
-    handleCancel = (e) => {
-        this.setState({showEditModal: false});
-    }
-
-    handleOk = (e) => {
-        this.setState({showEditModal: false});
     }
 
     render(){
@@ -256,8 +242,8 @@ class PeriodTable extends Component {
                     icon='edit'
                     onClick={
                         () => { 
-                            this.setState({ showEditModal: true }) 
-                            this.setState({ indexToEdit: idx })
+                            this.props.onEdit();
+                            this.props.setIndexToEdit(idx);
                         }
                     }
                 >
@@ -272,14 +258,8 @@ class PeriodTable extends Component {
                     Eliminar
                 </Button>
             </Button.Group>
-            <EditPeriodModal
-                visible={this.state.showEditModal}
-                handleCancel={this.handleCancel}
-                handleOk={this.handleOk}
-                dataSource={this.props.dataSource}
-                index={this.state.indexToEdit}
-            >
-            </EditPeriodModal>
+            
+
             
             </div>
             }

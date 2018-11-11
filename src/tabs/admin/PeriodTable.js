@@ -157,26 +157,33 @@ function MostrarCuatrimestre(id) {
 
 class PeriodTable extends Component {
 
+    deleteRecord = (period) => {
+        console.log('deletePeriod');
+        AdminService.deletePeriod(period).then((response) => {
+            console.log('Period deleted', response);
+            message.success('Periodo eliminado');
+            this.props.handleOk();
+        }).catch((e) => {
+            console.log('Period delete - failed');
+            console.log('Period delete - error', e);
+            console.log('Period delete - response', e.response);
+            console.log('Error:', e.response.data.error.message);
+        
+            //display error
+            message.error(e.response.data.error.message);
+        
+        });
+
+    }
+
     showWarningModal = (row) => {
+        let self = this
         Modal.confirm({
             title: 'Eliminar período ' + row.anio + ' - ' + row.cuatrimestre + '° Cuatrimestre',
             content: '¿Está seguro que desea eliminar este período? ',
             okText:'Si',
             onOk(){ 
-                console.log('deletePeriod');
-                AdminService.deletePeriod(row).then((response) => {
-                    console.log('Period deleted', response);
-                    message.success('Periodo eliminado');
-                }).catch((e) => {
-                    console.log('Period delete - failed');
-                    console.log('Period delete - error', e);
-                    console.log('Period delete - response', e.response);
-                    console.log('Error:', e.response.data.error.message);
-                
-                    //display error
-                    message.error(e.response.data.error.message);
-                
-                })
+                self.deleteRecord(row);
             },
             cancelText:'Cancelar'
         });

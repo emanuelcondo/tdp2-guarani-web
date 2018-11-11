@@ -99,6 +99,7 @@ class DefinePeriod extends Component {
         dataSource={this.state.existingPeriods}
         setIndexToEdit={this.setIndexToEdit}
         onEdit={this.setEditPeriodModalVisible}
+        handleOk={this.onRefresh}
       />
 
       <NewPeriodModal

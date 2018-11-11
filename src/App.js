@@ -27,7 +27,6 @@ class App extends Component {
   }
 
   getContainer = (rol) => {
-    console.log('getContainer rol', rol);
     if (rol === 'docente') {
       return <TeacherContainer update={this.update} />
     } else if (rol === 'departamento') {

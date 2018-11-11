@@ -42,3 +42,7 @@ export const updateExam = (courseId, examId, date) => {
   return server.put(`docentes/mis-cursos/${courseId}/examenes/${examId}`, { 'fecha': date })
 }
 
+export const updateNote = (courseId, students) => {
+  return server.post(`docentes/mis-cursos/${courseId}/cargar-notas`, { alumnos: students })
+}
+

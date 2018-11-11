@@ -10,11 +10,26 @@ const reducer = (state, action) => {
   if (action.type === "CHANGE_CHILDREN") {
     return {
       ...state,
-      teacherContainerChildren: action.data
+      showConfig: action.data
     }
   }
+
+  if (action.type === "SHOW_SAVE_NOTES_BUTTON") {
+    return {
+      ...state,
+      showSaveNotes: action.data
+    }
+  }
+
   return state;
 }
 
 
-export default createStore(reducer, { teacherContainerChildren: 'myCourses', currentCourse: {} }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+export default createStore(reducer,
+  {
+    teacherName: 'teacherName',
+    currentCourse: { materia: '' },
+    showSaveNotes: false,
+    showConfig: { myCourse: true, finalsContent: false, courseInformation: false }
+  }
+  , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

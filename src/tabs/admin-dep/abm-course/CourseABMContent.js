@@ -39,7 +39,7 @@ export default class CoursesABMContent extends Component {
   async update() {
     await this.loadMateriasFromServer();
     console.log("Materias recibidas: ", this.state.materias)
-    this.loadCursesFromServer();
+    this.loadCoursesFromServer();
     console.log("Cursos recibidos: ", this.state.cursos)
   }
 
@@ -77,7 +77,7 @@ export default class CoursesABMContent extends Component {
   /**
    * Resetea la info y carga los cursos, docentes, anios, cuatrimestres, etc
    */
-  loadCursesFromServer () {
+  loadCoursesFromServer () {
     let depto = this.state.departamento_id;
     this.resetInfo();
     DepartmentService.getCoursesByDepartamentID(depto, { limit: 100 })
@@ -344,12 +344,13 @@ export default class CoursesABMContent extends Component {
       width="90%"
       onCancel={this.onCancel}
       footer={null}
+      destroyOnClose="true"
        >
         <CreateNewCourseForm
           materias={this.state.materias}
           cursos={this.state.cursos}
           onCancel={this.onCancel}
-          updateCallback={ () => {this.loadCursesFromServer()}}
+          updateCallback={ () => {this.loadCoursesFromServer()}}
           mode={this.state.courseModalMode}
           buttonText={this.state.courseModalButtonText}
           selectedRow={this.state.selectedRow}

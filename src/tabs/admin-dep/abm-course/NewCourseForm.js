@@ -189,6 +189,8 @@ const CreateNewCourseForm = Form.create()(
           values.docenteACargo = values.docenteACargo[0];
           values.jtp = values.jtp[0];
           if (values.ayudantes == null) values.ayudantes = [];
+          console.log("POP1", this.state)
+          console.log("POP2", this.props)
           values.cursada = [];
           if (this.state.cursada != null) values.cursada = this.state.cursada;
           let APICall = DepartmentService.newCourse;
@@ -347,7 +349,6 @@ const CreateNewCourseForm = Form.create()(
     }
 
     initialDocente() {
-      console.log("POP",this.props.selectedRow)
       if (this.props.selectedRow.docenteACargo != null) {
         return [this.props.selectedRow.docenteACargo._id]
       }
@@ -361,6 +362,22 @@ const CreateNewCourseForm = Form.create()(
       else return []
     }
 
+    componentDidMount(){
+      console.log("CHANGED");
+      const { form } = this.props;
+      form.setFieldsValue({
+          cupos : this.props.selectedRow.cupos,
+          cuatrimestre : this.props.selectedRow.cuatrimestre,
+          anio : this.props.selectedRow.anio,
+          materia : this.props.selectedRow.materia._id,
+          jtp: this.initialJTP(),
+          docenteACargo: this.initialDocente(),
+          ayudantes: this.props.selectedRow.ayudantes.map(ayudante => ayudante._id)
+          
+      });
+    }
+
+
     render() {
       const { visible, onCancel, onCreate, form, size } = this.props;
       const { getFieldDecorator, getFieldValue } = form;
@@ -372,7 +389,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={3}>
             <FormItem label="Año">
-              {getFieldDecorator('anio', {initialValue:this.props.selectedRow.anio})(
+              {getFieldDecorator('anio')(
                   <Select style={{ width: 120 }}>
                     <Option value='2018'>2018</Option>
                     <Option value='2019'>2019</Option>
@@ -384,7 +401,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={4}>
             <FormItem label="Cuatrimestre">
-              {getFieldDecorator('cuatrimestre', {initialValue:this.props.selectedRow.cuatrimestre}, {
+              {getFieldDecorator('cuatrimestre',  {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
                 <RadioGroup >
@@ -399,7 +416,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={5}>
             <FormItem label="Cupo">
-              {getFieldDecorator('cupos', {initialValue:this.props.selectedRow.cupos}, {
+              {getFieldDecorator('cupos', {
                 rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
                 <Input type="number" min="1"/>
@@ -409,7 +426,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={12}>
             <FormItem label="Materia">
-              {getFieldDecorator('materia', {initialValue:this.props.selectedRow.materia._id}, {
+              {getFieldDecorator('materia', {
                 rules: [{ required: true, message: 'Ingrese la materia' }],
               })(
                 <Select>
@@ -430,7 +447,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={6}>
             <FormItem label="Docente">
-              {getFieldDecorator('docenteACargo', {initialValue: this.initialDocente() }, {
+              {getFieldDecorator('docenteACargo', {
                 rules: [{ required: true, message: 'Ingrese el docente'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -452,7 +469,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={6}>
             <FormItem label="JTP">
-              {getFieldDecorator('jtp', {initialValue: this.initialJTP() }, {
+              {getFieldDecorator('jtp', {
                 rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -475,7 +492,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={12}>
             <FormItem label="Ayudantes">
-            {getFieldDecorator('ayudantes', {initialValue: this.props.selectedRow.ayudantes.map(ayudante => ayudante._id)}) (
+            {getFieldDecorator('ayudantes') (
                 <Select mode="multiple"
                         filterOption={false}
                         notFoundContent={null}

@@ -300,11 +300,11 @@ const CreateNewCourseForm = Form.create()(
       console.log(changes);
     }
 
-    addCursadaItem = (dia = '', desde = '9:00', hasta = '11:00', tipo = '', sede = '', aula = '') => {
+    addCursadaItem = (event = null, dia = '', desde = '9:00', hasta = '11:00', tipo = '', sede = '', aula = '') => {
       const { form } = this.props;
       const cursada = form.getFieldValue('cursada');
       const updateCursada = cursada.concat({
-        'dia': '',
+        'dia': dia,
         'horario_desde': desde,
         'horario_hasta': hasta,
         'tipo': tipo,
@@ -376,7 +376,7 @@ const CreateNewCourseForm = Form.create()(
       if (this.props.selectedRow.cursada != null) {
         this.props.selectedRow.cursada.forEach( 
           (cursada) => {
-            this.addCursadaItem(cursada.dia, cursada.horario_desde, cursada.horario_hasta, cursada.tipo, cursada.sede, cursada.aula);
+            this.addCursadaItem(null, cursada.dia, cursada.horario_desde, cursada.horario_hasta, cursada.tipo, cursada.sede, cursada.aula);
           }
         )
       }

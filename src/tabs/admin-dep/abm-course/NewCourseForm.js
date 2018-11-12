@@ -186,13 +186,15 @@ const CreateNewCourseForm = Form.create()(
           //setTimeout(() => { this.loginUser(values) }, 2000)
         }
         else {
+          console.log("Course Values to Send", values)
           values.docenteACargo = values.docenteACargo[0];
           values.jtp = values.jtp[0];
           if (values.ayudantes == null) values.ayudantes = [];
-          console.log("POP1", this.state)
-          console.log("POP2", this.props)
           values.cursada = [];
-          if (this.state.cursada != null) values.cursada = this.state.cursada;
+          if (this.state.cursada != null) {
+            this.arreglarNullsCursada(this.state.cursada);
+            values.cursada = this.state.cursada;
+          } 
           let APICall = DepartmentService.newCourse;
           let messageWord = "cre";
           if (this.props.mode == CourseFormModeEnum.EDIT) {
@@ -212,6 +214,15 @@ const CreateNewCourseForm = Form.create()(
             })
         }
       });
+    }
+
+    arreglarNullsCursada(cursada) {
+      cursada.forEach( 
+        (elem) => {
+          if (elem.sede == null)    
+          delete elem.sede;
+      });
+      this.setState({cursada : cursada});
     }
 
     /**
@@ -300,7 +311,7 @@ const CreateNewCourseForm = Form.create()(
       console.log(changes);
     }
 
-    addCursadaItem = (event = null, dia = '', desde = '9:00', hasta = '11:00', tipo = '', sede = '', aula = '') => {
+    addCursadaItem = (event = null, dia = '', desde = '09:00', hasta = '11:00', tipo = '', sede = '', aula = '') => {
       const { form } = this.props;
       const cursada = form.getFieldValue('cursada');
       const updateCursada = cursada.concat({
@@ -364,6 +375,7 @@ const CreateNewCourseForm = Form.create()(
 
     componentDidMount(){
       const { form } = this.props;
+      console.log("Course Row: ", this.props.selectedRow)
       form.setFieldsValue({
           cupos : this.props.selectedRow.cupos,
           cuatrimestre : this.props.selectedRow.cuatrimestre,
@@ -374,11 +386,12 @@ const CreateNewCourseForm = Form.create()(
           ayudantes: this.props.selectedRow.ayudantes.map(ayudante => ayudante._id)
       });
       if (this.props.selectedRow.cursada != null) {
+        this.setState({ cursada : this.props.selectedRow.cursada });
         this.props.selectedRow.cursada.forEach( 
           (cursada) => {
             this.addCursadaItem(null, cursada.dia, cursada.horario_desde, cursada.horario_hasta, cursada.tipo, cursada.sede, cursada.aula);
           }
-        )
+        )        
       }
     }
 

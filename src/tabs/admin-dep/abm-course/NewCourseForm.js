@@ -15,6 +15,11 @@ const PROFESSOR = 1
 const JTP = 2
 const ASSISTANT = 3
 
+export var CourseFormModeEnum =  Object.freeze({
+  NEW : 0,
+  EDIT : 1
+});
+
 const CreateNewCourseForm = Form.create()(
   class extends Component {
     state = {
@@ -41,18 +46,26 @@ const CreateNewCourseForm = Form.create()(
           values.jtp = values.jtp[0];
           if (values.ayudantes == undefined) values.ayudantes = [];
           values.cursada = [];
-          console.log("DATA",values);
           DepartmentService.newCourse(values).then(
             (response) => {
               this.setState({ submitButtonLoading: false })
               message.success('Se ha creado el curso');
-              //this.props.handleOk();
+              this.props.updateCallback();
+              this.closeAndResetFields();
             }).catch((e) => {
               this.setState({ submitButtonLoading: false })
               message.error("No se pudo crear el curso: "+e.response.data.error.message);        
             })
         }
       });
+    }
+
+    /**
+     * Cierra el modal y vuelve los campos a los iniciales
+     */
+    closeAndResetFields() {
+      this.props.onCancel();
+      this.props.form.resetFields();
     }
 
     searchDocentes = (text, type) => {
@@ -260,7 +273,7 @@ const CreateNewCourseForm = Form.create()(
                   type="primary"
                   htmlType="submit"
                   loading={this.state.submitButtonLoading}
-                  >Crear Curso</Button>
+                  >{this.props.buttonText}</Button>
           {/*
             <FormItem>
               <Button style={{ marginRight: 8 }} >Cancelar</Button>

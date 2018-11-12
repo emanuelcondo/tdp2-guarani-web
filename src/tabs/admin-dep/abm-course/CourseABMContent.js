@@ -3,6 +3,7 @@ import { Table, Button, Modal, Col, Row, message } from 'antd'
 import EditCourseModal from '../../admin/EditCourseModal'
 import * as DepartmentService from '../service/DepartmentService'
 import CreateNewCourseForm from './NewCourseForm'
+import CourseFormModeEnum from './NewCourseForm'
 
 const ITEMS_PER_PAGE = 9;
 
@@ -18,8 +19,10 @@ export default class CoursesABMContent extends Component {
     nombresMaterias : new Set(),
     docentes : new Set(),
     jtps : new Set(),
-    editCourseModalVisible: false,
-    newCourseModalVisible : false,
+    courseModalVisible : false,
+    courseModalMode : CourseFormModeEnum.NEW,
+    courseModalButtonText : "",
+    courseModalButtonName : "",
     pagination: {
       pageSize: ITEMS_PER_PAGE,
       total: 0
@@ -144,19 +147,26 @@ export default class CoursesABMContent extends Component {
 
   onOk = (e) => {
     console.log(e);
-    this.setState({newCourseModalVisible : false});
+    this.setState({courseModalVisible : false});
   }
 
   onCancel = () => {
     console.log("CANCEL")
-    this.setState({newCourseModalVisible : false});
+    this.setState({courseModalVisible : false});
   }
 
   /**
    * Funcion a llamar cuando se clickea el boton para agregar un nuevo curso
    */
   onClickNewCourse() {
-    this.setState({newCourseModalVisible : true});
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.NEW, courseModalTitle : "Nuevo curso", courseModalButtonText : "Crear curso"});
+  }
+
+  /**
+   * Funcion a llamar cuando se clickea el boton editar un curso actual
+   */
+  onClickEdit = (row) => {
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.EDIT, courseModalTitle : "Editar curso", courseModalButtonText: "Editar curso"});
   }
 
   /**
@@ -254,8 +264,7 @@ export default class CoursesABMContent extends Component {
           <Button
             type='primary'
             icon='edit'
-            onClick={() => { this.setState({ editCourseModalVisible: true }) }}
-
+            onClick={() => { this.onClickEdit(row) }}
           >
             Editar
           </Button>
@@ -267,11 +276,6 @@ export default class CoursesABMContent extends Component {
             Eliminar
           </Button>
         </Button.Group>
-          <EditCourseModal
-            visible={this.state.editCourseModalVisible}
-            onOk={() => this.onOk()}
-            onCancel={() => this.onCancel()}
-          />
         </div>
       }
     }];
@@ -300,17 +304,20 @@ export default class CoursesABMContent extends Component {
       />
 
       <Modal
-      title="Nuevo curso"
-      visible={this.state.newCourseModalVisible}
+      title={this.state.courseModalTitle}
+      visible={this.state.courseModalVisible}
       width="80%"
-      //onOk={this.onOk}
       onCancel={this.onCancel}
       footer={null}
        >
         <CreateNewCourseForm
+
           materias={this.state.materias}
           cursos={this.state.cursos}
           onCancel={this.onCancel}
+          updateCallback={this.update}
+          mode={this.state.courseModalMode}
+          buttonText={this.state.courseModalButtonText}
           //wrappedComponentRef={this.saveFormRef}
           //rowdata={this.props.rowdata}
         ></CreateNewCourseForm>

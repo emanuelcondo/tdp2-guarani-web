@@ -157,8 +157,12 @@ const CreateNewCourseForm = Form.create()(
             (response) => {
               this.setState({ submitButtonLoading: false })
               message.success('Se ha creado el curso');
+              console.log("CALLBACK1", this.props);
+              console.log("CALLBACK2", this.props.updateCallback);
               this.props.updateCallback();
+              console.log("CALLBACK3", this.props.updateCallback);
               this.closeAndResetFields();
+              console.log("CALLBACK4", this.props.updateCallback);
             }).catch((e) => {
               this.setState({ submitButtonLoading: false })
               message.error("No se pudo crear el curso: "+e.response.data.error.message);        

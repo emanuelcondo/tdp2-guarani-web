@@ -19,14 +19,14 @@ export default class CoursesABMContent extends Component {
     nombresMaterias : new Set(),
     docentes : new Set(),
     jtps : new Set(),
+    pagination: {
+      pageSize: ITEMS_PER_PAGE,
+      total: 0
+    },
     courseModalVisible : false,
     courseModalMode : CourseFormModeEnum.NEW,
     courseModalButtonText : "",
     courseModalButtonName : "",
-    pagination: {
-      pageSize: ITEMS_PER_PAGE,
-      total: 0
-    }
   }
 
   componentDidMount() {
@@ -39,7 +39,7 @@ export default class CoursesABMContent extends Component {
   async update() {
     await this.loadMateriasFromServer();
     console.log("Materias recibidas: ", this.state.materias)
-    await this.loadCursesFromServer();
+    this.loadCursesFromServer();
     console.log("Cursos recibidos: ", this.state.cursos)
   }
 
@@ -57,12 +57,29 @@ export default class CoursesABMContent extends Component {
   }
 
   /**
-   * Por cada materia, carga los cursos a la lista
-   * Si bien uno esperaria tener problemas de concurrencia con estos requests->array, 
-   * parece que js es single threaded y no pasa nada
+   * Resetea la info que se saca de los cursos
    */
-  async loadCursesFromServer () {
+  resetInfo() {
+    this.setState({ 
+      cursos : [],
+      anios : new Set(),
+      cuatrimestres : new Set(),
+      nombresMaterias : new Set(),
+      docentes : new Set(),
+      jtps : new Set(),
+      pagination: {
+        pageSize: ITEMS_PER_PAGE,
+        total: 0
+      },
+    });
+  }
+
+  /**
+   * Resetea la info y carga los cursos, docentes, anios, cuatrimestres, etc
+   */
+  loadCursesFromServer () {
     let depto = this.state.departamento_id;
+    this.resetInfo();
     DepartmentService.getCoursesByDepartamentID(depto, { limit: 100 })
       .then((response) => {
         let data = response.data.data;
@@ -146,12 +163,10 @@ export default class CoursesABMContent extends Component {
   }
 
   onOk = (e) => {
-    console.log(e);
     this.setState({courseModalVisible : false});
   }
 
   onCancel = () => {
-    console.log("CANCEL")
     this.setState({courseModalVisible : false});
   }
 
@@ -315,7 +330,7 @@ export default class CoursesABMContent extends Component {
           materias={this.state.materias}
           cursos={this.state.cursos}
           onCancel={this.onCancel}
-          updateCallback={this.update}
+          updateCallback={ () => {this.loadCursesFromServer()}}
           mode={this.state.courseModalMode}
           buttonText={this.state.courseModalButtonText}
           //wrappedComponentRef={this.saveFormRef}

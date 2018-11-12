@@ -3,8 +3,8 @@ import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
 import * as AuthService from '../login/service/AuthService'
-import CourseABMContent from './CourseABMContent'
-import BookABMContent from './BookABMContent'
+import CourseABMContent from '../admin-dep/abm-course/CourseABMContent'
+//import BookABMContent from './BookABMContent'
 
 
 const TabPane = Tabs.TabPane;
@@ -19,10 +19,10 @@ class AdminContainer extends Component {
     childrens: {
       definePeriod: <DefinePeriod />,
       initialLoad: <InitialLoadContainer />,
-      books: <BookABMContent />,
-      courses: <CourseABMContent />
+      //books: <BookABMContent />,
+      //courses: <CourseABMContent />
     },
-    currentChilder: <BookABMContent />,
+    currentChilder: <DefinePeriod />,
     userName: ''
   }
 
@@ -55,7 +55,7 @@ class AdminContainer extends Component {
                 <Menu
                   theme="dark"
                   mode="horizontal"
-                  defaultSelectedKeys={['4']}
+                  defaultSelectedKeys={['1']}
                   style={{ lineHeight: '64px', backgroundColor: '#404040' }}
                 >
                   <Menu.Item
@@ -71,18 +71,18 @@ class AdminContainer extends Component {
                     Carga Inicial
                   </Menu.Item>
 
-                  <Menu.Item
+                  {/*<Menu.Item
                     key="3"
                     onClick={() => this.selectNewChilder('courses')}
                   >
                     Cursos
                   </Menu.Item>
-                  <Menu.Item
+                  {<Menu.Item
                     key="4"
                     onClick={() => this.selectNewChilder('books')}
                   >
                     Libros
-                  </Menu.Item>
+                  </Menu.Item>*/}
 
                 </Menu>
               </Col>

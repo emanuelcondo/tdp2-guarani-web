@@ -38,3 +38,11 @@ export const deleteCourseByID = (materiaID, courseID) => {
 export const newCourse = (data) => {
     return server.post(`/materias/${data.materia}/cursos`, data)
 }
+
+/**
+ * Crea un nuevo curso
+ * @param {*} data Consultar API doc del server
+ */
+export const editCourse = (data) => {
+    return server.put(`/materias/${data.materia}/cursos/${data.curso}`, data)
+}

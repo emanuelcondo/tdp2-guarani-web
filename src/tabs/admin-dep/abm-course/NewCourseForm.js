@@ -153,15 +153,26 @@ const CreateNewCourseForm = Form.create()(
           values.jtp = values.jtp[0];
           if (values.ayudantes == undefined) values.ayudantes = [];
           values.cursada = [];
-          DepartmentService.newCourse(values).then(
+          console.log("POP",this.props);
+          console.log("POP1",this.props.selectedCourse);
+          console.log("POP2",this.props.mode);
+          values.curso = this.props.selectedCourse;
+          let APICall = DepartmentService.newCourse;
+          let messageWord = "cre";
+          if (this.props.mode == CourseFormModeEnum.EDIT) {
+            APICall = DepartmentService.editCourse;
+            messageWord = "edit";
+          }
+          
+          APICall(values).then(
             (response) => {
               this.setState({ submitButtonLoading: false })
-              message.success('Se ha creado el curso');
+              message.success(`Se ha ${messageWord}ado el curso`);
               this.props.updateCallback();
               this.closeAndResetFields();
             }).catch((e) => {
               this.setState({ submitButtonLoading: false })
-              message.error("No se pudo crear el curso: "+e.response.data.error.message);        
+              message.error(`No se pudo ${messageWord}ar el curso: `+e.response.data.error.message);        
             })
         }
       });

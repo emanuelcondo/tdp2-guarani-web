@@ -3,7 +3,7 @@ import { Table, Button, Modal, Col, Row, message } from 'antd'
 import EditCourseModal from '../../admin/EditCourseModal'
 import * as DepartmentService from '../service/DepartmentService'
 import CreateNewCourseForm from './NewCourseForm'
-import CourseFormModeEnum from './NewCourseForm'
+import {CourseFormModeEnum} from './NewCourseForm'
 
 const ITEMS_PER_PAGE = 9;
 
@@ -26,7 +26,7 @@ export default class CoursesABMContent extends Component {
     courseModalVisible : false,
     courseModalMode : CourseFormModeEnum.NEW,
     courseModalButtonText : "",
-    courseModalButtonName : "",
+    courseModalSelectedCourse : null,
   }
 
   componentDidMount() {
@@ -179,7 +179,7 @@ export default class CoursesABMContent extends Component {
    * Funcion a llamar cuando se clickea el boton editar un curso actual
    */
   onClickEdit = (row) => {
-    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.EDIT, courseModalTitle : "Editar curso", courseModalButtonText: "Editar curso"});
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.EDIT, courseModalTitle : "Editar curso", courseModalButtonText: "Editar curso", courseModalSelectedCourse : row._id});
   }
 
   /**
@@ -307,7 +307,7 @@ export default class CoursesABMContent extends Component {
         </Col>
       </Row>
 
-<div>
+
       <Table
         style={{ marginTop: '50px', whiteSpace: 'pre'}}
         dataSource={dataSource}
@@ -315,7 +315,7 @@ export default class CoursesABMContent extends Component {
         pagination={this.state.pagination}
         onChange={this.updateTable}
         
-      /></div>
+      />
 
       <Modal
       title={this.state.courseModalTitle}
@@ -325,13 +325,13 @@ export default class CoursesABMContent extends Component {
       footer={null}
        >
         <CreateNewCourseForm
-
           materias={this.state.materias}
           cursos={this.state.cursos}
           onCancel={this.onCancel}
           updateCallback={ () => {this.loadCursesFromServer()}}
           mode={this.state.courseModalMode}
           buttonText={this.state.courseModalButtonText}
+          selectedCourse={this.state.courseModalSelectedCourse}
           //wrappedComponentRef={this.saveFormRef}
           //rowdata={this.props.rowdata}
         ></CreateNewCourseForm>

@@ -54,7 +54,7 @@ const CursadaForm = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
   return (
-    <Row gutter={16} type="flex" justify="center" key={props.key}>
+    <Row gutter={30} type="flex" justify="center" key={props.key}>
       <Col span={6}>
         <FormItem>
           {getFieldDecorator(`dia`, {
@@ -106,7 +106,7 @@ const CursadaForm = Form.create({
               message: "Tipo",
             }],
           })(
-            <TimePicker placeholder="Horario Desde" format={formatTime}/>
+            <TimePicker minuteStep={15} placeholder="9:15" format={formatTime}/>
           )}
         </FormItem>
       </Col>
@@ -119,7 +119,7 @@ const CursadaForm = Form.create({
               message: "Tipo",
             }],
           })(
-            <TimePicker placeholder="Horario Hasta" format={formatTime}/>
+            <TimePicker minuteStep={15} placeholder="Horario Hasta" format={formatTime}/>
           )}
         </FormItem>
       </Col>
@@ -157,12 +157,8 @@ const CreateNewCourseForm = Form.create()(
             (response) => {
               this.setState({ submitButtonLoading: false })
               message.success('Se ha creado el curso');
-              console.log("CALLBACK1", this.props);
-              console.log("CALLBACK2", this.props.updateCallback);
               this.props.updateCallback();
-              console.log("CALLBACK3", this.props.updateCallback);
               this.closeAndResetFields();
-              console.log("CALLBACK4", this.props.updateCallback);
             }).catch((e) => {
               this.setState({ submitButtonLoading: false })
               message.error("No se pudo crear el curso: "+e.response.data.error.message);        
@@ -310,7 +306,7 @@ const CreateNewCourseForm = Form.create()(
 
       return <Form onSubmit={this.handleSubmit} className="" layout="vertical">
         <Row gutter={30} type="flex" justify="center" >
-          <Col span={12}>
+          <Col span={3}>
             <FormItem label="Año">
               {getFieldDecorator('anio', {initialValue: '2018'})(
                   <Select style={{ width: 120 }}>
@@ -322,12 +318,12 @@ const CreateNewCourseForm = Form.create()(
               
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={4}>
             <FormItem label="Cuatrimestre">
               {getFieldDecorator('cuatrimestre', {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
-                <RadioGroup size="large">
+                <RadioGroup >
                   <RadioButton value={0}>Verano</RadioButton>
                   <RadioButton value={1}> 1° </RadioButton>
                   <RadioButton value={2}> 2° </RadioButton>
@@ -337,8 +333,16 @@ const CreateNewCourseForm = Form.create()(
 
           </Col>
 
-        </Row>
-        <Row gutter={30} type="flex" justify="center" >
+          <Col span={5}>
+            <FormItem label="Cupo">
+              {getFieldDecorator('cupos', {
+                rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
+              })(
+                <Input type="number" min="1"/>
+              )}
+            </FormItem>
+          </Col>
+
           <Col span={12}>
             <FormItem label="Materia">
               {getFieldDecorator('materia', {
@@ -355,20 +359,12 @@ const CreateNewCourseForm = Form.create()(
               )}
             </FormItem>
           </Col>
-          <Col span={12}>
-            <FormItem label="Cupo">
-              {getFieldDecorator('cupos', {
-                rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
-              })(
-                <Input type="number" min="1"/>
-              )}
-            </FormItem>
-          </Col>
+          
 
         </Row>
 
         <Row gutter={30} type="flex" justify="center" >
-          <Col span={12}>
+          <Col span={6}>
             <FormItem label="Docente">
               {getFieldDecorator('docenteACargo', {
                 rules: [{ required: true, message: 'Ingrese el docente'},
@@ -390,7 +386,7 @@ const CreateNewCourseForm = Form.create()(
               )}
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={6}>
             <FormItem label="JTP">
               {getFieldDecorator('jtp', {
                 rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
@@ -413,10 +409,7 @@ const CreateNewCourseForm = Form.create()(
             </FormItem>
           </Col>
 
-        </Row>
-
-        <Row type="flex" justify="center" >
-          <Col span={24}>
+          <Col span={12}>
             <FormItem label="Ayudantes">
             {getFieldDecorator('ayudantes', {}) (
                 <Select mode="multiple"

@@ -99,7 +99,6 @@ export default class CoursesABMContent extends Component {
             docentes : this.state.docentes.add(curso.docenteACargo.nombreYApellido),
             jtps : this.state.jtps.add(curso.jtp.nombreYApellido)
           });
-          console.log("ESTADO: ",this.state)
         });
       })
 
@@ -136,7 +135,6 @@ export default class CoursesABMContent extends Component {
    * @param {*} curso El curso como viene en el JSON
    */
   aplanarCurso (curso) {
-    console.log("ESTADO: ", curso)
     curso.docenteACargo.nombreYApellido = curso.docenteACargo.nombre + " " + curso.docenteACargo.apellido;
     curso.jtp.nombreYApellido = curso.jtp.nombre + " " + curso.jtp.apellido;
     curso.ayudantesPlanos = [];
@@ -309,19 +307,20 @@ export default class CoursesABMContent extends Component {
         </Col>
       </Row>
 
-
+<div>
       <Table
         style={{ marginTop: '50px', whiteSpace: 'pre'}}
         dataSource={dataSource}
         columns={columns}
         pagination={this.state.pagination}
         onChange={this.updateTable}
-      />
+        
+      /></div>
 
       <Modal
       title={this.state.courseModalTitle}
       visible={this.state.courseModalVisible}
-      width="80%"
+      width="90%"
       onCancel={this.onCancel}
       footer={null}
        >

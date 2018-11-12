@@ -333,7 +333,7 @@ export default class CoursesABMContent extends Component {
           <Button
             type='primary'
             icon='plus'
-            style={{ marginRight: '25px', marginTop: '25px' }}
+            style={{ marginRight: '25px', marginTop: '10px', marginBottom: '10px' }}
             onClick={this.onClickNewCourse.bind(this)}
           >
             Agregar Curso
@@ -343,7 +343,7 @@ export default class CoursesABMContent extends Component {
 
 
       <Table
-        style={{ marginTop: '50px', whiteSpace: 'pre'}}
+        style={{ whiteSpace: 'pre'}}
         dataSource={dataSource}
         columns={columns}
         pagination={this.state.pagination}

@@ -296,20 +296,20 @@ const CreateNewCourseForm = Form.create()(
       if (changes.hasOwnProperty('horario_desde')) item.horario_desde = changes.horario_desde;
       if (changes.hasOwnProperty('horario_hasta')) item.horario_hasta = changes.horario_hasta;
       cursada[index] = item;
-      this.setState(cursada);
+      this.setState({ cursada : cursada });
       console.log(changes);
     }
 
-    addCursadaItem = () => {
+    addCursadaItem = (dia = '', desde = '9:00', hasta = '11:00', tipo = '', sede = '', aula = '') => {
       const { form } = this.props;
       const cursada = form.getFieldValue('cursada');
       const updateCursada = cursada.concat({
         'dia': '',
-        'horario_desde': '09:00',
-        'horario_hasta': '09:00',
-        'tipo': '',
-        'sede':'',
-        'aula':''
+        'horario_desde': desde,
+        'horario_hasta': hasta,
+        'tipo': tipo,
+        'sede': sede,
+        'aula': aula,
       });
       form.setFieldsValue({
         cursada: updateCursada
@@ -363,7 +363,6 @@ const CreateNewCourseForm = Form.create()(
     }
 
     componentDidMount(){
-      console.log("CHANGED");
       const { form } = this.props;
       form.setFieldsValue({
           cupos : this.props.selectedRow.cupos,
@@ -373,8 +372,14 @@ const CreateNewCourseForm = Form.create()(
           jtp: this.initialJTP(),
           docenteACargo: this.initialDocente(),
           ayudantes: this.props.selectedRow.ayudantes.map(ayudante => ayudante._id)
-          
       });
+      if (this.props.selectedRow.cursada != null) {
+        this.props.selectedRow.cursada.forEach( 
+          (cursada) => {
+            this.addCursadaItem(cursada.dia, cursada.horario_desde, cursada.horario_hasta, cursada.tipo, cursada.sede, cursada.aula);
+          }
+        )
+      }
     }
 
 

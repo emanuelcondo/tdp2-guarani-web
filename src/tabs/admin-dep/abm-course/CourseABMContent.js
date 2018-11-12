@@ -173,8 +173,6 @@ export default class CoursesABMContent extends Component {
    */
   fillPresets(arow) {
     let row = arow;
-    console.log("PRESET STATE",this.state);
-    console.log("PRESET INCOMING",row);
     if (row == null) row = {};
     if (row.anio == null) row.anio = 2018;
     if (row.cuatrimestre == null) row.cuatrimestre = 0;
@@ -184,7 +182,6 @@ export default class CoursesABMContent extends Component {
     if (row.jtp == null) row.jtp = null;
     if (row.ayudantes == null) row.ayudantes = [];
     this.setState({selectedRow : row});
-    console.log("PRESET",row);
   }
 
   /**

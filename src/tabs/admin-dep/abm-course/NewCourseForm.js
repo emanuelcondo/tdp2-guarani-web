@@ -27,6 +27,8 @@ const CursadaForm = Form.create({
     let data = {};
     if (changedFields.hasOwnProperty('dia')) data['dia'] = changedFields.dia.value;
     if (changedFields.hasOwnProperty('tipo')) data['tipo'] = changedFields.tipo.value;
+    if (changedFields.hasOwnProperty('aula')) data['aula'] = changedFields.aula.value;
+    if (changedFields.hasOwnProperty('sede')) data['sede'] = changedFields.sede.value;
     if (changedFields.hasOwnProperty('horario_desde')) data['horario_desde'] = ( changedFields.horario_desde.value ? changedFields.horario_desde.value.format('HH:mm') : '');
     if (changedFields.hasOwnProperty('horario_hasta')) data['horario_hasta'] = (changedFields.horario_hasta.value ? changedFields.horario_hasta.value.format('HH:mm') : '');
 
@@ -39,6 +41,12 @@ const CursadaForm = Form.create({
       }),
       tipo: Form.createFormField({
         value: props.cursada.tipo
+      }),
+      sede: Form.createFormField({
+        value: props.cursada.sede
+      }),
+      aula: Form.createFormField({
+        value: props.cursada.aula
       }),
       horario_desde: Form.createFormField({
         value: props.cursada.horario_desde ? moment(props.cursada.horario_desde, 'HH:mm') : moment('09:00','HH:mm')
@@ -55,7 +63,7 @@ const CursadaForm = Form.create({
   const { getFieldDecorator } = props.form;
   return (
     <Row gutter={30} type="flex" justify="center" key={props.key}>
-      <Col span={6}>
+      <Col span={4}>
         <FormItem>
           {getFieldDecorator(`dia`, {
             rules: [{
@@ -76,7 +84,7 @@ const CursadaForm = Form.create({
         </FormItem>
       </Col>
 
-      <Col span={6}>
+      <Col span={4}>
         <FormItem>
           {getFieldDecorator(`tipo`, {
             rules: [{
@@ -97,7 +105,36 @@ const CursadaForm = Form.create({
           )}
         </FormItem>
       </Col>
-      <Col span={6}>
+
+      <Col span={4}>
+        <FormItem>
+          {getFieldDecorator(`sede`, {
+            rules: [{
+              message: "Sede",
+            }],
+          })(
+            <Select placeholder="Sede">
+                <Option value='PC'>PC</Option>
+                <Option value='LH'>LH</Option>
+                <Option value='CU'>CU</Option>
+            </Select>
+          )}
+        </FormItem>
+      </Col>
+
+      <Col span={4}>
+        <FormItem>
+          {getFieldDecorator(`aula`, {
+            rules: [{
+              message: "Aula",
+            }],
+          })(
+            <Input type="number"/>
+          )}
+        </FormItem>
+      </Col>
+
+      <Col span={4}>
         <FormItem>
           {getFieldDecorator(`horario_desde`, {
             rules: [{
@@ -110,7 +147,7 @@ const CursadaForm = Form.create({
           )}
         </FormItem>
       </Col>
-      <Col span={6}>
+      <Col span={4}>
         <FormItem>
           {getFieldDecorator(`horario_hasta`, {
             rules: [{
@@ -153,17 +190,14 @@ const CreateNewCourseForm = Form.create()(
           values.jtp = values.jtp[0];
           if (values.ayudantes == undefined) values.ayudantes = [];
           values.cursada = [];
-          console.log("POP",this.props);
-          console.log("POP1",this.props.selectedCourse);
-          console.log("POP2",this.props.mode);
-          values.curso = this.props.selectedCourse;
+          if (this.props.cursada != undefined) values.cursada = this.props.cursada;
           let APICall = DepartmentService.newCourse;
           let messageWord = "cre";
           if (this.props.mode == CourseFormModeEnum.EDIT) {
+            values.curso = this.props.selectedRow._id;
             APICall = DepartmentService.editCourse;
             messageWord = "edit";
           }
-          
           APICall(values).then(
             (response) => {
               this.setState({ submitButtonLoading: false })
@@ -255,6 +289,8 @@ const CreateNewCourseForm = Form.create()(
       let item = cursada[index];
       if (changes.hasOwnProperty('dia')) item.dia = changes.dia;
       if (changes.hasOwnProperty('tipo')) item.tipo = changes.tipo;
+      if (changes.hasOwnProperty('aula')) item.aula = changes.aula;
+      if (changes.hasOwnProperty('sede')) item.sede = changes.sede;
       if (changes.hasOwnProperty('horario_desde')) item.horario_desde = changes.horario_desde;
       if (changes.hasOwnProperty('horario_hasta')) item.horario_hasta = changes.horario_hasta;
       cursada[index] = item;
@@ -269,7 +305,9 @@ const CreateNewCourseForm = Form.create()(
         'dia': '',
         'horario_desde': '09:00',
         'horario_hasta': '09:00',
-        'tipo': ''
+        'tipo': '',
+        'sede':'',
+        'aula':''
       });
       form.setFieldsValue({
         cursada: updateCursada
@@ -319,7 +357,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={3}>
             <FormItem label="Año">
-              {getFieldDecorator('anio', {initialValue: '2018'})(
+              {getFieldDecorator('anio', {initialValue:this.props.selectedRow.anio})(
                   <Select style={{ width: 120 }}>
                     <Option value='2018'>2018</Option>
                     <Option value='2019'>2019</Option>
@@ -331,7 +369,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={4}>
             <FormItem label="Cuatrimestre">
-              {getFieldDecorator('cuatrimestre', {
+              {getFieldDecorator('cuatrimestre', {initialValue:this.props.selectedRow.cuatrimestre}, {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
                 <RadioGroup >
@@ -346,7 +384,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={5}>
             <FormItem label="Cupo">
-              {getFieldDecorator('cupos', {
+              {getFieldDecorator('cupos', {initialValue:this.props.selectedRow.cupos}, {
                 rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
                 <Input type="number" min="1"/>
@@ -356,7 +394,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={12}>
             <FormItem label="Materia">
-              {getFieldDecorator('materia', {
+              {getFieldDecorator('materia', {initialValue:this.props.selectedRow.materia._id}, {
                 rules: [{ required: true, message: 'Ingrese la materia' }],
               })(
                 <Select>
@@ -377,7 +415,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={6}>
             <FormItem label="Docente">
-              {getFieldDecorator('docenteACargo', {
+              {getFieldDecorator('docenteACargo', {initialValue: this.props.selectedRow.docenteACargo._id}, {
                 rules: [{ required: true, message: 'Ingrese el docente'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -399,7 +437,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={6}>
             <FormItem label="JTP">
-              {getFieldDecorator('jtp', {
+              {getFieldDecorator('jtp', {initialValue: this.props.selectedRow.jtp._id}, {
                 rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -422,7 +460,7 @@ const CreateNewCourseForm = Form.create()(
 
           <Col span={12}>
             <FormItem label="Ayudantes">
-            {getFieldDecorator('ayudantes', {}) (
+            {getFieldDecorator('ayudantes', {initialValue: this.props.selectedRow.ayudantes.map(ayudante => ayudante._id)}) (
                 <Select mode="multiple"
                         filterOption={false}
                         notFoundContent={null}

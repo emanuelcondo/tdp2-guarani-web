@@ -26,7 +26,7 @@ export default class CoursesABMContent extends Component {
     courseModalVisible : false,
     courseModalMode : CourseFormModeEnum.NEW,
     courseModalButtonText : "",
-    courseModalSelectedCourse : null,
+    selectedRow : null,
   }
 
   componentDidMount() {
@@ -169,17 +169,38 @@ export default class CoursesABMContent extends Component {
   }
 
   /**
+   * Setea la selected row con los los valores faltantes
+   */
+  fillPresets(arow) {
+    let row = arow;
+    console.log("PRESET STATE",this.state);
+    console.log("PRESET INCOMING",row);
+    if (row == null) row = {};
+    if (row.anio == null) row.anio = 2018;
+    if (row.cuatrimestre == null) row.cuatrimestre = 0;
+    if (row.cupos == null) row.cupos = 10;
+    if (row.materia == null) row.materia = this.state.materias[0];
+    if (row.docenteACargo == null) row.docenteACargo = [];
+    if (row.jtp == null) row.jtp = [];
+    if (row.ayudantes == null) row.ayudantes = [];
+    this.setState({selectedRow : row});
+    console.log("PRESET",row);
+  }
+
+  /**
    * Funcion a llamar cuando se clickea el boton para agregar un nuevo curso
    */
   onClickNewCourse() {
-    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.NEW, courseModalTitle : "Nuevo curso", courseModalButtonText : "Crear curso"});
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.NEW, courseModalTitle : "Nuevo curso", courseModalButtonText : "Crear curso", selectedRow : null});
+    this.fillPresets(null);
   }
 
   /**
    * Funcion a llamar cuando se clickea el boton editar un curso actual
    */
   onClickEdit = (row) => {
-    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.EDIT, courseModalTitle : "Editar curso", courseModalButtonText: "Editar curso", courseModalSelectedCourse : row._id});
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.EDIT, courseModalTitle : "Editar curso", courseModalButtonText: "Editar curso", selectedRow : row});
+    this.fillPresets(row);
   }
 
   /**
@@ -331,7 +352,7 @@ export default class CoursesABMContent extends Component {
           updateCallback={ () => {this.loadCursesFromServer()}}
           mode={this.state.courseModalMode}
           buttonText={this.state.courseModalButtonText}
-          selectedCourse={this.state.courseModalSelectedCourse}
+          selectedRow={this.state.selectedRow}
           //wrappedComponentRef={this.saveFormRef}
           //rowdata={this.props.rowdata}
         ></CreateNewCourseForm>

@@ -13,6 +13,7 @@ export default class CoursesABMContent extends Component {
     departamento_id: null,
     codigo : null,
     materias : [],
+    docentesList: [],
     cursos : [],
     anios : new Set(),
     cuatrimestres : new Set(),
@@ -37,10 +38,25 @@ export default class CoursesABMContent extends Component {
    * Carga los datos
    */
   async update() {
+    await this.loadProfessorsFromServer();
     await this.loadMateriasFromServer();
     console.log("Materias recibidas: ", this.state.materias)
     this.loadCoursesFromServer();
     console.log("Cursos recibidos: ", this.state.cursos)
+  }
+
+  async loadProfessorsFromServer() {
+    let self = this;
+    return DepartmentService.searchProfessors('')
+      .then((response) => {
+        let _docentes = response.data.data.docentes;
+        self.setState({
+          docentesList: _docentes
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   /**
@@ -345,6 +361,7 @@ export default class CoursesABMContent extends Component {
        >
         <CreateNewCourseForm
           materias={this.state.materias}
+          docentes={this.state.docentesList}
           cursos={this.state.cursos}
           onCancel={this.onCancel}
           updateCallback={ () => {this.loadCoursesFromServer()}}

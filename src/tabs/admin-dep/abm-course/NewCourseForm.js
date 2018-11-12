@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Select, Form, Radio, Row, Col, Button, Icon, TimePicker, message } from 'antd';
+import { Input, Select, Form, Radio, Row, Col, Button, Icon, TimePicker, message, Tooltip } from 'antd';
 import * as DepartmentService from '../service/DepartmentService'
 import moment from 'moment';
 
@@ -64,12 +64,11 @@ const CursadaForm = Form.create({
   return (
     <Row gutter={30} type="flex" justify="center" key={props.key}>
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Día">
           {getFieldDecorator(`dia`, {
             rules: [{
               required: true,
-              whitespace: true,
-              message: "Día",
+              message: "Día"
             }],
           })(
             <Select placeholder="Día">
@@ -85,7 +84,7 @@ const CursadaForm = Form.create({
       </Col>
 
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Tipo">
           {getFieldDecorator(`tipo`, {
             rules: [{
               required: true,
@@ -107,7 +106,7 @@ const CursadaForm = Form.create({
       </Col>
 
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Sede">
           {getFieldDecorator(`sede`, {
             rules: [{
               message: "Sede",
@@ -123,7 +122,7 @@ const CursadaForm = Form.create({
       </Col>
 
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Aula">
           {getFieldDecorator(`aula`, {
             rules: [{
               message: "Aula",
@@ -135,7 +134,7 @@ const CursadaForm = Form.create({
       </Col>
 
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Horario Desde">
           {getFieldDecorator(`horario_desde`, {
             rules: [{
               required: true,
@@ -148,7 +147,7 @@ const CursadaForm = Form.create({
         </FormItem>
       </Col>
       <Col span={4}>
-        <FormItem>
+        <FormItem label="Horario Hasta">
           {getFieldDecorator(`horario_hasta`, {
             rules: [{
               required: true,
@@ -166,6 +165,7 @@ const CursadaForm = Form.create({
 
 const CreateNewCourseForm = Form.create()(
   class extends Component {
+
     state = {
       submitButtonLoading: false,
       submitButtonColor: NORMAL_COLOR,
@@ -348,10 +348,12 @@ const CreateNewCourseForm = Form.create()(
               <CursadaForm {...data} onChange={this.onChangeCursada}/>
             </Col>
             <Col span={1}>
-              <Icon
+              <Tooltip placement="right" title="Eliminar">
+              <Icon style={{marginTop:35}}
                     className="dynamic-delete-button"
                     type="minus-circle-o"
                     onClick={() => this.removeCursadaItem(index)} />
+                    </Tooltip>
             </Col>
           </Row>
       });
@@ -376,6 +378,14 @@ const CreateNewCourseForm = Form.create()(
     componentDidMount(){
       const { form } = this.props;
       console.log("Course Row: ", this.props.selectedRow)
+      let docentesMapped = this.props.docentes.map((item) => {
+        return { value: item._id, text: item.apellido+', '+item.nombre }
+      });
+      this.setState({ 
+        docentesArray: docentesMapped,
+        jtpArray: docentesMapped,
+        ayudantesArray: docentesMapped
+       });
       form.setFieldsValue({
           cupos : this.props.selectedRow.cupos,
           cuatrimestre : this.props.selectedRow.cuatrimestre,

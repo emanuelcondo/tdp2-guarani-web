@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Select, Form, Radio, Row, Col, Button, Icon, TimePicker } from 'antd';
+import { Input, Select, Form, Radio, Row, Col, Button, Icon, TimePicker, message } from 'antd';
 import * as DepartmentService from '../service/DepartmentService'
 import moment from 'moment';
 
@@ -140,10 +140,26 @@ const CreateNewCourseForm = Form.create()(
       this.setState({ submitButtonLoading: true })
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
-        if (!err) {
+        if (err) {
+          this.setState({ submitButtonLoading: false })
           //setTimeout(() => { this.loginUser(values) }, 2000)
         }
-        console.log(values);
+        else {
+          values.docenteACargo = values.docenteACargo[0];
+          values.jtp = values.jtp[0];
+          if (values.ayudantes == undefined) values.ayudantes = [];
+          values.cursada = [];
+          console.log("DATA",values);
+          DepartmentService.newCourse(values).then(
+            (response) => {
+              this.setState({ submitButtonLoading: false })
+              message.success('Se ha creado el curso');
+              //this.props.handleOk();
+            }).catch((e) => {
+              this.setState({ submitButtonLoading: false })
+              message.error("No se pudo crear el curso: "+e.response.data.error.message);        
+            })
+        }
       });
     }
 
@@ -292,7 +308,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={12}>
             <FormItem label="Cuatrimestre">
-              {getFieldDecorator('cuatri', {
+              {getFieldDecorator('cuatrimestre', {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
                 <RadioGroup size="large">
@@ -313,19 +329,22 @@ const CreateNewCourseForm = Form.create()(
                 rules: [{ required: true, message: 'Ingrese la materia' }],
               })(
                 <Select>
-                  <Option value='5ba6cf168b7931ac3e21de27'>Alritmos y Programación I</Option>
-                  <Option value='5ba705601dabf8854f11ddfd'>Alritmos y Programación II</Option>
-                  <Option value='5ba706661dabf8854f11de22'>Alritmos y Programación III</Option>
+                  {this.props.materias.map( 
+                      (materia)=> {
+                        return <Option value={materia._id}>{materia.codigo} - {materia.nombre}</Option>;
+                      }
+                    )
+                  }
               </Select>
               )}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem label="Cupo">
-              {getFieldDecorator('cupo', {
-                rules: [{ required: true, message: 'Ingrese el cupo' }],
+              {getFieldDecorator('cupos', {
+                rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
-                <Input/>
+                <Input type="number" min="1"/>
               )}
             </FormItem>
           </Col>
@@ -335,8 +354,16 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={12}>
             <FormItem label="Docente">
-              {getFieldDecorator('docente', {
-                rules: [{ required: true, message: 'Ingrese el Docente' }],
+              {getFieldDecorator('docenteACargo', {
+                rules: [{ required: true, message: 'Ingrese el docente'},
+                {validator: (rule, value, callback) => {
+                  let errors = [];
+                  if (value != undefined && value.length > 1) {
+                    errors.push(new Error("Solo puede haber un docente"));
+                  }
+                  callback(errors);                  
+                }
+                , message: 'Solo puede haber un docente'}],
               })(
                 <Select mode="multiple"
                         filterOption={false}
@@ -350,7 +377,15 @@ const CreateNewCourseForm = Form.create()(
           <Col span={12}>
             <FormItem label="JTP">
               {getFieldDecorator('jtp', {
-                rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos' }],
+                rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
+                {validator: (rule, value, callback) => {
+                  let errors = [];
+                  if (value != undefined && value.length > 1) {
+                    errors.push(new Error("Solo puede haber un jtp"));
+                  }
+                  callback(errors);                  
+                }
+                , message: 'Solo puede haber un jefe de trabajos practicos'}],
               })(
                 <Select mode="multiple"
                         filterOption={false}
@@ -367,13 +402,16 @@ const CreateNewCourseForm = Form.create()(
         <Row type="flex" justify="center" >
           <Col span={24}>
             <FormItem label="Ayudantes">
-              <Select mode="multiple"
-                      filterOption={false}
-                      notFoundContent={null}
-                      onSearch={this.searchAssistant}
-                      onChange={this.onChangeAssistant}>
-                      { this.state.ayudantesArray.map(d => <Option key={d.value}>{d.text}</Option>)}
-              </Select>
+            {getFieldDecorator('ayudantes', {}) (
+                <Select mode="multiple"
+                        filterOption={false}
+                        notFoundContent={null}
+                        onSearch={this.searchAssistant}
+                        //onChange={this.onChangeAssistant}
+                        >
+                        { this.state.ayudantesArray.map(d => <Option key={d.value}>{d.text}</Option>)}
+                </Select>
+            )}
             </FormItem>
           </Col>
         </Row>
@@ -386,10 +424,12 @@ const CreateNewCourseForm = Form.create()(
         </Row>
 
         <Row gutter={16} type="flex" justify="end">
-          <Button style={{ marginRight: 8 }} >Cancelar</Button>
+          <Button style={{ marginRight: 8 }} onClick={this.props.onCancel} >Cancelar</Button>
           <Button style={{ marginRight: 8 }}
                   type="primary"
-                  htmlType="submit">Crear Curso</Button>
+                  htmlType="submit"
+                  loading={this.state.submitButtonLoading}
+                  >Crear Curso</Button>
         </Row>
 
       </Form>

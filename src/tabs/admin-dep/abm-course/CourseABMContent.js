@@ -9,7 +9,6 @@ const ITEMS_PER_PAGE = 9;
 export default class CoursesABMContent extends Component {
 
   state = {
-    editCourseModalVisible: false,
     departamento_id: null,
     codigo : null,
     materias : [],
@@ -19,7 +18,8 @@ export default class CoursesABMContent extends Component {
     nombresMaterias : new Set(),
     docentes : new Set(),
     jtps : new Set(),
-    newCourseModalVisible : true,
+    editCourseModalVisible: false,
+    newCourseModalVisible : false,
     pagination: {
       pageSize: ITEMS_PER_PAGE,
       total: 0
@@ -147,8 +147,8 @@ export default class CoursesABMContent extends Component {
     this.setState({newCourseModalVisible : false});
   }
 
-  onCancel = (e) => {
-    console.log(e);
+  onCancel = () => {
+    console.log("CANCEL")
     this.setState({newCourseModalVisible : false});
   }
 
@@ -308,7 +308,9 @@ export default class CoursesABMContent extends Component {
       footer={null}
        >
         <CreateNewCourseForm
-          materias={this.nombresMaterias}
+          materias={this.state.materias}
+          cursos={this.state.cursos}
+          onCancel={this.onCancel}
           //wrappedComponentRef={this.saveFormRef}
           //rowdata={this.props.rowdata}
         ></CreateNewCourseForm>

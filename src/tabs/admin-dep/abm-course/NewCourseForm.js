@@ -184,9 +184,9 @@ const CreateNewCourseForm = Form.create()(
           <Col span={12}>
             <FormItem label="Cupo">
               {getFieldDecorator('cupo', {
-                rules: [{ required: true, message: 'Ingrese el cupo' }],
+                rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
-                <Input/>
+                <Input type="number" min="1"/>
               )}
             </FormItem>
           </Col>
@@ -197,7 +197,15 @@ const CreateNewCourseForm = Form.create()(
           <Col span={12}>
             <FormItem label="Docente">
               {getFieldDecorator('docente', {
-                rules: [{ required: true, message: 'Ingrese el Docente' }],
+                rules: [{ required: true, message: 'Ingrese un Docente',
+                validator: (rule, value, callback) => {
+                    let errors = [];
+                    if (value.length != 1) {
+                      errors.push(new Error("Solo puede haber un docente titular"));
+                    }
+                    callback(errors);                  
+                  }
+                }],
               })(
                 <Select mode="multiple"
                         filterOption={false}
@@ -211,7 +219,15 @@ const CreateNewCourseForm = Form.create()(
           <Col span={12}>
             <FormItem label="JTP">
               {getFieldDecorator('jtp', {
-                rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos' }],
+                rules: [{ required: true, message: 'Ingrese un jefe de trabajos prácticos',
+                validator: (rule, value, callback) => {
+                  let errors = [];
+                  if (value.length != 1) {
+                    errors.push(new Error("Solo puede haber un docente titular"));
+                  }
+                  callback(errors);                  
+                }
+                }],
               })(
                 <Select mode="multiple"
                         filterOption={false}

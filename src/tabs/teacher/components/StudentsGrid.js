@@ -70,7 +70,7 @@ class StudentGrid extends Component {
         render={(row) => {
           return <div
           >
-            2
+            
           </div>
         }}
       />

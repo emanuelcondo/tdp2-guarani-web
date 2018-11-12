@@ -37,7 +37,7 @@ const CreateEditPeriodForm = Form.create()(
           <h2 align="right">{MostrarCuatrimestre(this.props.rowdata.cuatrimestre)}  {this.props.rowdata.anio}</h2>
         </FormItem>
 
-        <Row type="flex" justify="center" >
+        <Row type="flex" justify="center" gutter={16}>
           <Col span={12}>
             <FormItem label="Inscripción a cursos">
               {getFieldDecorator('ins_cur', {
@@ -59,7 +59,7 @@ const CreateEditPeriodForm = Form.create()(
 
         </Row>
 
-        <Row type="flex" justify="center" >
+        <Row type="flex" justify="center" gutter={16}>
           <Col span={12}>
             <FormItem label="Consulta de Prioridad">
               {getFieldDecorator('con_pri', {

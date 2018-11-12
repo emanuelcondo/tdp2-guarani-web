@@ -180,8 +180,8 @@ export default class CoursesABMContent extends Component {
     if (row.cuatrimestre == null) row.cuatrimestre = 0;
     if (row.cupos == null) row.cupos = 10;
     if (row.materia == null) row.materia = this.state.materias[0];
-    if (row.docenteACargo == null) row.docenteACargo = [];
-    if (row.jtp == null) row.jtp = [];
+    if (row.docenteACargo == null) row.docenteACargo = null;
+    if (row.jtp == null) row.jtp = null;
     if (row.ayudantes == null) row.ayudantes = [];
     this.setState({selectedRow : row});
     console.log("PRESET",row);

@@ -188,9 +188,9 @@ const CreateNewCourseForm = Form.create()(
         else {
           values.docenteACargo = values.docenteACargo[0];
           values.jtp = values.jtp[0];
-          if (values.ayudantes == undefined) values.ayudantes = [];
+          if (values.ayudantes == null) values.ayudantes = [];
           values.cursada = [];
-          if (this.props.cursada != undefined) values.cursada = this.props.cursada;
+          if (this.state.cursada != null) values.cursada = this.state.cursada;
           let APICall = DepartmentService.newCourse;
           let messageWord = "cre";
           if (this.props.mode == CourseFormModeEnum.EDIT) {
@@ -346,6 +346,21 @@ const CreateNewCourseForm = Form.create()(
       return formItems;
     }
 
+    initialDocente() {
+      console.log("POP",this.props.selectedRow)
+      if (this.props.selectedRow.docenteACargo != null) {
+        return [this.props.selectedRow.docenteACargo._id]
+      }
+      else return []
+    }
+
+    initialJTP() {
+      if (this.props.selectedRow.jtp != null) {
+        return [this.props.selectedRow.jtp._id]
+      }
+      else return []
+    }
+
     render() {
       const { visible, onCancel, onCreate, form, size } = this.props;
       const { getFieldDecorator, getFieldValue } = form;
@@ -415,7 +430,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={6}>
             <FormItem label="Docente">
-              {getFieldDecorator('docenteACargo', {initialValue: [this.props.selectedRow.docenteACargo._id]}, {
+              {getFieldDecorator('docenteACargo', {initialValue: this.initialDocente() }, {
                 rules: [{ required: true, message: 'Ingrese el docente'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -437,7 +452,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={6}>
             <FormItem label="JTP">
-              {getFieldDecorator('jtp', {initialValue: [this.props.selectedRow.jtp._id]}, {
+              {getFieldDecorator('jtp', {initialValue: this.initialJTP() }, {
                 rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
                 {validator: (rule, value, callback) => {
                   let errors = [];

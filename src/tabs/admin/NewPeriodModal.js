@@ -3,6 +3,25 @@ import { Modal, message } from 'antd';
 import CreateNewPeriodForm from './NewPeriodForm'
 import * as AdminService from './service/AdminService'
 
+function RedondearHoras(date, start) {
+  const dateToSend = new Date(date._d);
+  dateToSend.setHours(start);
+  dateToSend.setMinutes(0);
+  dateToSend.setSeconds(0);
+  dateToSend.setMilliseconds(0);
+    
+  return dateToSend;
+}
+
+function Desde(date) {
+  //arranca a las 9:00a.m.
+  return RedondearHoras(date, 9);
+}
+
+function Hasta(date) {
+  //finaliza a las 6:00p.m.
+  return RedondearHoras(date, 18);
+}
 
 class NewPeriodModal extends Component {
 
@@ -24,20 +43,20 @@ class NewPeriodModal extends Component {
           cuatrimestre: values.cuatri,
           anio: values.anio,
           inscripcionCurso: {
-              inicio: values.ins_cur[0]._d,
-              fin: values.ins_cur[1]._d
+              inicio: Desde(values.ins_cur[0]),
+              fin: Hasta(values.ins_cur[1])
           },
           desinscripcionCurso: {
-            inicio: values.des_cur[0]._d,
-            fin: values.des_cur[1]._d
+            inicio: Desde(values.des_cur[0]),
+            fin: Hasta(values.des_cur[1])
           },
           cursada: {
-            inicio: values.cursad[0]._d,
-            fin: values.cursad[1]._d
+            inicio: Desde(values.cursad[0]),
+            fin: Hasta(values.cursad[1])
           },
           consultaPrioridad: {
-            inicio: values.con_pri[0]._d,
-            fin: values.con_pri[1]._d
+            inicio: Desde(values.con_pri[0]),
+            fin: Hasta(values.con_pri[1])
           }
       }
 

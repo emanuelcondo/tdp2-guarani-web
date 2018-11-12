@@ -26,10 +26,9 @@ function MostrarCuatrimestre(id) {
 const CreateEditPeriodForm = Form.create()(
   class extends Component {
 
-    
-
     render() {
-      const { visible, onCancel, onCreate, form, size } = this.props;
+      //const { visible, onCancel, onCreate, form, size } = this.props;
+      const { form } = this.props;
       const { getFieldDecorator } = form;
       const state = this.state;
 

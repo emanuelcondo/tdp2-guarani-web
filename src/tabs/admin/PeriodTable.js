@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Table, Button, Modal, message} from 'antd';
 import * as AdminService from './service/AdminService'
 
+/*
 const dataSource = [
     {
         _id: "5be6d493fc5a1c0cdd40b068",
@@ -88,6 +89,7 @@ const dataSource = [
         }
     }
 ];
+*/
 
 function Transformar(date) {
     var month = date.substring(5, 7);
@@ -242,7 +244,7 @@ class PeriodTable extends Component {
             render: (value, row, idx) => {
             return <div> <Button.Group>
                 <Button
-                    disabled={row.anio == '2018' && row.cuatrimestre =='2'}
+                    disabled={row.anio <= 2018 && row.cuatrimestre <= 2}
                     type='primary'
                     icon='edit'
                     onClick={
@@ -255,7 +257,7 @@ class PeriodTable extends Component {
                 Editar
                 </Button>
                 <Button 
-                    disabled={row.anio == '2018' && row.cuatrimestre =='2'}
+                    disabled={row.anio <= 2018 && row.cuatrimestre <= 2}
                     type='primary'
                     icon='delete'
                     onClick={() => this.showWarningModal(row)}

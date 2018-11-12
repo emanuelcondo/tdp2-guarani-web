@@ -415,7 +415,7 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={6}>
             <FormItem label="Docente">
-              {getFieldDecorator('docenteACargo', {initialValue: this.props.selectedRow.docenteACargo._id}, {
+              {getFieldDecorator('docenteACargo', {initialValue: [this.props.selectedRow.docenteACargo._id]}, {
                 rules: [{ required: true, message: 'Ingrese el docente'},
                 {validator: (rule, value, callback) => {
                   let errors = [];
@@ -437,7 +437,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={6}>
             <FormItem label="JTP">
-              {getFieldDecorator('jtp', {initialValue: this.props.selectedRow.jtp._id}, {
+              {getFieldDecorator('jtp', {initialValue: [this.props.selectedRow.jtp._id]}, {
                 rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
                 {validator: (rule, value, callback) => {
                   let errors = [];

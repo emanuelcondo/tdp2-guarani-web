@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Select, Form, Radio, Row, Col, Button } from 'antd';
+import { Input, Select, Form, Radio, Row, Col, Button, message } from 'antd';
 import * as DepartmentService from '../service/DepartmentService'
 
 const FormItem = Form.Item;
@@ -28,34 +28,30 @@ const CreateNewCourseForm = Form.create()(
       ayudantesArray: []
     }
 
-    /*
-    loginUser = (authInfo) => {
-      AuthService.authUser(authInfo).then((response) => {
-        console.log('NormalLogin - the user is logged');
-        console.log('NormalLogin - response', response);
-        this.setState({ loginButtonLoading: false })
-        this.setState({ loginButtonColor: SUCESS_COLOR, loginButtonIcon: 'check', loginButtonMessage: '' })
-        this.saveAuthData(response.data.data)
-        //aviso el container que el login fue correcto
-        setTimeout(() => { this.props.userLogged() }, 1000)
-      }).catch((e) => {
-        console.log('NormalLogin -  the is not logged');
-        console.log('NormalLogin -  error', e);
-        this.setState({ loginButtonLoading: false })
-        this.setState({ loginButtonColor: ERROR_COLOR, loginButtonIcon: 'close', loginButtonMessage: '', errorMessageDisplay: 'block' })
-        setTimeout(this.rollBackButton, 1000);
-      })
-    }
-    */
-
     handleSubmit = (e) => {
       this.setState({ submitButtonLoading: true })
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
-        if (!err) {
+        if (err) {
+          this.setState({ submitButtonLoading: false })
           //setTimeout(() => { this.loginUser(values) }, 2000)
         }
-        console.log(values);
+        else {
+          values.docenteACargo = values.docenteACargo[0];
+          values.jtp = values.jtp[0];
+          if (values.ayudantes == undefined) values.ayudantes = [];
+          values.cursada = [];
+          console.log("DATA",values);
+          DepartmentService.newCourse(values).then(
+            (response) => {
+              this.setState({ submitButtonLoading: false })
+              message.success('Se ha creado el curso');
+              //this.props.handleOk();
+            }).catch((e) => {
+              this.setState({ submitButtonLoading: false })
+              message.error("No se pudo crear el curso: "+e.response.data.error.message);        
+            })
+        }
       });
     }
 
@@ -150,7 +146,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={12}>
             <FormItem label="Cuatrimestre">
-              {getFieldDecorator('cuatri', {
+              {getFieldDecorator('cuatrimestre', {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
                 <RadioGroup size="large">
@@ -183,7 +179,7 @@ const CreateNewCourseForm = Form.create()(
           </Col>
           <Col span={12}>
             <FormItem label="Cupo">
-              {getFieldDecorator('cupo', {
+              {getFieldDecorator('cupos', {
                 rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
                 <Input type="number" min="1"/>
@@ -196,16 +192,16 @@ const CreateNewCourseForm = Form.create()(
         <Row gutter={30} type="flex" justify="center" >
           <Col span={12}>
             <FormItem label="Docente">
-              {getFieldDecorator('docente', {
-                rules: [{ required: true, message: 'Ingrese un Docente',
-                validator: (rule, value, callback) => {
-                    let errors = [];
-                    if (value.length != 1) {
-                      errors.push(new Error("Solo puede haber un docente titular"));
-                    }
-                    callback(errors);                  
+              {getFieldDecorator('docenteACargo', {
+                rules: [{ required: true, message: 'Ingrese el docente'},
+                {validator: (rule, value, callback) => {
+                  let errors = [];
+                  if (value != undefined && value.length > 1) {
+                    errors.push(new Error("Solo puede haber un docente"));
                   }
-                }],
+                  callback(errors);                  
+                }
+                , message: 'Solo puede haber un docente'}],
               })(
                 <Select mode="multiple"
                         filterOption={false}
@@ -219,15 +215,15 @@ const CreateNewCourseForm = Form.create()(
           <Col span={12}>
             <FormItem label="JTP">
               {getFieldDecorator('jtp', {
-                rules: [{ required: true, message: 'Ingrese un jefe de trabajos prácticos',
-                validator: (rule, value, callback) => {
+                rules: [{ required: true, message: 'Ingrese el jefe de trabajos prácticos'},
+                {validator: (rule, value, callback) => {
                   let errors = [];
-                  if (value.length != 1) {
-                    errors.push(new Error("Solo puede haber un docente titular"));
+                  if (value != undefined && value.length > 1) {
+                    errors.push(new Error("Solo puede haber un jtp"));
                   }
                   callback(errors);                  
                 }
-                }],
+                , message: 'Solo puede haber un jefe de trabajos practicos'}],
               })(
                 <Select mode="multiple"
                         filterOption={false}
@@ -244,22 +240,27 @@ const CreateNewCourseForm = Form.create()(
         <Row type="flex" justify="center" >
           <Col span={24}>
             <FormItem label="Ayudantes">
-              <Select mode="multiple"
-                      filterOption={false}
-                      notFoundContent={null}
-                      onSearch={this.searchAssistant}
-                      onChange={this.onChangeAssistant}>
-                      { this.state.ayudantesArray.map(d => <Option key={d.value}>{d.text}</Option>)}
-              </Select>
+            {getFieldDecorator('ayudantes', {}) (
+                <Select mode="multiple"
+                        filterOption={false}
+                        notFoundContent={null}
+                        onSearch={this.searchAssistant}
+                        //onChange={this.onChangeAssistant}
+                        >
+                        { this.state.ayudantesArray.map(d => <Option key={d.value}>{d.text}</Option>)}
+                </Select>
+            )}
             </FormItem>
           </Col>
         </Row>
 
         <Row gutter={16} type="flex" justify="end">
-          <Button style={{ marginRight: 8 }} >Cancelar</Button>
+          <Button style={{ marginRight: 8 }} onClick={this.props.onCancel} >Cancelar</Button>
           <Button style={{ marginRight: 8 }}
                   type="primary"
-                  htmlType="submit">Crear Curso</Button>
+                  htmlType="submit"
+                  loading={this.state.submitButtonLoading}
+                  >Crear Curso</Button>
           {/*
             <FormItem>
               <Button style={{ marginRight: 8 }} >Cancelar</Button>

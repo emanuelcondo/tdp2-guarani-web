@@ -5,7 +5,8 @@ import moment from 'moment';
 
 export var CourseFormModeEnum =  Object.freeze({
   NEW : 0,
-  EDIT : 1
+  EDIT : 1,
+  VIEW: 2
 })
 
 const FormItem = Form.Item;
@@ -71,7 +72,7 @@ const CursadaForm = Form.create({
               message: "Día"
             }],
           })(
-            <Select placeholder="Día">
+            <Select placeholder="Día" disabled={props.readOnly}>
                 <Option value='Lunes'>Lunes</Option>
                 <Option value='Martes'>Martes</Option>
                 <Option value='Miércoles'>Miércoles</Option>
@@ -92,7 +93,7 @@ const CursadaForm = Form.create({
               message: "Tipo",
             }],
           })(
-            <Select placeholder="Tipo">
+            <Select placeholder="Tipo" disabled={props.readOnly}>
                 <Option value='Teórica'>Teórica</Option>
                 <Option value='Teórica Obligatoria'>Teórica Obligatoria</Option>
                 <Option value='Práctica'>Práctica</Option>
@@ -112,7 +113,7 @@ const CursadaForm = Form.create({
               message: "Sede",
             }],
           })(
-            <Select placeholder="Sede">
+            <Select placeholder="Sede" disabled={props.readOnly}>
                 <Option value='PC'>PC</Option>
                 <Option value='LH'>LH</Option>
                 <Option value='CU'>CU</Option>
@@ -128,7 +129,7 @@ const CursadaForm = Form.create({
               message: "Aula",
             }],
           })(
-            <Input type="number"/>
+            <Input disabled={props.readOnly} type="number"/>
           )}
         </FormItem>
       </Col>
@@ -142,7 +143,7 @@ const CursadaForm = Form.create({
               message: "Tipo",
             }],
           })(
-            <TimePicker minuteStep={15} placeholder="9:15" format={formatTime}/>
+            <TimePicker disabled={props.readOnly} minuteStep={15} placeholder="9:15" format={formatTime}/>
           )}
         </FormItem>
       </Col>
@@ -155,7 +156,7 @@ const CursadaForm = Form.create({
               message: "Tipo",
             }],
           })(
-            <TimePicker minuteStep={15} placeholder="Horario Hasta" format={formatTime}/>
+            <TimePicker disabled={props.readOnly} minuteStep={15} placeholder="Horario Hasta" format={formatTime}/>
           )}
         </FormItem>
       </Col>
@@ -174,10 +175,16 @@ const CreateNewCourseForm = Form.create()(
       errorMessageDisplay: 'none',
       docentesArray: [],
       jtpArray: [],
-      ayudantesArray: []
+      ayudantesArray: [],
+      readOnly: false
     }
 
     handleSubmit = (e) => {
+      if (this.state.readOnly) {
+        this.props.onCancel();
+        return;
+      }
+
       this.setState({ submitButtonLoading: true })
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
@@ -342,11 +349,12 @@ const CreateNewCourseForm = Form.create()(
       const cursada = getFieldValue('cursada');
 
       const formItems = cursada.map((item, index) => {
-        const data = { cursada: item, index: index, key: index };
+        const data = { cursada: item, index: index, key: index, readOnly: this.state.readOnly };
         return <Row type="flex">
-            <Col span={23}>
+            <Col span={this.state.readOnly ? 24 : 23}>
               <CursadaForm {...data} onChange={this.onChangeCursada}/>
             </Col>
+            { !this.state.readOnly && 
             <Col span={1}>
               <Tooltip placement="right" title="Eliminar">
               <Icon style={{marginTop:35}}
@@ -355,6 +363,7 @@ const CreateNewCourseForm = Form.create()(
                     onClick={() => this.removeCursadaItem(index)} />
                     </Tooltip>
             </Col>
+            }
           </Row>
       });
 
@@ -384,7 +393,8 @@ const CreateNewCourseForm = Form.create()(
       this.setState({ 
         docentesArray: docentesMapped,
         jtpArray: docentesMapped,
-        ayudantesArray: docentesMapped
+        ayudantesArray: docentesMapped,
+        readOnly: (this.props.mode == CourseFormModeEnum.VIEW)
        });
       form.setFieldsValue({
           cupos : this.props.selectedRow.cupos,
@@ -418,7 +428,7 @@ const CreateNewCourseForm = Form.create()(
           <Col span={3}>
             <FormItem label="Año">
               {getFieldDecorator('anio')(
-                  <Select style={{ width: 120 }}>
+                  <Select style={{ width: 120 }} disabled={this.state.readOnly}>
                     <Option value='2018'>2018</Option>
                     <Option value='2019'>2019</Option>
                     <Option value='2020'>2020</Option>
@@ -432,7 +442,7 @@ const CreateNewCourseForm = Form.create()(
               {getFieldDecorator('cuatrimestre',  {
                 rules: [{ required: true, message: 'Ingrese el cuatrimestre' }],
               })(
-                <RadioGroup >
+                <RadioGroup disabled={this.state.readOnly}>
                   <RadioButton value={0}>Verano</RadioButton>
                   <RadioButton value={1}> 1° </RadioButton>
                   <RadioButton value={2}> 2° </RadioButton>
@@ -447,7 +457,7 @@ const CreateNewCourseForm = Form.create()(
               {getFieldDecorator('cupos', {
                 rules: [{ required: true, message: 'Ingrese el cupo. Debe ser un entero > 0' }],
               })(
-                <Input type="number" min="1"/>
+                <Input disabled={this.state.readOnly} type="number" min="1"/>
               )}
             </FormItem>
           </Col>
@@ -457,7 +467,7 @@ const CreateNewCourseForm = Form.create()(
               {getFieldDecorator('materia', {
                 rules: [{ required: true, message: 'Ingrese la materia' }],
               })(
-                <Select>
+                <Select disabled={this.state.readOnly}>
                   {this.props.materias.map( 
                       (materia)=> {
                         return <Option value={materia._id}>{materia.codigo} - {materia.nombre}</Option>;
@@ -487,6 +497,7 @@ const CreateNewCourseForm = Form.create()(
                 , message: 'Solo puede haber un docente'}],
               })(
                 <Select mode="multiple"
+                        disabled={this.state.readOnly}
                         filterOption={false}
                         notFoundContent={null}
                         onSearch={this.searchProfessor}>
@@ -509,6 +520,7 @@ const CreateNewCourseForm = Form.create()(
                 , message: 'Solo puede haber un jefe de trabajos practicos'}],
               })(
                 <Select mode="multiple"
+                        disabled={this.state.readOnly}
                         filterOption={false}
                         notFoundContent={null}
                         onSearch={this.searchJTP}>
@@ -522,6 +534,7 @@ const CreateNewCourseForm = Form.create()(
             <FormItem label="Ayudantes">
             {getFieldDecorator('ayudantes') (
                 <Select mode="multiple"
+                        disabled={this.state.readOnly}
                         filterOption={false}
                         notFoundContent={null}
                         onSearch={this.searchAssistant}
@@ -536,18 +549,20 @@ const CreateNewCourseForm = Form.create()(
 
         <Row gutter={30} type="flex" justify="center" >
           <Col span={24}>
-                <Button style={{ marginBottom: 10 }} type="primary" onClick={this.addCursadaItem}>Agregar Cursada</Button>
+                <Button disabled={this.state.readOnly} style={{ marginBottom: 10 }} type="primary" onClick={this.addCursadaItem}>Agregar Cursada</Button>
                 {formCursadaItems}
           </Col>
         </Row>
 
         <Row gutter={16} type="flex" justify="end">
-          <Button style={{ marginRight: 8 }} onClick={this.props.onCancel} >Cancelar</Button>
+          <Button style={{ marginRight: 8 }} onClick={this.props.onCancel} >{this.state.readOnly ? 'Cerrar' : 'Cancelar'}</Button>
+          { !this.state.readOnly &&
           <Button style={{ marginRight: 8 }}
                   type="primary"
                   htmlType="submit"
                   loading={this.state.submitButtonLoading}
                   >{this.props.buttonText}</Button>
+          }
         </Row>
 
       </Form>

@@ -24,25 +24,15 @@ const formItemLayout = {
 
 const CollectionCreateForm = Form.create()(
   class extends React.Component {
-
-    state = {
-      courses: []
-    }
-
-    getTeacherCourse = () => {
-      TeacherService.getAsignatures().then((response) => {
-        const courses = response.data.data.cursos.map((course) => { return { 'comision': course.comision, 'id': course._id, "materia" : course.materia } });
-        console.log('courses', courses);
-        this.setState({ courses })
-      })
-    }
-
-    getCourseOption = () => {
-      return this.state.courses.filter((course) => course.materia.nombre === this.props.asignatureSelected).map((course) => <Option value={course.id} key={course.id}>{course.comision}</Option>)
-    }
-
-    componentDidMount() {
-      this.getTeacherCourse();
+   
+    getOptions = () => {
+      if (this.props.cursosPorMateria == null || this.props.cursosPorMateria[this.props.asignatureSelected._id] == null ) return;
+      return this.props.cursosPorMateria[this.props.asignatureSelected._id].map(
+        (course) => {
+          console.log(course);
+          return <Option key={course._id} value={course._id}>{course.comision}</Option>
+        }
+      )
     }
 
     render() {
@@ -77,20 +67,20 @@ const CollectionCreateForm = Form.create()(
             <FormItem
               {...formItemLayout}
             >
-              <h2 align="right">{this.props.asignatureSelected}</h2>
+              <h2 align="right">{this.props.asignatureSelected.nombre}</h2>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Curso">
               {getFieldDecorator('curso', {
-                rules: [{ required: true, message: 'Por favor selecciona un curso la sede del examen' }],
+                rules: [{ required: true, message: 'Por favor selecciona un curso' }],
               })(
                 <Select
                   placeholder='Seleccione un curso'
                   size={size}
                   style={{ width: '55%' }}
                 >
-                  {this.getCourseOption()}
+                  {this.getOptions()}
                 </Select>
               )}
             </FormItem>
@@ -129,73 +119,72 @@ const dataSource = []
 export default class FinalsContent extends Component {
   state = {
     finalsToShow: [],
-    asignatureSelected: '',
+    asignatureSelected: {},
     buttonNewFinalDisabled: true,
     visible: false,
     sede: 'Paseo Colón',
-    courses: []
+    courses: [],
+    
+    materias: [],
+    cursosPorMateria : null,    
+    finalesPorMateria: null,
+    finalesPorCurso: null
+  }
+
+  constructor(props) {
+    super(props);
+    this.refModal = React.createRef();
   }
 
 
   componentDidMount() {
-    if (this.state.asignatureSelected !== '') {
-      this.getTeacherCourse()
-    }
+    //if (this.state.asignatureSelected !== '') this.getTeacherCourse()
+    this.getMateriasYFinales();
   }
 
-  getDataSource = () => {
-    console.log('Las fechas de examenes actuales son', this.state.finalsToShow);
-    console.log('Obteniendo las fechas de finales...');
-    console.log('Los cursos que se tiene son', this.state.courses);
-    const coursesIds = this.state.courses.map((course) => {
-      console.log('courseId', course.id);
-      return course.id
-    })
-
-    const cursosfiltrados = coursesIds.filter((id, idx) => coursesIds.indexOf(id) === idx)
-    console.log('cursos filtrados', cursosfiltrados);
-    cursosfiltrados.map((courseId) => {
-      console.log('Pidiendo los examenes del curso', courseId);
-      return TeacherService.getExamenes(courseId).then((response) => {
-        console.log('Los examenes del cursos son', response.data.data.examenes);
-        console.log('Cantidad de examenes', response.data.data.examenes.length);
-        const finals = response.data.data.examenes
-        finals.forEach((final) => final.course = courseId)
-        const finalsToShow = [...this.state.finalsToShow]
-        const finalsToShowUpdated = response.data.data.examenes.length === 0 ? finalsToShow : finalsToShow.concat(finals);
-        this.setState({ finalsToShow: finalsToShowUpdated }, () => {
-          console.log('Los finales a mostrar son', this.state.finalsToShow);
-        })
-      })
-    })
-  }
-
-
-  getTeacherCourse = () => {
-    console.log('getTeacherCourse');
-    TeacherService.getAsignatures().then((response) => {
-      console.log('Materia elegida', this.state.asignatureSelected);
-      console.log('Obteniendo los cursos del docente', response);
-      const courses = response.data.data.cursos.filter((course) => course.materia.nombre === this.state.asignatureSelected).map((course) => { return { 'comision': course.comision, 'id': course._id} });
-      console.log('course', response.data.data.cursos);
-      console.log('courses', courses);
-      this.setState({ courses }, () => {
-        console.log('llamando..');
-        this.getDataSource()
-      })
-    })
+  getMateriasYFinales() {
+    TeacherService.getExamenesNew().then(
+      (response) => {
+        let materias = response.data.data.materias;
+        let finalesPorMateria = {};
+        let cursosPorMateria = {};
+        let finalesPorCurso = {};
+        materias.forEach( 
+          (materia) => {
+            cursosPorMateria[materia._id] = materia.cursos;
+            finalesPorMateria[materia._id] = [];
+            materia.cursos.forEach(
+              (curso) => {
+                curso.examenes.forEach(
+                  (examen) => {
+                    examen.docente = curso.docenteACargo.nombre + " " + curso.docenteACargo.apellido;
+                    examen.curso = curso;
+                  }
+                )
+                finalesPorMateria[materia._id] = finalesPorMateria[materia._id].concat(curso.examenes);
+                finalesPorCurso[curso._id] = curso.examenes;
+              }
+            )
+          }
+        )
+        this.setState({ materias : materias, finalesPorMateria : finalesPorMateria, finalesPorCurso : finalesPorCurso, cursosPorMateria : cursosPorMateria})
+        this.setFinalsToShow(this.state.asignatureSelected._id);
+      }
+    )
   }
 
   getAsignaturesNamesOption = () => {
-    const nombreMaterias = localStorage.getItem('asignatureNames').split(',')
-    console.log('nombreMaterias', nombreMaterias);
-    return nombreMaterias.filter((value, idx) => nombreMaterias.indexOf(value) === idx).map((name, idx) => (<Option key={idx} value={name}> {name} </Option>))
+    if (this.state.materias.length <= 0) return;
+    let result = this.state.materias.map( (materia) => {return <Option key={materia._id} value={materia._id}> {materia.nombre} </Option>} );
+    return result;
   }
 
 
-  setFinalsToShow = () => {
-    this.setState({ buttonNewFinalDisabled: false })
-    this.getTeacherCourse()
+  setFinalsToShow = (materiaID) => {
+    if (materiaID == null) return;
+    let finalsToShow = this.state.finalesPorMateria[materiaID]
+    let materia = this.state.materias.find( (mat) => { return mat._id == materiaID } );
+    this.setState({ buttonNewFinalDisabled: false , finalsToShow: finalsToShow, asignatureSelected : materia })
   }
 
   showModal = () => {
@@ -221,7 +210,7 @@ export default class FinalsContent extends Component {
       console.log('date to send the server', dateToSend);
       TeacherService.createExam(values.curso, dateToSend).then((response) => {
         message.success('La fecha de examen fue creada')
-        this.setState({ finalsToShow: [] }, () => { this.getDataSource() })
+        this.update();
       }).catch((e) => {
         message.error('La fecha no pudo ser ingresada: ' + e.response.data.error.message)
       })
@@ -231,7 +220,7 @@ export default class FinalsContent extends Component {
   }
 
   update = () => {
-    this.setState({ finalsToShow: [] }, () => { this.getDataSource() })
+    this.getMateriasYFinales();
   }
 
   handleSedeChange = (sede) => {
@@ -252,10 +241,7 @@ export default class FinalsContent extends Component {
           <Select
             placeholder="Selecciona una materia"
             style={{ width: '300px' }}
-            onSelect={(value) => {
-              this.setState({ finalsToShow: [], asignatureSelected: value }, this.setFinalsToShow)
-            }
-            }
+            onSelect={ this.setFinalsToShow }
           >
             {this.getAsignaturesNamesOption()}
           </Select>
@@ -284,6 +270,7 @@ export default class FinalsContent extends Component {
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
           asignatureSelected={this.state.asignatureSelected}
+          cursosPorMateria={this.state.cursosPorMateria}
           update={this.update}
         />
       </Row>

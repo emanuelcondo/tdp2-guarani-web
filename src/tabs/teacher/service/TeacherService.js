@@ -27,6 +27,10 @@ export const getExamenes = (courseId) => {
   return server.get(`/docentes/mis-cursos/${courseId}/examenes`)
 }
 
+export const getExamenesNew = () => {
+  return server.get(`/docentes/mis-examenes`)
+}
+
 export const createExam = (courseId, date) => {
   return server.post(`docentes/mis-cursos/${courseId}/examenes`, { 'fecha': date })
 }

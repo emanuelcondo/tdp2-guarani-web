@@ -55,15 +55,16 @@ export default class EditFinalModal extends Component {
     return <Modal
       title="Editar fecha de final"
       visible={this.props.visible}
-      onOk={this.handleOK}
+      onOk={this.handleOk}
       onCancel={this.props.handleCancel}
+      destroyOnClose={true}
     >
     <p>Esta acción enviará una notificación a los alumnos inscriptos.</p>
       <CollectionCreateForm
         wrappedComponentRef={this.saveFormRef}
         curso={this.props.curso}
         date={this.props.date}
-        onCreate={this.handleOk}
+        //onCreate={this.handleOk}
       ></CollectionCreateForm>
     </Modal >
   }

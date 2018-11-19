@@ -188,6 +188,7 @@ class SurveyGraph extends Component {
 	  }
 
 	render() {
+		
 		var misDataPoints = [];
 		var index;
 		for (index = 0; index < estadisticas.length; ++index) {
@@ -195,8 +196,9 @@ class SurveyGraph extends Component {
 			dataPoint["y"] = estadisticas[index].puntos;
 			dataPoint["label"] = estadisticas[index].nombre;
 			misDataPoints.push(dataPoint);
-			//console.log(a[index]);
+			//console.log(estadisticas[index]);
 		}
+
 		const self = this
 		const options = {
 			animationEnabled: true,
@@ -209,7 +211,7 @@ class SurveyGraph extends Component {
 				//title: "Materia",
 				reversed: true,
 				height: 15,
-				labelFontSize: 12,
+				labelFontSize: 15,
 				interval: 1
 			},
 			axisY: {
@@ -244,6 +246,7 @@ class SurveyGraph extends Component {
 				]*/
 			}]
 		}
+		
 		return (
 		<div style={divStyle} >
 
@@ -252,25 +255,25 @@ class SurveyGraph extends Component {
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 
-	  <Modal
-      visible={this.state.modalVisible}
-      onOk={self.setModalInvisible}
-      onCancel={self.setModalInvisible}
-    >
-      <div>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </div>
-    </Modal>
+			<Modal
+			visible={self.state.modalVisible}
+			onOk={self.setModalInvisible}
+			onCancel={self.setModalInvisible}
+			>
+				<div>
+					<p>Some contents...</p>
+					<p>Some contents...</p>
+					<p>Some contents...</p>
+				</div>
+			</Modal>
 		</div>
 		);
 	}
+
 	addSymbols(e){
-		//var suffixes = ["", "K", "M", "B"];
 		var order = Math.max(Math.floor(Math.log(e.value) / Math.log(1000)), 0);
 		//if(order > suffixes.length - 1)
-//			order = suffixes.length - 1;
+		//	order = suffixes.length - 1;
 		var suffix = "%";
 		return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
 	}

@@ -22,3 +22,8 @@ export const deletePeriod = (period) => {
   console.log(CLASS_NAME + ' - delete period', period);
   return server.delete('/periodos/' + period._id, period)
 }
+
+export const getSurveys = (anio, cuatri, depto) => {
+  console.log(CLASS_NAME + ' - get survey statistical information');
+  return server.get('/encuestas?anio=' + anio + '&cuatrimestre=' + cuatri + '&departamento=' + depto)
+}

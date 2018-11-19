@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Modal, Row, Col, message, Input } from 'antd';
 import * as TeacherService from '../service/TeacherService'
+import moment from 'moment';
 
 import EditFinalModal from './EditFinalModal'
 
@@ -54,10 +55,12 @@ class MyFinals extends Component {
     tableMessage: 'Seleccione una materia por favor',
     showEditModal: false,
     fechaEdit: null,
+    selectedCourse : null,
+    selectedFinal : null
   }
 
   //Muestra el modal para confirmar cancelar un examen. Hecho con currying porque me salió así
-  confirm = (row) => () => {
+  confirmCancel = (row) => () => {
     Modal.confirm({
       title: 'Cancelar fecha de final',
       okText: "Si",
@@ -70,7 +73,7 @@ class MyFinals extends Component {
   }
 
   inscriptos = (row) => () => {
-    TeacherService.getExamEnrolled(row.course, row._id).then(
+    TeacherService.getExamEnrolled(row.curso._id, row._id).then(
       (response) => {
         //Data para la tabla
         //const dataSource = response.data.data.inscripciones;
@@ -153,7 +156,7 @@ class MyFinals extends Component {
 
   //Funcion a llamar al cancelar un examen. Hecho con currying porque me salió así
   cancelExam = (row) => () => {
-    TeacherService.cancelExam(row.course, row._id).then(
+    TeacherService.cancelExam(row.curso._id, row._id).then(
       (response) => {
         message.success('La fecha de examen fue cancelada');
         this.props.update()
@@ -163,7 +166,6 @@ class MyFinals extends Component {
   }
 
   handleOk = () => {
-    console.log('handleOk my finals');
     this.setState({
       showEditModal: false,
     });
@@ -188,18 +190,16 @@ class MyFinals extends Component {
         index: 'dia',
         dataIndex: 'fecha',
         render: (value, row, idx) => {
-          const date = new Date(row.fecha)
-          console.log('Dibujando la fecha', date);
-          console.log('Fecha obtenida', date.getUTCDate() + '-' + date.getUTCMonth() + 1 + '-' + date.getFullYear());
-          return ("0" + date.getUTCDate()).slice(-2) + '-' + (date.getUTCMonth() + 1) + '-' + date.getFullYear()
+          const date = new moment(row.fecha)
+          return date.format('DD-MM-YYYY')
         }
       }, {
         title: 'Horario',
         index: 'horario',
         dataIndex: 'hora',
         render: (value, row, idx) => {
-          const date = new Date(row.fecha)
-          return ("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2)
+          const date = new moment(row.fecha)
+          return date.format('HH:mm')
         }
       }, {
         title: 'Aula asignada',
@@ -208,25 +208,22 @@ class MyFinals extends Component {
       }, {
         title: 'Docente',
         key: 'docente',
-        dataIndex: 'docenteACargo',
-        render: (value, row, idx) => {
-          return row.curso.docenteACargo.nombre + ', ' + row.curso.docenteACargo.apellido
-        }
-
+        dataIndex: 'docente',
       }, {
         title: 'Acciones',
         render: (value, row, idx) => {
           return <Button.Group>
-            <Button type='primary' icon='ordered-list' onClick={this.inscriptos(row)} >
+            <Button type='primary' icon='ordered-list' disabled={row.cantidadInscriptos <= 0} onClick={this.inscriptos(row)} >
               Inscriptos
             </Button>
             <Button type='primary' icon='edit' onClick={() => { 
+              console.log("ROW",row);
+              this.setState({ fechaEdit: row.fecha, selectedCourse : row.curso._id, selectedFinal : row._id});
               this.setState({ showEditModal: true });
-              this.setState({ fechaEdit: row.fecha});
             }}>
               Editar
             </Button>
-            <Button type='primary' icon='delete' onClick={this.confirm(row)} >
+            <Button type='primary' icon='delete' onClick={this.confirmCancel(row)} >
               Cancelar
             </Button>
             <EditFinalModal
@@ -234,8 +231,8 @@ class MyFinals extends Component {
               handleCancel={this.handleCancel}
               curso={row.curso.comision}
               date={this.state.fechaEdit}
-              courseId={row.curso._id}
-              finalId={row._id}
+              courseId={this.state.selectedCourse}
+              finalId={this.state.selectedFinal}
               handleOk={this.handleOk}
             >
             </EditFinalModal>

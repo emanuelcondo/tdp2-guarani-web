@@ -44,7 +44,7 @@ class MyCourses extends Component {
       }
     ]
     row.cursada.forEach(element => {
-      element['sede'] = row.sede.nombre
+      element['sede'] = element.sede
     });
     return <Table
       dataSource={row.cursada}

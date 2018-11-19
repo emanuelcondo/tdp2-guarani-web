@@ -31,6 +31,7 @@ export default class EditFinalModal extends Component {
       dateToSend.setSeconds(0)
       console.log('date to send the server', dateToSend);
       TeacherService.updateExam(this.props.courseId, this.props.finalId, dateToSend).then(() => {
+        console.log('finales a editar', this.props);
         console.log('Se actualizó la fecha de final');
         this.props.handleOk()
         message.success('La fecha de final se actualizó de manera correcta')

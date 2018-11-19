@@ -55,6 +55,8 @@ class MyFinals extends Component {
     tableMessage: 'Seleccione una materia por favor',
     showEditModal: false,
     fechaEdit: null,
+    selectedCourse : null,
+    selectedFinal : null
   }
 
   //Muestra el modal para confirmar cancelar un examen. Hecho con currying porque me salió así
@@ -216,7 +218,7 @@ class MyFinals extends Component {
             </Button>
             <Button type='primary' icon='edit' onClick={() => { 
               console.log("ROW",row);
-              this.setState({ fechaEdit: row.fecha});
+              this.setState({ fechaEdit: row.fecha, selectedCourse : row.curso._id, selectedFinal : row._id});
               this.setState({ showEditModal: true });
             }}>
               Editar
@@ -229,8 +231,8 @@ class MyFinals extends Component {
               handleCancel={this.handleCancel}
               curso={row.curso.comision}
               date={this.state.fechaEdit}
-              courseId={row.curso._id}
-              finalId={row._id}
+              courseId={this.state.selectedCourse}
+              finalId={this.state.selectedFinal}
               handleOk={this.handleOk}
             >
             </EditFinalModal>

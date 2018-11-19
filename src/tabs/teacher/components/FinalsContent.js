@@ -185,6 +185,7 @@ export default class FinalsContent extends Component {
     let finalsToShow = this.state.finalesPorMateria[materiaID]
     let materia = this.state.materias.find( (mat) => { return mat._id == materiaID } );
     this.setState({ buttonNewFinalDisabled: false , finalsToShow: finalsToShow, asignatureSelected : materia })
+    console.log("finales", finalsToShow);
   }
 
   showModal = () => {

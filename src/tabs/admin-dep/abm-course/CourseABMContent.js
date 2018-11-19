@@ -116,32 +116,7 @@ export default class CoursesABMContent extends Component {
             jtps : this.state.jtps.add(curso.jtp.nombreYApellido)
           });
         });
-      })
-
-    /*
-    return this.state.materias.forEach( 
-      (materia) => {
-        DepartmentService.getCoursesByMateriaID(materia._id).then(
-          (response) => {
-            response.data.data.cursos.forEach(
-              (curso) => {
-                this.aplanarCurso(curso);
-                let nuevoArray = this.state.cursos.concat(curso);
-                this.setState({ 
-                  cursos : nuevoArray, 
-                  anios : this.state.anios.add(curso.anio),
-                  cuatrimestres : this.state.cuatrimestres.add(curso.cuatrimestre),
-                  nombresMaterias : this.state.nombresMaterias.add(curso.materia.nombre),
-                  docentes : this.state.docentes.add(curso.docenteACargo.nombreYApellido),
-                  jtps : this.state.jtps.add(curso.jtp.nombreYApellido)});
-                console.log("ESTADO: ",this.state)
-              }
-            )
-          }
-        )
-      } 
-    );
-    */
+      });
   }
 
   /**
@@ -209,6 +184,14 @@ export default class CoursesABMContent extends Component {
   }
 
   /**
+   * Funcion a llamar cuando se clickea el boton ver curso actual
+   */
+  onClickView = (row) => {
+    this.setState({courseModalVisible : true, courseModalMode : CourseFormModeEnum.VIEW, courseModalTitle : "Detalle de curso", courseModalButtonText: "Cerrar", selectedRow : row});
+    this.fillPresets(row);
+  }
+
+  /**
    * Funcion a llamar cuando se clickea el boton editar un curso actual
    */
   onClickEdit = (row) => {
@@ -270,12 +253,14 @@ export default class CoursesABMContent extends Component {
       title: 'Cuatrimestre',
       dataIndex: 'cuatrimestre',
       key: 'cuatrimestre',
+      render: cuatrimestre => cuatrimestre < 1 ? 'Verano' : (cuatrimestre + 'º'),
       filters: this.setToFilter(this.state.cuatrimestres),
       onFilter: (value, record) => { return record.cuatrimestre == value }
     },{
       title: 'Materia',
-      dataIndex: 'materia.nombre',
-      key: 'materia.nombre',
+      dataIndex: 'materia',
+      key: 'materia',
+      render: materia => `${materia.codigo} - ${materia.nombre}`,
       filters: this.setToFilter(this.state.nombresMaterias),
       onFilter: (value, record) => { return record.materia.nombre == value }
     }, {
@@ -309,19 +294,25 @@ export default class CoursesABMContent extends Component {
       render: (value, row, idx) => {
         return <div> <Button.Group>
           <Button
-            type='primary'
-            icon='edit'
-            onClick={() => { this.onClickEdit(row) }}
-          >
-            Editar
-          </Button>
-          <Button
-            type='primary'
-            icon='delete'
-            onClick={() => this.warningEliminarCurso(row)}
-          >
-            Eliminar
-          </Button>
+              type='primary'
+              icon='eye'
+              onClick={() => { this.onClickView(row) }}>Ver</Button>
+          { (row.anio > 2018 || (row.anio == 2018 && row.cuatrimestre > 1)) ?
+            (
+              <Button
+                type='primary'
+                icon='edit'
+                onClick={() => { this.onClickEdit(row) }}>Editar</Button>
+              ) : ('')
+          }
+          { (row.anio > 2018 || (row.anio == 2018 && row.cuatrimestre > 1)) ?
+            (
+              <Button
+                type='primary'
+                icon='delete'
+                onClick={() => this.warningEliminarCurso(row)}>Eliminar</Button>
+            ) : ('')
+          }
         </Button.Group>
         </div>
       }

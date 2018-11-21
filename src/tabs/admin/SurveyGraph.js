@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CanvasJSReact from '../../canvasjs.react'
-import { Table, Modal, Card, Row, Col, message } from 'antd'
+import { Drawer, Table, Modal, Card, Row, Col, message } from 'antd'
 
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -36,7 +36,16 @@ const estadisticas = [
 			"El horario de las clases me parece pésimo.\
 			\nMuy estrictos al corregir los \"parciales\", no me parecio que valoren que entiendas los conceptos de ibm mainframe sino que apliques especificamente lo que ellos pensaban que debias hacer en los ejercicios, y siendo que en el examen se programa en papel no me parece que deban ser tan estrictos y hacer tan complicados ese tipo de ejercicios. \
 			\nSobre el resto no me quejo, los tps me parecieron accesibles, pero en los parciales a mi parecer le ponen demasiado enfasis a ibm mainframe y lo complican mas de lo que deberian\
-			"
+			",
+			"El horario de las clases me parece pésimo.\
+			\nMuy estrictos al corregir los \"parciales\", no me parecio que valoren que entiendas los conceptos de ibm mainframe sino que apliques especificamente lo que ellos pensaban que debias hacer en los ejercicios, y siendo que en el examen se programa en papel no me parece que deban ser tan estrictos y hacer tan complicados ese tipo de ejercicios. \
+			\nSobre el resto no me quejo, los tps me parecieron accesibles, pero en los parciales a mi parecer le ponen demasiado enfasis a ibm mainframe y lo complican mas de lo que deberian\
+			",
+			"El horario de las clases me parece pésimo.\
+			\n\nMuy estrictos al corregir los \"parciales\", no me parecio que valoren que entiendas los conceptos de ibm mainframe sino que apliques especificamente lo que ellos pensaban que debias hacer en los ejercicios, y siendo que en el examen se programa en papel no me parece que deban ser tan estrictos y hacer tan complicados ese tipo de ejercicios. \
+			\nSobre el resto no me quejo, los tps me parecieron accesibles, pero en los parciales a mi parecer le ponen demasiado enfasis a ibm mainframe y lo complican mas de lo que deberian\
+			",
+			"La cursé con Villagra, un curso muy dinámico. Lo recomiendo."
 		]
 	},
 	{
@@ -187,7 +196,44 @@ const estadisticas = [
 			"Se ven cosas del año 1986... viejísimo!!!.",
 			"Podrían actualizar los contenidos???."
 		]
+	},
+	{
+		_id: "5ba708b61dabf8854f11de75",
+		codigo: "75.59",
+		nombre: "Técnicas de Programación Concurrente I",
+		puntos: 1.52,
+		comentarios: [
+			"Podrían actualizar los contenidos???."
+		]
+	},
+	{
+		_id: "5ba708b61dabf8854f11de76",
+		codigo: "75.61",
+		nombre: "Taller de Programación III",
+		puntos: 1.50,
+		comentarios: [
+			"Podrían actualizar los contenidos???."
+		]
+	},
+	{
+		_id: "5ba708b61dabf8854f11de77",
+		codigo: "75.74",
+		nombre: "Sistemas Distribuídos I",
+		puntos: 1.47,
+		comentarios: [
+			"Podrían actualizar los contenidos???."
+		]
+	},
+	{
+		_id: "5ba708b61dabf8854f11de76",
+		codigo: "75.66",
+		nombre: "Manufactura Integrada por COmputadora (CIM) II",
+		puntos: 1.46,
+		comentarios: [
+			"Podrían actualizar los contenidos???."
+		]
 	}
+	
 ]
 
 class SurveyGraph extends Component {
@@ -197,7 +243,8 @@ class SurveyGraph extends Component {
 	  
 		this.state = {
 			modalVisible: false,
-			asignatureSelected: -1
+			asignatureSelected: "",
+			data: []
 		  };
 	  
 	  }
@@ -213,7 +260,9 @@ class SurveyGraph extends Component {
 		for (index = 0; index < estadisticas.length; ++index) {
 			var dataPoint = {};
 			dataPoint["y"] = estadisticas[index].puntos;
+			dataPoint["name"] = estadisticas[index].codigo;
 			dataPoint["label"] = estadisticas[index].nombre;
+			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + estadisticas[index].nombre;
 			misDataPoints.push(dataPoint);
 			//console.log(estadisticas[index]);
 		}
@@ -225,25 +274,39 @@ class SurveyGraph extends Component {
 			theme: "light2",
 			height: 560,
 			title:{
-				text: "Materias más populares de la facultad"
+				text: "Materias más populares de la facultad",
+				fontSize: 20
 			},
+			subtitles: [
+				{
+					text: "Haga clic sobre la barra de la materia para ver los comentarios de los alumnos.",
+					fontSize: 14
+				}
+			],
 			axisX: {
 				//title: "Materia",
 				reversed: true,
-				height: 15,
-				labelFontSize: 15,
+				height: 13,
+				width: 500,
+				labelFontSize: 12,
 				interval: 1
 			},
 			axisY: {
 				//title: "Puntajes asignados",
 				//labelFormatter: this.addSymbols
+				labelFontSize: 12,
+				maximum: 5
 			},
 			data: [{
 				click: function(e){
 					//alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.x + ", y: "+ e.dataPoint.y + " }" );
-					message.error('Hola este vale ' + e.dataPoint.x);
+					//message.error('Hola este vale ' + e.dataPoint.x);
 					self.setState({modalVisible: true});
-					self.setState({asignatureSelected: e.dataPoint.x});
+					var subject = e.dataPoint.label;
+					var code = e.dataPoint.name;
+					self.setState({asignatureSelected: code + ' - ' + subject});
+					self.setState({data: datasource[e.dataPoint.x].comentarios});
+					
 				},
 				type: "bar",
 				dataPoints: misDataPoints
@@ -276,8 +339,9 @@ class SurveyGraph extends Component {
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 
+			{/*
 			<Modal
-				title="Comentarios"
+				title= {"Comentarios - " + self.state.asignatureSelected}
 				visible={self.state.modalVisible}
 				onOk={self.setModalInvisible}
 				onCancel={self.setModalInvisible}
@@ -286,20 +350,42 @@ class SurveyGraph extends Component {
 				
 			>
 				<Row>
-      <Col span={24}>
+      				<Col span={24}>
 
     
-				<Table
-					style={{ showHeader: false, 'table-layout': 'fixed', width: 1000, 'white-space': 'pre-line'}}
-					dataSource={datasource[0].comentarios}
-					columns={columns}
-					pagination={true}
-					//width={900}
-					
-				/>
-				</Col>
+						<Table
+							style={{ 'table-layout': 'fixed', width: 1000, 'white-space': 'pre-line'}}
+							dataSource={this.state.data}
+							columns={columns}
+							pagination={{pageSize: 5}}
+							showHeader={false}
+							//width={900}
+							
+						/>
+					</Col>
 				</Row>
 			</Modal>
+			*/}
+			<Drawer
+				title= {"Comentarios - " + self.state.asignatureSelected}
+				visible={self.state.modalVisible}
+				closable={true}
+				onClose={self.setModalInvisible}
+				width={550}
+			>
+				<Row>
+      				<Col span={24}>
+						<Table
+							style={{ 'table-layout': 'fixed', width: 500, 'white-space': 'pre-line'}}
+							dataSource={this.state.data}
+							columns={columns}
+							pagination={{pageSize: 5}}
+							showHeader={false}
+							//width={900}
+						/>
+					</Col>
+				</Row>
+			</Drawer>
 		</div>
 		);
 	}

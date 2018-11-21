@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CanvasJSReact from '../../canvasjs.react'
-import { Button, Modal, Row, Col, message } from 'antd'
+import { Table, Modal, Card, Row, Col, message } from 'antd'
 
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -10,6 +10,19 @@ var divStyle = {
 	margin: "20px"
   };
 
+const columns = [{
+	title: 'Comentario',
+	//columnWidth: 100,
+	/*render: (text, record) => (
+		<Card style={{ width: 800, 'white-space': 'pre-line' }}>
+		{text}
+		</Card>
+	)*/
+
+	//dataIndex: 'comentario',
+	//key: 'comentario',
+  }];
+
 const estadisticas = [
 	{
 		_id: "5ba706661dabf8854f11de22",
@@ -18,7 +31,12 @@ const estadisticas = [
 		puntos: 5,
 		comentarios: [
 			"Excelente curso..",
-			"Fontela CRACK!!!"
+			"Fontela CRACK!!!",
+			"Excelente, probablemente el mejor curso al que asistí en la facu, junto con el de AM3 de Acero. Algunas clases (pocas) donde no se hacía mucho más que comentar diapositivas y presentar algún ejemplo, quizás no me gustaron tanto y me parecía que se entendía mejor directamente leyendo tranquilo el apunte en mi casa. Otra cosa que por momentos me generó problemas fue que quizás algunos algoritmos que se veían en clase, en el apunte estaban explicados de otra forma, o tenía pequeñas diferencias en algunas formulas o selección de parámetros (ej: tf-idf normalizado) y eso a veces me llevaba a generar resultados erróneos en las guías. A veces los notebooks que se veían en clase tardaban unos cuantos días en estar subidos.			",
+			"El horario de las clases me parece pésimo.\
+			\nMuy estrictos al corregir los \"parciales\", no me parecio que valoren que entiendas los conceptos de ibm mainframe sino que apliques especificamente lo que ellos pensaban que debias hacer en los ejercicios, y siendo que en el examen se programa en papel no me parece que deban ser tan estrictos y hacer tan complicados ese tipo de ejercicios. \
+			\nSobre el resto no me quejo, los tps me parecieron accesibles, pero en los parciales a mi parecer le ponen demasiado enfasis a ibm mainframe y lo complican mas de lo que deberian\
+			"
 		]
 	},
 	{
@@ -179,6 +197,7 @@ class SurveyGraph extends Component {
 	  
 		this.state = {
 			modalVisible: false,
+			asignatureSelected: -1
 		  };
 	  
 	  }
@@ -199,7 +218,8 @@ class SurveyGraph extends Component {
 			//console.log(estadisticas[index]);
 		}
 
-		const self = this
+		const self = this;
+		const datasource = estadisticas;
 		const options = {
 			animationEnabled: true,
 			theme: "light2",
@@ -221,8 +241,9 @@ class SurveyGraph extends Component {
 			data: [{
 				click: function(e){
 					//alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.x + ", y: "+ e.dataPoint.y + " }" );
-					//message.error('Hola este vale ' + e.dataPoint.y);
+					message.error('Hola este vale ' + e.dataPoint.x);
 					self.setState({modalVisible: true});
+					self.setState({asignatureSelected: e.dataPoint.x});
 				},
 				type: "bar",
 				dataPoints: misDataPoints
@@ -256,15 +277,28 @@ class SurveyGraph extends Component {
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 
 			<Modal
-			visible={self.state.modalVisible}
-			onOk={self.setModalInvisible}
-			onCancel={self.setModalInvisible}
+				title="Comentarios"
+				visible={self.state.modalVisible}
+				onOk={self.setModalInvisible}
+				onCancel={self.setModalInvisible}
+				width={1100}
+				footer={null}
+				
 			>
-				<div>
-					<p>Some contents...</p>
-					<p>Some contents...</p>
-					<p>Some contents...</p>
-				</div>
+				<Row>
+      <Col span={24}>
+
+    
+				<Table
+					style={{ showHeader: false, 'table-layout': 'fixed', width: 1000, 'white-space': 'pre-line'}}
+					dataSource={datasource[0].comentarios}
+					columns={columns}
+					pagination={true}
+					//width={900}
+					
+				/>
+				</Col>
+				</Row>
 			</Modal>
 		</div>
 		);

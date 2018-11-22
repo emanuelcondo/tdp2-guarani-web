@@ -291,7 +291,7 @@ class SurveyGraph extends Component {
 				click: function(e){
 					//alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.x + ", y: "+ e.dataPoint.y + " }" );
 					//message.error('Hola este vale ' + e.dataPoint.x);
-					self.setState({modalVisible: true});
+					self.setState({drawerVisible: true});
 					var subject = e.dataPoint.label;
 					var code = e.dataPoint.name;
 					self.setState({asignatureSelected: code + ' - ' + subject});

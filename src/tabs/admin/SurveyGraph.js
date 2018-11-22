@@ -12,15 +12,6 @@ var divStyle = {
 
 const columns = [{
 	title: 'Comentario',
-	//columnWidth: 100,
-	/*render: (text, record) => (
-		<Card style={{ width: 800, 'white-space': 'pre-line' }}>
-		{text}
-		</Card>
-	)*/
-
-	//dataIndex: 'comentario',
-	//key: 'comentario',
   }];
 
 const estadisticas = [
@@ -242,15 +233,15 @@ class SurveyGraph extends Component {
 		super(props);
 	  
 		this.state = {
-			modalVisible: false,
+			drawerVisible: false,
 			asignatureSelected: "",
 			data: []
 		  };
 	  
 	  }
 
-	  setModalInvisible = (e) => {
-		this.setState({modalVisible: false});
+	  setDrawerInvisible = (e) => {
+		this.setState({drawerVisible: false});
 	  }
 
 	render() {
@@ -293,7 +284,6 @@ class SurveyGraph extends Component {
 			},
 			axisY: {
 				//title: "Puntajes asignados",
-				//labelFormatter: this.addSymbols
 				labelFontSize: 12,
 				maximum: 5
 			},
@@ -310,24 +300,7 @@ class SurveyGraph extends Component {
 				},
 				type: "bar",
 				dataPoints: misDataPoints
-				/*dataPoints: [
-					{ y:  98.6, label: "Psicología general" },
-					{ y:  94.2, label: "Taller de programación I" },
-					{ y:  89.1, label: "Taller de desarrollo de proyectos II" },
-					{ y:  60.4, label: "Análisis numérico" },
-					{ y:  46.0, label: "Algoritmos y programación II" },
-					{ y:  45.3, label: "Física III" },
-					{ y:  32.8, label: "Física II" },
-					{ y:  30.0, label: "Física I" },
-					{ y:  28.0, label: "Química" },
-					{ y:  25.3, label: "Física III" },
-					{ y:  25.3, label: "Física IIIh" },
-					{ y:  25.2, label: "Física IIIsfdg" },
-					{ y:  22.3, label: "Física IIIsdf" },
-					{ y:  22.3, label: "Física IIIsfg" },
-					{ y:  22.3, label: "Física IIIsdfsdf" },
-					{ y:  20.7, label: "Base de datos" }
-				]*/
+
 			}]
 		}
 		
@@ -339,38 +312,12 @@ class SurveyGraph extends Component {
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 
-			{/*
-			<Modal
-				title= {"Comentarios - " + self.state.asignatureSelected}
-				visible={self.state.modalVisible}
-				onOk={self.setModalInvisible}
-				onCancel={self.setModalInvisible}
-				width={1100}
-				footer={null}
-				
-			>
-				<Row>
-      				<Col span={24}>
-
-    
-						<Table
-							style={{ 'table-layout': 'fixed', width: 1000, 'white-space': 'pre-line'}}
-							dataSource={this.state.data}
-							columns={columns}
-							pagination={{pageSize: 5}}
-							showHeader={false}
-							//width={900}
-							
-						/>
-					</Col>
-				</Row>
-			</Modal>
-			*/}
+			
 			<Drawer
 				title= {"Comentarios - " + self.state.asignatureSelected}
-				visible={self.state.modalVisible}
+				visible={self.state.drawerVisible}
 				closable={true}
-				onClose={self.setModalInvisible}
+				onClose={self.setDrawerInvisible}
 				width={550}
 			>
 				<Row>
@@ -381,7 +328,6 @@ class SurveyGraph extends Component {
 							columns={columns}
 							pagination={{pageSize: 5}}
 							showHeader={false}
-							//width={900}
 						/>
 					</Col>
 				</Row>
@@ -390,13 +336,6 @@ class SurveyGraph extends Component {
 		);
 	}
 
-	addSymbols(e){
-		var order = Math.max(Math.floor(Math.log(e.value) / Math.log(1000)), 0);
-		//if(order > suffixes.length - 1)
-		//	order = suffixes.length - 1;
-		var suffix = "%";
-		return CanvasJS.formatNumber(e.value / Math.pow(1000, order)) + suffix;
-	}
 }
 
 export default SurveyGraph;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CanvasJSReact from '../../canvasjs.react'
-import { Drawer, Table, Modal, Card, Row, Col, message } from 'antd'
+import { Drawer, Table, Row, Col, Modal, Spin, message } from 'antd'
+import * as AdminService from './service/AdminService'
 
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -193,9 +194,7 @@ const estadisticas = [
 		codigo: "75.59",
 		nombre: "Técnicas de Programación Concurrente I",
 		puntos: 1.52,
-		comentarios: [
-			"Podrían actualizar los contenidos???."
-		]
+		comentarios: []
 	},
 	{
 		_id: "5ba708b61dabf8854f11de76",
@@ -229,37 +228,75 @@ const estadisticas = [
 
 class SurveyGraph extends Component {
 	
-	constructor (props){
+	constructor (props) {
 		super(props);
 	  
 		this.state = {
 			drawerVisible: false,
+			showLoading: true,
 			asignatureSelected: "",
-			data: []
+			departmentSelected: "",
+			datasource: [],
+			encuestas: null,
+			assignatureData: []
 		  };
 	  
-	  }
+	}
 
-	  setDrawerInvisible = (e) => {
+	setDrawerInvisible = (e) => {
 		this.setState({drawerVisible: false});
+	}
+
+	componentDidMount() {
+		this.getDepartmentInformation()
+	}
+
+	getDepartmentInformation = () => {
+		console.log('getDepartmentInformation');
+		AdminService.getSurveys('2018', '2', '75').then((response) => {
+		  console.log('Informacion del departamento obtenida', response);
+		  const encuestasRecibidas = response.data.data.encuestas;
+		  this.setState({encuestas: encuestasRecibidas});
+		  console.log('Encuestas: ', encuestasRecibidas);
+		  this.setState({datasource: encuestasRecibidas.materias});
+		  this.setState({showLoading: false});
+		  //this.setState({departmentSelected: deparmentInformation});
+
+		}).catch((e) => {
+		  console.log('DepartmentInformation fetch - failed');
+		  console.log('DepartmentInformation fetch - error', e);
+		  this.setState({showLoading: false});
+		  if (e.response == undefined) {
+			message.error('El servidor no responde. Intente más tarde.');
+		  } else {
+			console.log('DepartmentInformation fetch - response', e.response);
+			console.log('Error:', e.response.data.error.message);
+	  
+			//display error
+			message.error(e.response.data.error.message);
+		  }
+		  
+		  
+		})
 	  }
 
 	render() {
+		const self = this;
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = [];
 		var index;
-		for (index = 0; index < estadisticas.length; ++index) {
+		for (index = 0; index < datasource.length; ++index) {
 			var dataPoint = {};
-			dataPoint["y"] = estadisticas[index].puntos;
-			dataPoint["name"] = estadisticas[index].codigo;
-			dataPoint["label"] = estadisticas[index].nombre;
-			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + estadisticas[index].nombre;
+			dataPoint["y"] = datasource[index].puntos;
+			dataPoint["name"] = datasource[index].codigo;
+			dataPoint["label"] = datasource[index].nombre;
+			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + datasource[index].nombre;
 			misDataPoints.push(dataPoint);
-			//console.log(estadisticas[index]);
+			//console.log(datasource[index]);
 		}
 
-		const self = this;
-		const datasource = estadisticas;
 		const options = {
 			animationEnabled: true,
 			theme: "light2",
@@ -295,7 +332,7 @@ class SurveyGraph extends Component {
 					var subject = e.dataPoint.label;
 					var code = e.dataPoint.name;
 					self.setState({asignatureSelected: code + ' - ' + subject});
-					self.setState({data: datasource[e.dataPoint.x].comentarios});
+					self.setState({assignatureData: datasource[e.dataPoint.x].comentarios});
 					
 				},
 				type: "bar",
@@ -306,6 +343,19 @@ class SurveyGraph extends Component {
 		
 		return (
 		<div style={divStyle} >
+
+			<div>
+				<Modal
+				visible={this.state.showLoading}
+				title={<h2>Cargando estadísticas</h2>}
+				footer={[]}
+				>
+				<div>
+				Esta operación puede demorar varios segundos<br /><br />
+				<center><Spin size="large" /></center>
+				</div>
+				</Modal>
+			</div>
 
 			<CanvasJSChart options = {options}
 				/* onRef={ref => this.chart = ref} */
@@ -324,10 +374,11 @@ class SurveyGraph extends Component {
       				<Col span={24}>
 						<Table
 							style={{ 'table-layout': 'fixed', width: 500, 'white-space': 'pre-line'}}
-							dataSource={this.state.data}
+							dataSource={this.state.assignatureData}
 							columns={columns}
 							pagination={{pageSize: 5}}
 							showHeader={false}
+							locale={{ emptyText: "Nadie ha hecho comentarios aún en esta materia" }}
 						/>
 					</Col>
 				</Row>

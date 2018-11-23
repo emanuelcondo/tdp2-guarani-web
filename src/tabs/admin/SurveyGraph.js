@@ -284,6 +284,8 @@ class SurveyGraph extends Component {
 			encuestas: null,
 			assignatureData: []
 		};
+		
+		this.updateChart = this.updateChart.bind(this);
 	
 	}
 
@@ -323,15 +325,15 @@ class SurveyGraph extends Component {
 			
 		})
 	}
-
-	render() {
+	
+	getOptions = () => {
 		const self = this;
-		//const datasource = self.state.datasource;
-		const datasource = estadisticas; // => para pruebas mock
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = [];
-		var index;
-		for (index = 0; index < datasource.length; ++index) {
+		
+		for (let index = 0; index < datasource.length; ++index) {
 			var dataPoint = {};
 			dataPoint["y"] = datasource[index].puntos * 2;
 			dataPoint["name"] = datasource[index].codigo;
@@ -346,6 +348,7 @@ class SurveyGraph extends Component {
 			animationEnabled: true,
 			theme: "light2",
 			height: 560,
+			width: 1200,
 			title:{
 				text: "Materias más populares de la facultad",
 				fontSize: 20
@@ -360,7 +363,7 @@ class SurveyGraph extends Component {
 				//title: "Materia",
 				reversed: true,
 				height: 13,
-				width: 500,
+				
 				labelFontSize: 12,
 				interval: 1
 			},
@@ -378,13 +381,28 @@ class SurveyGraph extends Component {
 					var code = e.dataPoint.name;
 					self.setState({asignatureSelected: code + ' - ' + subject});
 					self.setState({assignatureData: datasource[e.dataPoint.x].comentarios});
+					self.updateChart();
 					
 				},
 				type: "bar",
 				dataPoints: misDataPoints
 
 			}]
-		}
+		};
+		
+		return options;
+	}
+	
+	updateChart() {
+		this.chart.options.width = 740;
+		this.chart.options.subtitles = [];
+		this.chart.render();
+	}
+
+	render() {
+		
+		const self = this;
+		const options = this.getOptions();
 		
 		return (
 		<div style={divStyle} >
@@ -403,7 +421,7 @@ class SurveyGraph extends Component {
 			</div>
 
 			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
+				onRef={ref => this.chart = ref}
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 

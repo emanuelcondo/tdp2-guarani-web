@@ -9,11 +9,11 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var divStyle = {
 	padding: "20px",
 	margin: "20px"
-  };
+};
 
 const columns = [{
 	title: 'Comentario',
-  }];
+}];
 
 const estadisticas = [
 	{
@@ -306,7 +306,7 @@ class SurveyGraph extends Component {
 	
 	constructor (props) {
 		super(props);
-	
+		
 		this.state = {
 			drawerVisible: false,
 			showLoading: true,
@@ -315,8 +315,8 @@ class SurveyGraph extends Component {
 			datasource: [],
 			encuestas: null,
 			assignatureData: []
-		  };
-	  
+		};
+	
 	}
 
 	setDrawerInvisible = (e) => {
@@ -330,31 +330,31 @@ class SurveyGraph extends Component {
 	getDepartmentInformation = () => {
 		console.log('getDepartmentInformation');
 		AdminService.getSurveys('2018', '2', '75').then((response) => {
-		  console.log('Informacion del departamento obtenida', response);
-		  const encuestasRecibidas = response.data.data.encuestas;
-		  this.setState({encuestas: encuestasRecibidas});
-		  console.log('Encuestas: ', encuestasRecibidas);
-		  this.setState({datasource: encuestasRecibidas.materias});
-		  this.setState({showLoading: false});
-		  //this.setState({departmentSelected: deparmentInformation});
+			console.log('Informacion del departamento obtenida', response);
+			const encuestasRecibidas = response.data.data.encuestas;
+			this.setState({encuestas: encuestasRecibidas});
+			console.log('Encuestas: ', encuestasRecibidas);
+			this.setState({datasource: encuestasRecibidas.materias});
+			this.setState({showLoading: false});
+			//this.setState({departmentSelected: deparmentInformation});
 
 		}).catch((e) => {
-		  console.log('DepartmentInformation fetch - failed');
-		  console.log('DepartmentInformation fetch - error', e);
-		  this.setState({showLoading: false});
-		  if (e.response == undefined) {
-			message.error('El servidor no responde. Intente más tarde.');
-		  } else {
-			console.log('DepartmentInformation fetch - response', e.response);
-			console.log('Error:', e.response.data.error.message);
-	  
-			//display error
-			message.error(e.response.data.error.message);
-		  }
-		  
-		  
+			console.log('DepartmentInformation fetch - failed');
+			console.log('DepartmentInformation fetch - error', e);
+			this.setState({showLoading: false});
+			if (e.response == undefined) {
+				message.error('El servidor no responde. Intente más tarde.');
+			} else {
+				console.log('DepartmentInformation fetch - response', e.response);
+				console.log('Error:', e.response.data.error.message);
+			
+				//display error
+				message.error(e.response.data.error.message);
+			}
+			
+			
 		})
-	  }
+	}
 
 	render() {
 		const self = this;
@@ -399,7 +399,7 @@ class SurveyGraph extends Component {
 			axisY: {
 				//title: "Puntajes asignados",
 				labelFontSize: 12,
-				maximum: 5
+				maximum: 10
 			},
 			data: [{
 				click: function(e){
@@ -448,7 +448,7 @@ class SurveyGraph extends Component {
 				width={550}
 			>
 				<Row>
-      				<Col span={24}>
+					<Col span={24}>
 						<Table
 							style={{ 'table-layout': 'fixed', width: 500, 'white-space': 'pre-line'}}
 							dataSource={this.state.assignatureData}

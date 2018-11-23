@@ -278,6 +278,7 @@ function Abbreviate(name) {
 	newName = newName.replace("Sistemas", "Sist.");
 	newName = newName.replace("Taller", "T.");
 	newName = newName.replace("Informáticos", "Inf.");
+	newName = newName.replace("Técnicas", "Tcas.");
 	
 	return newName;
 }
@@ -340,8 +341,8 @@ class SurveyGraph extends Component {
 	
 	getDataPoints = () => {
 		const self = this;
-		const datasource = self.state.datasource;
-		//const datasource = estadisticas; // => para pruebas mock
+		//const datasource = self.state.datasource;
+		const datasource = estadisticas; // => para pruebas mock
 		var dataPoints = [];
 		
 		for (let i = 0; i < datasource.length; ++i) {
@@ -353,11 +354,12 @@ class SurveyGraph extends Component {
 			dataPoint["label"] = datasource[i].nombre;
 			// armo el comentario para el mousehover
 			var n = datasource[i].comentarios.length;
-			var comments = (n == 0) ? "Son comentarios" : (n + " comentarios");
+			var comments = "<strong>" + ((n == 0) ? "Sin comentarios</strong>" : n + " comentarios</strong> <small>Clic para visualizar</small>" ) ;
 			var assignature = datasource[i].codigo + " - " + Abbreviate(datasource[i].nombre);
-			dataPoint["toolTipContent"] = assignature + " (" + comments + ")";
+			var points = "Puntos: <strong>" + dataPoint["y"] + "</strong>";
+			dataPoint["toolTipContent"] = assignature + "</br>" + points + "</br>" + comments;
 			dataPoints.push(dataPoint);
-			//console.log(datasource[i]);
+			//console.log(datasource[i]); </br> <strong>Temp</strong> </br>
 		}
 		
 		return dataPoints;
@@ -365,8 +367,8 @@ class SurveyGraph extends Component {
 	
 	getOptions = () => {
 		const self = this;
-		const datasource = self.state.datasource;
-		//const datasource = estadisticas; // => para pruebas mock
+		//const datasource = self.state.datasource;
+		const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = self.getDataPoints();
 
@@ -424,7 +426,7 @@ class SurveyGraph extends Component {
 		this.chart.options.width = 740;
 		this.chart.options.subtitles = [];
 		this.chart.options.title.fontSize = 16;
-		this.chart.options.axisX.labelFontSize = 10;
+		this.chart.options.axisX.labelFontSize = 11;
 		//this.chart.options.axisX.height = 10;
 		this.chart.options.dataPointWidth = 18;
 		

@@ -217,7 +217,7 @@ const estadisticas = [
 	{
 		_id: "5ba708b61dabf8854f11de76",
 		codigo: "75.66",
-		nombre: "Manufactura Integrada por COmputadora (CIM) II",
+		nombre: "Manufactura Integrada por Computadora (CIM) II",
 		puntos: 1.46,
 		comentarios: [
 			"Podrían actualizar los contenidos???."
@@ -226,11 +226,87 @@ const estadisticas = [
 	
 ]
 
+function SelectColor(points) {
+/*
+FF0000 <-- red
+FF1100
+FF2200
+FF3300
+FF4400
+FF5500
+FF6600
+FF7700
+FF8800
+FF9900
+FFAA00
+FFBB00
+FFCC00
+FFDD00
+FFEE00
+FFFF00 <-- yellow
+EEFF00
+DDFF00
+CCFF00
+BBFF00
+AAFF00
+99FF00
+88FF00
+77FF00
+66FF00
+55FF00
+44FF00
+33FF00
+22FF00
+11FF00
+00FF00 <-- green
+*/
+	var color
+	if (points >= 9.5) {
+		color = "00FF00"
+	} else if (points >= 9.0) {
+		color = "22FF00"
+	} else if (points >= 8.5) {
+		color = "44FF00"
+	} else if (points >= 8.0) {
+		color = "66FF00"
+	} else if (points >= 7.5) {
+		color = "88FF00"
+	} else if (points >= 7.0) {
+		color = "AAFF00"
+	} else if (points >= 6.5) {
+		color = "FFFF00"
+	} else if (points >= 6.0) {
+		color = color + "FFEE00"
+	} else if (points >= 5.5) {
+		color = "FFDD00"
+	} else if (points >= 5.0) {
+		color = "FFCC00"
+	} else if (points >= 4.5) {
+		color = "FFBB00"
+	} else if (points >= 4.0) {
+		color = "FFAA00"
+	} else if (points >= 3.5) {
+		color = "FF5500"
+	} else if (points >= 3.0) {
+		color = "FF4400"
+	} else if (points >= 2.5) {
+		color = "FF3300"
+	} else if (points >= 2.0) {
+		color = "FF2200"
+	} else if (points >= 1.5) {
+		color = "FF1100"
+	} else {
+		color = "FF0000"
+	}
+	
+	return "#" + color
+}
+
 class SurveyGraph extends Component {
 	
 	constructor (props) {
 		super(props);
-	  
+	
 		this.state = {
 			drawerVisible: false,
 			showLoading: true,
@@ -289,8 +365,9 @@ class SurveyGraph extends Component {
 		var index;
 		for (index = 0; index < datasource.length; ++index) {
 			var dataPoint = {};
-			dataPoint["y"] = datasource[index].puntos;
+			dataPoint["y"] = datasource[index].puntos * 2;
 			dataPoint["name"] = datasource[index].codigo;
+			dataPoint["color"] = SelectColor(dataPoint["y"]);
 			dataPoint["label"] = datasource[index].nombre;
 			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + datasource[index].nombre;
 			misDataPoints.push(dataPoint);

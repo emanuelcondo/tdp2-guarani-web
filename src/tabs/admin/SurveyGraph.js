@@ -270,6 +270,18 @@ function SelectColor(points) {
 	return "#" + color
 }
 
+function Abbreviate(name) {
+	var newName = name.replace("Administración", "Adm.");
+	newName = newName.replace("Introducción", "Intr.");
+	newName = newName.replace("Control", "Cont.");
+	newName = newName.replace("Proyectos", "Proy.");
+	newName = newName.replace("Sistemas", "Sist.");
+	newName = newName.replace("Taller", "T.");
+	newName = newName.replace("Informáticos", "Inf.");
+	
+	return newName;
+}
+
 class SurveyGraph extends Component {
 	
 	constructor (props) {
@@ -326,23 +338,37 @@ class SurveyGraph extends Component {
 		})
 	}
 	
+	getDataPoints = () => {
+		const self = this;
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
+		var dataPoints = [];
+		
+		for (let i = 0; i < datasource.length; ++i) {
+			var dataPoint = {};
+			
+			dataPoint["y"] = datasource[i].puntos * 2;
+			dataPoint["name"] = datasource[i].codigo;
+			dataPoint["color"] = SelectColor(dataPoint["y"]);
+			dataPoint["label"] = datasource[i].nombre;
+			// armo el comentario para el mousehover
+			var n = datasource[i].comentarios.length;
+			var comments = (n == 0) ? "Son comentarios" : (n + " comentarios");
+			var assignature = datasource[i].codigo + " - " + Abbreviate(datasource[i].nombre);
+			dataPoint["toolTipContent"] = assignature + " (" + comments + ")";
+			dataPoints.push(dataPoint);
+			//console.log(datasource[i]);
+		}
+		
+		return dataPoints;
+	}
+	
 	getOptions = () => {
 		const self = this;
 		const datasource = self.state.datasource;
 		//const datasource = estadisticas; // => para pruebas mock
 		
-		var misDataPoints = [];
-		
-		for (let index = 0; index < datasource.length; ++index) {
-			var dataPoint = {};
-			dataPoint["y"] = datasource[index].puntos * 2;
-			dataPoint["name"] = datasource[index].codigo;
-			dataPoint["color"] = SelectColor(dataPoint["y"]);
-			dataPoint["label"] = datasource[index].nombre;
-			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + datasource[index].nombre;
-			misDataPoints.push(dataPoint);
-			//console.log(datasource[index]);
-		}
+		var misDataPoints = self.getDataPoints();
 
 		const options = {
 			animationEnabled: true,
@@ -394,8 +420,21 @@ class SurveyGraph extends Component {
 	}
 	
 	updateChart() {
+		const self = this;
 		this.chart.options.width = 740;
 		this.chart.options.subtitles = [];
+		this.chart.options.title.fontSize = 16;
+		this.chart.options.axisX.labelFontSize = 10;
+		//this.chart.options.axisX.height = 10;
+		this.chart.options.dataPointWidth = 18;
+		
+		var misDataPoints = self.getDataPoints();
+		for (let i = 0; i < misDataPoints.length; ++i) {
+			var s = Abbreviate(misDataPoints[i].label);
+			misDataPoints[i].label = s;
+		}
+		
+		this.chart.options.data[0].dataPoints = misDataPoints;
 		this.chart.render();
 	}
 

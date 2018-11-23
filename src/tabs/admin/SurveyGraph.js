@@ -276,7 +276,7 @@ AAFF00
 	} else if (points >= 6.5) {
 		color = "FFFF00"
 	} else if (points >= 6.0) {
-		color = color + "FFEE00"
+		color = "FFEE00"
 	} else if (points >= 5.5) {
 		color = "FFDD00"
 	} else if (points >= 5.0) {

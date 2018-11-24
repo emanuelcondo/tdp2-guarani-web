@@ -20,7 +20,7 @@ class AdminContainer extends Component {
     childrens: {
       definePeriod: <DefinePeriod />,
       initialLoad: <InitialLoadContainer />,
-      surveyGraph: <SurveyGraph/>
+      surveyGraph: <SurveyGraph anio={2018} cuatrimestre={2} depto={75}/>
       //books: <BookABMContent />,
       //courses: <CourseABMContent />
     },

@@ -312,7 +312,10 @@ class SurveyGraph extends Component {
 
 	getDepartmentInformation = () => {
 		console.log('getDepartmentInformation');
-		AdminService.getSurveys('2018', '2', '75').then((response) => {
+		var anio = this.props.anio;
+		var cuatrimestre = this.props.cuatrimestre;
+		var depto = this.props.depto;
+		AdminService.getSurveys(anio, cuatrimestre, depto).then((response) => {
 			console.log('Informacion del departamento obtenida', response);
 			const encuestasRecibidas = response.data.data.encuestas;
 			this.setState({encuestas: encuestasRecibidas});

@@ -14,17 +14,30 @@ export default class FinalActModal extends Component {
 
     handleOk = () => {
 
-        let sumatoria = this.props.notasFinal.registros.reduce( 
-            (acum, val) => {
-                return acum + parseInt(val.notaCierre);
-            }, 0
+        let errores = ""
+
+        this.props.notasFinal.registros.forEach( 
+            registro => {
+                if (registro.notaCierre != null && registro.notaExamen == null) {
+                    return Modal.error({
+                        title: 'Incosistencia de notas',
+                        content: `El alumno ${registro.alumno} tiene nota de cierre pero no tiene nota de final`,
+                    });
+                }
+            }
         )
 
-        console.log("SUMA", this.state.suma)
-        console.log("SUMA", sumatoria)
+        let sumatoria = this.props.notasFinal.registros.reduce( 
+            (acum, val) => {
+                let nota = parseInt(val.notaCierre)
+                if (nota !== nota) return acum;
+                return acum + nota;
+            }, 0
+        )
+        if (sumatoria !== sumatoria) sumatoria = 0;
 
         if (sumatoria !== this.state.suma) {
-            Modal.error({
+            return Modal.error({
                 title: 'Suma de seguridad incorrecta',
                 content: 'Por favor verifique las notas ingresadas',
             });
@@ -74,7 +87,6 @@ export default class FinalActModal extends Component {
         else {
             result.registros.push( {alumno : row.alumno.legajo, notaExamen : nota} )
         }        
-        console.log("E",this.props.notasFinal);
     }
 
     onChangeNotaCierre = (row) => (event) => {
@@ -92,11 +104,12 @@ export default class FinalActModal extends Component {
         else {
             result.registros.push( {alumno : row.alumno.legajo, notaCierre : nota} )
         }
-        console.log("E",this.props.notasFinal);
     }
 
     onChangeSumaSeguridad = (event) => {
-        this.setState({suma : parseInt(event.target.value)});
+        let sum = parseInt(event.target.value);
+        if (sum !== sum) sum = 0;
+        this.setState({suma : sum});
     }
 
   render() {
@@ -137,7 +150,7 @@ export default class FinalActModal extends Component {
                 return record.notaExamen;
             }
             else {
-                return <Input type="number" min={0} max={10} style={{ width: '30%' }} onChange={this.onChangeNotaFinal(record)}/>
+                return <Input type="number" min={2} max={10} style={{ width: '30%' }} onChange={this.onChangeNotaFinal(record)}/>
             }
         },
     }, {
@@ -150,7 +163,7 @@ export default class FinalActModal extends Component {
                 return record.notaCierre;
             }
             else {
-                return <Input type="number" min={0} max={10} style={{ width: '30%' }} onChange={this.onChangeNotaCierre(record)}/>
+                return <Input type="number" min={2} max={10} style={{ width: '30%' }} onChange={this.onChangeNotaCierre(record)}/>
             }
         },
     }];

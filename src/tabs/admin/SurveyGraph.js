@@ -9,11 +9,11 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var divStyle = {
 	padding: "20px",
 	margin: "20px"
-  };
+};
 
 const columns = [{
 	title: 'Comentario',
-  }];
+}];
 
 const estadisticas = [
 	{
@@ -54,7 +54,7 @@ const estadisticas = [
 		_id: "5ba708051dabf8854f11de5f",
 		codigo: "75.09",
 		nombre: "Análisis de la Información",
-		puntos: 4.8,
+		puntos: 4.89,
 		comentarios: [
 			"Excelente curso... Villagra, excelente profesor.",
 			"La cursé con Villagra, un curso muy dinámico. Lo recomiendo."
@@ -64,7 +64,7 @@ const estadisticas = [
 		_id: "5ba708051dabf8854f11de5d",
 		codigo: "75.08",
 		nombre: "Sistemas Operativos",
-		puntos: 4.6,
+		puntos: 4.71,
 		comentarios: [
 			"La cursé con Mendez porque ya lo conocía y porque el tipo sabe mucho.",
 			"Mendez crack!!!."
@@ -74,7 +74,7 @@ const estadisticas = [
 		_id: "5ba70a2e1dabf8854f11deac",
 		codigo: "75.46",
 		nombre: "Administración y Control de Proyectos Informáticos II",
-		puntos: 4.6,
+		puntos: 4.53,
 		comentarios: [
 			"Fer es un genio... la materia es interesante y los contenidos son interesantes."
 		]
@@ -83,7 +83,7 @@ const estadisticas = [
 		_id: "5ba70a2e1dabf8854f11dea8",
 		codigo: "75.44",
 		nombre: "Administración y Control de Proyectos Informáticos I",
-		puntos: 4.6,
+		puntos: 4.26,
 		comentarios: [
 			"Fontela no me para de sorprender.",
 			"Fontela está en todos lados. Estaría bueno que esté en algunas materias como Análsis Matemático y Física. Un genio total."
@@ -93,7 +93,7 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de78",
 		codigo: "75.52",
 		nombre: "Taller de Programación II",
-		puntos: 4.5,
+		puntos: 4.05,
 		comentarios: [
 			"Esta materia tiene la posta.",
 			"Nada que ver con taller I. Acá se aprende posta."
@@ -103,7 +103,7 @@ const estadisticas = [
 		_id: "5ba70a2e1dabf8854f11deaa",
 		codigo: "75.45",
 		nombre: "Taller de Desarrollo de Proyectos I",
-		puntos: 4.4,
+		puntos: 3.54,
 		comentarios: [
 			"Excelente materia para aprender a ver un producto"
 		]
@@ -112,7 +112,7 @@ const estadisticas = [
 		_id: "5ba70ab61dabf8854f11dec6",
 		codigo: "75.47",
 		nombre: "Taller de Desarrollo de Proyectos II",
-		puntos: 4.33,
+		puntos: 3.33,
 		comentarios: [
 			"Nada para agregar. Excelente curso. Saludos para Fontela.",
 			"Deberían coordinar un poco mejor la rotación de grupos para ser equitativos con todos los grupos, siempre, semana por medio, nos tocaba irnos últimos. Más allá de eso, excelente curso.",
@@ -123,7 +123,7 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de76",
 		codigo: "75.43",
 		nombre: "Introducción a los Sistemas Distribuidos",
-		puntos: 4.07,
+		puntos: 3.07,
 		comentarios: [
 			"Los temas son complejos pero interesantes.",
 			"Las correcciones de los tps son demasiado exigentes.",
@@ -134,7 +134,7 @@ const estadisticas = [
 		_id: "5ba705601dabf8854f11ddfd",
 		codigo: "75.41",
 		nombre: "Algoritmos y Programación II",
-		puntos: 4,
+		puntos: 2.78,
 		comentarios: [
 			"Excelente curso.."
 		]
@@ -143,7 +143,7 @@ const estadisticas = [
 		_id: "5ba7076a1dabf8854f11de48",
 		codigo: "75.42",
 		nombre: "Taller de Programación I",
-		puntos: 3.5,
+		puntos: 2.51,
 		comentarios: [
 			"El curso de veiga es bastante exigente, pero se aprende.",
 			"Querés aprobar? Cursala con Azcurra."
@@ -162,7 +162,7 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de72",
 		codigo: "75.10",
 		nombre: "Técnicas de Diseño",
-		puntos: 2,
+		puntos: 1.77,
 		comentarios: [
 			"Creo que se le podría sacar más provecho a la materia.",
 			"Sólo fui a las fechas de exámenes y la aprobé."
@@ -172,7 +172,7 @@ const estadisticas = [
 		_id: "5ba6cf168b7931ac3e21de27",
 		codigo: "75.40",
 		nombre: "Algoritmos y Programación I",
-		puntos: 1.8,
+		puntos: 1.52,
 		comentarios: [
 			"Para alguien que recién empieza con la programación, esto es chino.",
 			"Usamos Pascal para programar.....cualquiera"
@@ -182,7 +182,7 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de74",
 		codigo: "75.15",
 		nombre: "Base de Datos",
-		puntos: 1.53,
+		puntos: 1.28,
 		comentarios: [
 			"Los temas que se dan están muy desactualizados.",
 			"Se ven cosas del año 1986... viejísimo!!!.",
@@ -193,14 +193,14 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de75",
 		codigo: "75.59",
 		nombre: "Técnicas de Programación Concurrente I",
-		puntos: 1.52,
+		puntos: 1.23,
 		comentarios: []
 	},
 	{
 		_id: "5ba708b61dabf8854f11de76",
 		codigo: "75.61",
 		nombre: "Taller de Programación III",
-		puntos: 1.50,
+		puntos: 1.06,
 		comentarios: [
 			"Podrían actualizar los contenidos???."
 		]
@@ -209,7 +209,7 @@ const estadisticas = [
 		_id: "5ba708b61dabf8854f11de77",
 		codigo: "75.74",
 		nombre: "Sistemas Distribuídos I",
-		puntos: 1.47,
+		puntos: 0.76,
 		comentarios: [
 			"Podrían actualizar los contenidos???."
 		]
@@ -217,8 +217,8 @@ const estadisticas = [
 	{
 		_id: "5ba708b61dabf8854f11de76",
 		codigo: "75.66",
-		nombre: "Manufactura Integrada por COmputadora (CIM) II",
-		puntos: 1.46,
+		nombre: "Manufactura Integrada por Computadora (CIM) II",
+		puntos: 0.46,
 		comentarios: [
 			"Podrían actualizar los contenidos???."
 		]
@@ -226,11 +226,68 @@ const estadisticas = [
 	
 ]
 
+function SelectColor(points) {
+
+	var color
+	if (points >= 9.5) {
+		color = "009955"
+	} else if (points >= 9.0) {
+		color = "229900"
+	} else if (points >= 8.5) {
+		color = "44B300"
+	} else if (points >= 8.0) {
+		color = "66CC00"
+	} else if (points >= 7.5) {
+		color = "88FF00"
+	} else if (points >= 7.0) {
+		color = "AAFF00"
+	} else if (points >= 6.5) {
+		color = "FFFF00"
+	} else if (points >= 6.0) {
+		color = "FFEE00"
+	} else if (points >= 5.5) {
+		color = "FFDD00"
+	} else if (points >= 5.0) {
+		color = "FFCC00"
+	} else if (points >= 4.5) {
+		color = "FFBB00"
+	} else if (points >= 4.0) {
+		color = "FFAA00"
+	} else if (points >= 3.5) {
+		color = "FF5500"
+	} else if (points >= 3.0) {
+		color = "FF4400"
+	} else if (points >= 2.5) {
+		color = "FF3300"
+	} else if (points >= 2.0) {
+		color = "FF2200"
+	} else if (points >= 1.5) {
+		color = "FF1100"
+	} else {
+		color = "FF0000"
+	}
+	
+	return "#" + color
+}
+
+function Abbreviate(name) {
+	var newName = name.replace("Administración", "Adm.");
+	newName = newName.replace("Introducción", "Intr.");
+	newName = newName.replace("Control", "Cont.");
+	newName = newName.replace("Proyectos", "Proy.");
+	newName = newName.replace("Sistemas", "Sist.");
+	newName = newName.replace("Taller", "T.");
+	newName = newName.replace("Informáticos", "Inf.");
+	newName = newName.replace("Técnicas", "Tcas.");
+	
+	return newName;
+}
+
 class SurveyGraph extends Component {
 	
 	constructor (props) {
 		super(props);
-	  
+		
 		this.state = {
 			drawerVisible: false,
 			showLoading: true,
@@ -239,8 +296,10 @@ class SurveyGraph extends Component {
 			datasource: [],
 			encuestas: null,
 			assignatureData: []
-		  };
-	  
+		};
+		
+		this.updateChart = this.updateChart.bind(this);
+	
 	}
 
 	setDrawerInvisible = (e) => {
@@ -254,53 +313,70 @@ class SurveyGraph extends Component {
 	getDepartmentInformation = () => {
 		console.log('getDepartmentInformation');
 		AdminService.getSurveys('2018', '2', '75').then((response) => {
-		  console.log('Informacion del departamento obtenida', response);
-		  const encuestasRecibidas = response.data.data.encuestas;
-		  this.setState({encuestas: encuestasRecibidas});
-		  console.log('Encuestas: ', encuestasRecibidas);
-		  this.setState({datasource: encuestasRecibidas.materias});
-		  this.setState({showLoading: false});
-		  //this.setState({departmentSelected: deparmentInformation});
+			console.log('Informacion del departamento obtenida', response);
+			const encuestasRecibidas = response.data.data.encuestas;
+			this.setState({encuestas: encuestasRecibidas});
+			console.log('Encuestas: ', encuestasRecibidas);
+			this.setState({datasource: encuestasRecibidas.materias});
+			this.setState({showLoading: false});
+			//this.setState({departmentSelected: deparmentInformation});
 
 		}).catch((e) => {
-		  console.log('DepartmentInformation fetch - failed');
-		  console.log('DepartmentInformation fetch - error', e);
-		  this.setState({showLoading: false});
-		  if (e.response == undefined) {
-			message.error('El servidor no responde. Intente más tarde.');
-		  } else {
-			console.log('DepartmentInformation fetch - response', e.response);
-			console.log('Error:', e.response.data.error.message);
-	  
-			//display error
-			message.error(e.response.data.error.message);
-		  }
-		  
-		  
+			console.log('DepartmentInformation fetch - failed');
+			console.log('DepartmentInformation fetch - error', e);
+			this.setState({showLoading: false});
+			if (e.response == undefined) {
+				message.error('El servidor no responde. Intente más tarde.');
+			} else {
+				console.log('DepartmentInformation fetch - response', e.response);
+				console.log('Error:', e.response.data.error.message);
+			
+				//display error
+				message.error(e.response.data.error.message);
+			}
+			
+			
 		})
-	  }
-
-	render() {
+	}
+	
+	getDataPoints = () => {
 		const self = this;
-		const datasource = self.state.datasource;
-		//const datasource = estadisticas; // => para pruebas mock
+		//const datasource = self.state.datasource;
+		const datasource = estadisticas; // => para pruebas mock
+		var dataPoints = [];
 		
-		var misDataPoints = [];
-		var index;
-		for (index = 0; index < datasource.length; ++index) {
+		for (let i = 0; i < datasource.length; ++i) {
 			var dataPoint = {};
-			dataPoint["y"] = datasource[index].puntos;
-			dataPoint["name"] = datasource[index].codigo;
-			dataPoint["label"] = datasource[index].nombre;
-			//dataPoint["toolTipContent"] = "Clic para ver comentarios de " + datasource[index].nombre;
-			misDataPoints.push(dataPoint);
-			//console.log(datasource[index]);
+			
+			dataPoint["y"] = datasource[i].puntos * 2;
+			dataPoint["name"] = datasource[i].codigo;
+			dataPoint["color"] = SelectColor(dataPoint["y"]);
+			dataPoint["label"] = datasource[i].nombre;
+			// armo el comentario para el mousehover
+			var n = datasource[i].comentarios.length;
+			var comments = "<strong>" + ((n == 0) ? "Sin comentarios</strong>" : n + " comentarios</strong> <small>Clic para visualizar</small>" ) ;
+			var assignature = datasource[i].codigo + " - " + Abbreviate(datasource[i].nombre);
+			var points = "Puntos: <strong>" + dataPoint["y"] + "</strong>";
+			dataPoint["toolTipContent"] = assignature + "</br>" + points + "</br>" + comments;
+			dataPoints.push(dataPoint);
+			//console.log(datasource[i]); </br> <strong>Temp</strong> </br>
 		}
+		
+		return dataPoints;
+	}
+	
+	getOptions = () => {
+		const self = this;
+		//const datasource = self.state.datasource;
+		const datasource = estadisticas; // => para pruebas mock
+		
+		var misDataPoints = self.getDataPoints();
 
 		const options = {
 			animationEnabled: true,
 			theme: "light2",
 			height: 560,
+			width: 1200,
 			title:{
 				text: "Materias más populares de la facultad",
 				fontSize: 20
@@ -315,14 +391,14 @@ class SurveyGraph extends Component {
 				//title: "Materia",
 				reversed: true,
 				height: 13,
-				width: 500,
+				
 				labelFontSize: 12,
 				interval: 1
 			},
 			axisY: {
 				//title: "Puntajes asignados",
 				labelFontSize: 12,
-				maximum: 5
+				maximum: 10
 			},
 			data: [{
 				click: function(e){
@@ -333,13 +409,41 @@ class SurveyGraph extends Component {
 					var code = e.dataPoint.name;
 					self.setState({asignatureSelected: code + ' - ' + subject});
 					self.setState({assignatureData: datasource[e.dataPoint.x].comentarios});
+					self.updateChart();
 					
 				},
 				type: "bar",
 				dataPoints: misDataPoints
 
 			}]
+		};
+		
+		return options;
+	}
+	
+	updateChart() {
+		const self = this;
+		this.chart.options.width = 740;
+		this.chart.options.subtitles = [];
+		this.chart.options.title.fontSize = 16;
+		this.chart.options.axisX.labelFontSize = 11;
+		//this.chart.options.axisX.height = 10;
+		this.chart.options.dataPointWidth = 18;
+		
+		var misDataPoints = self.getDataPoints();
+		for (let i = 0; i < misDataPoints.length; ++i) {
+			var s = Abbreviate(misDataPoints[i].label);
+			misDataPoints[i].label = s;
 		}
+		
+		this.chart.options.data[0].dataPoints = misDataPoints;
+		this.chart.render();
+	}
+
+	render() {
+		
+		const self = this;
+		const options = this.getOptions();
 		
 		return (
 		<div style={divStyle} >
@@ -358,7 +462,7 @@ class SurveyGraph extends Component {
 			</div>
 
 			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
+				onRef={ref => this.chart = ref}
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 
@@ -371,7 +475,7 @@ class SurveyGraph extends Component {
 				width={550}
 			>
 				<Row>
-      				<Col span={24}>
+					<Col span={24}>
 						<Table
 							style={{ 'table-layout': 'fixed', width: 500, 'white-space': 'pre-line'}}
 							dataSource={this.state.assignatureData}

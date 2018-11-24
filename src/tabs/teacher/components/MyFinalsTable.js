@@ -15,7 +15,8 @@ class MyFinals extends Component {
     fechaEdit: null,
     selectedCourse : null,
     selectedFinal : null,
-    inscriptosAFinal : {}
+    inscriptosAFinal : {},
+    notasFinal : {}
   }
 
   //Muestra el modal para confirmar cancelar un examen. Hecho con currying porque me salió así
@@ -65,7 +66,9 @@ class MyFinals extends Component {
     this.setState( { inscriptosAFinal : {} } );
       TeacherService.getExamEnrolled(row.curso._id, row._id).then( 
           (response) => {
-            this.setState( { selectedCourse : row.curso._id, selectedFinal : row._id, showFinalModal : true, inscriptosAFinal : response.data.data.inscripciones } )
+            let notasFinal =  { registros : [] }
+            this.setState( { selectedCourse : row.curso._id, selectedFinal : row._id, showFinalModal : true, inscriptosAFinal : response.data.data.inscripciones,
+            notasFinal : notasFinal } )
             console.log("Inscriptos",response.data.data.inscripciones);
           }
       ) 
@@ -132,7 +135,9 @@ class MyFinals extends Component {
               finalId={this.state.selectedFinal}   
               visible={this.state.showFinalModal}  
               handleCancel={this.handleCancelFinal}
-              inscriptosAFinal={this.state.inscriptosAFinal}       
+              inscriptosAFinal={this.state.inscriptosAFinal}      
+              notasFinal={this.state.notasFinal} 
+              hayActa={false} 
             ></FinalActModal>
           </Button.Group>
         }

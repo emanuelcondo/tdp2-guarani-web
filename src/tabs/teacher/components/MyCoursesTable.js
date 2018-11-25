@@ -178,6 +178,7 @@ class MyCourses extends Component {
               }}
               disabled={row.regulares === undefined || row.regulares.length === 0}
               icon='eye'
+              type="primary"
             >
               Ver
               </Button>
@@ -188,6 +189,7 @@ class MyCourses extends Component {
               }}
               disabled={row.regulares !== undefined && row.regulares.length === 0}
               icon='ordered-list'
+              type="primary"
             >
               Calificar
               </Button>

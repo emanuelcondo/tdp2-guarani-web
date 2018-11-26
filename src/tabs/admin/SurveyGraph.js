@@ -289,6 +289,9 @@ class SurveyGraph extends Component {
 		super(props);
 		
 		this.state = {
+			anio: null,
+			cuatrimestre: null,
+			depto: null,
 			drawerVisible: false,
 			showLoading: true,
 			asignatureSelected: "",
@@ -310,12 +313,13 @@ class SurveyGraph extends Component {
 		console.log('componentDidMount');
 		if (this.state.showLoading) {
 			console.log('va a actualizar componentDidMount');
-			this.getDepartmentInformation();
+			//this.getDepartmentInformation();
+			this.updateDepartmentInformation(this.props);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('componentWillReceiveProps');
+		console.log('componentWillReceiveProps: ',nextProps);
 		var actualAnio = this.props.anio;
 		var actualCuatri = this.props.cuatrimestre;
 		var actualDepto = this.props.depto;
@@ -325,15 +329,39 @@ class SurveyGraph extends Component {
 		if (newAnio !== actualAnio || newCuatri !== actualCuatri || actualDepto !== newDepto) {
 			this.setState({showLoading: true});
 			console.log('va a actualizar componentWillReceiveProps');
-			this.getDepartmentInformation();
+			
+			/*this.setState({
+				anio: newAnio,
+				cuatrimestre: newCuatri,
+				depto: newDepto
+			}, 
+			() => {
+				console.log('SurveyGraph NEW STATE: ', this.state);
+				this.getDepartmentInformation();
+			});*/
+
+			this.updateDepartmentInformation(nextProps);
 		}
 	}
 
+	updateDepartmentInformation = (nextProps) => {
+		this.setState({
+			anio: nextProps.anio,
+			cuatrimestre: nextProps.cuatrimestre,
+			depto: nextProps.depto
+		}, 
+		() => {
+			console.log('SurveyGraph NEW STATE: ', this.state);
+			this.getDepartmentInformation();
+		});
+	}
+
 	getDepartmentInformation = () => {
-		console.log('getDepartmentInformation');
-		var anio = this.props.anio;
-		var cuatrimestre = this.props.cuatrimestre;
-		var depto = this.props.depto;
+		
+		var anio = this.state.anio;
+		var cuatrimestre = this.state.cuatrimestre;
+		var depto = this.state.depto;
+		console.log('getDepartmentInformation ', anio, cuatrimestre, depto);
 		AdminService.getSurveys(anio, cuatrimestre, depto).then((response) => {
 			console.log('Informacion del departamento obtenida', response);
 			const encuestasRecibidas = response.data.data.encuestas;
@@ -363,8 +391,8 @@ class SurveyGraph extends Component {
 	
 	getDataPoints = () => {
 		const self = this;
-		//const datasource = self.state.datasource;
-		const datasource = estadisticas; // => para pruebas mock
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		var dataPoints = [];
 		
 		for (let i = 0; i < datasource.length; ++i) {
@@ -388,8 +416,8 @@ class SurveyGraph extends Component {
 	
 	getOptions = () => {
 		const self = this;
-		//const datasource = self.state.datasource;
-		const datasource = estadisticas; // => para pruebas mock
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = self.getDataPoints();
 

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Icon, Row, Col, Popover, Radio, Select } from 'antd';
+import { Button, Card, Row, Col, Popover, Radio, Select } from 'antd';
 import SurveyGraph from './SurveyGraph';
 
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const { Meta } = Card;
 
 class AdminSurveyChartRender extends Component {
 
@@ -22,14 +23,16 @@ class AdminSurveyChartRender extends Component {
 		}
 		console.log('Renderizando Popover');
 		return (
-			<div style={{ width: '25px', height: '25px', backgroundColor: 'white', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto'}}>
-				{/*<Popover
-					visible={true}
-					content='Seleccione año, cuatrimestre y departamento para visualizar el gráfico'
+			<div style={{ width: '250px', height: '50px', backgroundColor: 'white', position: 'absolute', left: 0, right: 0, top: 0, bottom: 100, margin: 'auto'}}>
+				<Card
+					style={{ width: 500, alignContent: 'center' }}
 				>
-					<Icon type="bar-chart" width='150em' height='150em' />
-				</Popover>*/}
-				<h1>Seleccione año, cuatrimestre y departamento para visualizar el gráfico</h1>
+					<Meta
+						title="Sin datos para mostrar"
+						description="Seleccione año, cuatrimestre y departamento. Luego presione Mostrar estadística"
+						align='center'
+					/>
+				</Card>
 			</div>
 		)
 	}
@@ -75,11 +78,16 @@ class AdminSurveyChart extends Component {
 	}
 
 	onUpdateChart = () => {
+		
 		this.setState({
 			anioToSend: this.state.anioSelected,
 			cuatrimestreToSend: this.state.cuatrimestreSelected,
 			deptoToSend: this.state.deptoSelected
+		}, 
+		() => {
+			console.log('NEW STATE: ', this.state);
 		});
+
 	}
 	
 	render() {
@@ -122,7 +130,7 @@ class AdminSurveyChart extends Component {
 							onSelect={ this.onDeptoSelected }
 						>
 							<Option value='61'>Matemática</Option>
-							<Option value='62'>Física</Option>
+							<Option value='62'>Física </Option>
 							<Option value='63'>Química</Option>
 							<Option value='66'>Electrónica</Option>
 							<Option value='70'>Agrimensura</Option>

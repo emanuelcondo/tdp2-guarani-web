@@ -62,7 +62,7 @@ export default class FinalActModal extends Component {
                 Modal.confirm({
                     title: 'Cargar notas de final',
                     okText: "Si",
-                    content: 'Una vez cargadas las notas del final estas no podran modificarse ni se podrán agregar notas nuevas. Esta seguro que desea continuar?  ',
+                    content: 'Una vez cargadas las notas del final estas no podran modificarse ni se podrán agregar notas nuevas. ¿Está seguro que desea continuar?  ',
                     onOk: this.generarActa,
                     cancelText: "No",
                     onCancel: () => { },

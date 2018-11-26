@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Button, Card, Row, Col, Popover, Radio, Select } from 'antd';
-import SurveyGraph from './SurveyGraph';
+import SurveyGraph from '../../admin/SurveyGraph';
+import * as DepartmentService from '../service/DepartmentService'
 
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Meta } = Card;
 
-class AdminSurveyChartRender extends Component {
+class DepSurveyChartRender extends Component {
 
 	getRender = () => {
 		console.log('Anio {}, cuatri {}, depto {}', this.props.anio, this.props.cuatrimestre, this.props.depto)
@@ -29,7 +30,7 @@ class AdminSurveyChartRender extends Component {
 				>
 					<Meta
 						title="Sin datos para mostrar"
-						description="Seleccione año, cuatrimestre y departamento. Luego presione Mostrar estadística"
+						description="Seleccione año y cuatrimestre. Luego presione Mostrar estadística"
 						align='center'
 					/>
 				</Card>
@@ -42,7 +43,7 @@ class AdminSurveyChartRender extends Component {
 	}
 }
 
-class AdminSurveyChart extends Component {
+class DepSurveyChart extends Component {
 	state = {
 		popOverVisible: true,
 		anioSelected: null,
@@ -68,21 +69,12 @@ class AdminSurveyChart extends Component {
 		//	cuatrimestreToSend: null
 		});
 	}
-	
-	onDeptoSelected = (d) => {
-		console.log('Depto selected: ', d);
-		this.setState({
-			deptoSelected: d,
-		//	deptoToSend: null
-		});
-	}
 
 	onUpdateChart = () => {
 		
 		this.setState({
 			anioToSend: this.state.anioSelected,
-			cuatrimestreToSend: this.state.cuatrimestreSelected,
-			deptoToSend: this.state.deptoSelected
+			cuatrimestreToSend: this.state.cuatrimestreSelected
 		}, 
 		() => {
 			console.log('NEW STATE: ', this.state);
@@ -90,11 +82,28 @@ class AdminSurveyChart extends Component {
 
 	}
 	
+	componentDidMount() {
+    this.loadMateriasFromServer();
+  }
+	
+	/**
+   * Carga las materias para el departamento que esta logeado usando el token
+   * Devuelve una promise para chainearle más cosas
+   */
+  async loadMateriasFromServer () {
+    return DepartmentService.getDepartmentDataByToken().then(
+      (response) => {
+        let depto = response.data.data.departamentos[0];
+        this.setState({ deptoToSend : depto.codigo });
+      }
+    )
+  }
+	
 	render() {
 		return (
 		<div>
 			<Row type="flex" justify="space-around" align="middle">
-				<Col span={7}>
+				<Col span={8}>
 					<div style={{ marginTop: '25px', marginLeft: '25px' }}>
 						<Select
 							placeholder="Selecciona el año"
@@ -113,7 +122,7 @@ class AdminSurveyChart extends Component {
 
 					</div>
 				</Col>
-				<Col span={4}>
+				<Col span={8}>
 					<div style={{ marginTop: '25px' }}>
 						<RadioGroup size="large" onChange={this.onCuatrimestreChange} value={this.state.cuatrimestreSelected}>
 							<RadioButton value={1}>1° </RadioButton>
@@ -122,25 +131,8 @@ class AdminSurveyChart extends Component {
 						</RadioGroup>
 					</div>
 				</Col>
+				
 				<Col span={6}>
-					<div style={{ marginTop: '25px' }}>
-						<Select
-							placeholder="Selecciona el departamento"
-							style={{ width: '300px' }}
-							onSelect={ this.onDeptoSelected }
-						>
-							<Option value='61'>Matemática</Option>
-							<Option value='62'>Física</Option>
-							<Option value='63'>Química</Option>
-							<Option value='66'>Electrónica</Option>
-							<Option value='70'>Agrimensura</Option>
-							<Option value='71'>Gestión</Option>
-							<Option value='75'>Computación</Option>
-						</Select>
-
-					</div>
-				</Col>
-				<Col span={4}>
 					<div style={{ marginTop: '25px' }}>
 						<Button
 							type='primary'
@@ -158,7 +150,7 @@ class AdminSurveyChart extends Component {
 			</Row>
 			
 			<Row type="flex" justify="left">
-				<AdminSurveyChartRender 
+				<DepSurveyChartRender 
 					anio={this.state.anioToSend} 
 					cuatrimestre={this.state.cuatrimestreToSend} 
 					depto={this.state.deptoToSend}/>
@@ -168,4 +160,4 @@ class AdminSurveyChart extends Component {
 	}
 }
 
-export default AdminSurveyChart;
+export default DepSurveyChart;

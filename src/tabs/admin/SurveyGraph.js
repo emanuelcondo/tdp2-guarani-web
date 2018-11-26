@@ -289,6 +289,8 @@ class SurveyGraph extends Component {
 		super(props);
 		
 		this.state = {
+			chartTitle: "",
+			chartSubtitle: "",
 			anio: null,
 			cuatrimestre: null,
 			depto: null,
@@ -330,16 +332,6 @@ class SurveyGraph extends Component {
 			this.setState({showLoading: true});
 			console.log('va a actualizar componentWillReceiveProps');
 			
-			/*this.setState({
-				anio: newAnio,
-				cuatrimestre: newCuatri,
-				depto: newDepto
-			}, 
-			() => {
-				console.log('SurveyGraph NEW STATE: ', this.state);
-				this.getDepartmentInformation();
-			});*/
-
 			this.updateDepartmentInformation(nextProps);
 		}
 	}
@@ -367,6 +359,17 @@ class SurveyGraph extends Component {
 			const encuestasRecibidas = response.data.data.encuestas;
 			this.setState({encuestas: encuestasRecibidas});
 			console.log('Encuestas: ', encuestasRecibidas);
+			if (encuestasRecibidas.materias.length == 0) {
+				this.setState({
+					chartTitle: "No hay datos para los parámetros seleccionados",
+					chartSubtitle: "Seleccione otro año, cuatrimestre o departamento"
+				});
+			} else {
+				this.setState({
+					chartTitle: "Opinión general de las materias",
+					chartSubtitle: "Haga clic sobre la barra de la materia para ver los comentarios de los alumnos."
+				});
+			}
 			this.setState({datasource: encuestasRecibidas.materias});
 			this.setState({showLoading: false});
 			//this.setState({departmentSelected: deparmentInformation});
@@ -424,15 +427,15 @@ class SurveyGraph extends Component {
 		const options = {
 			animationEnabled: true,
 			theme: "light2",
-			height: 560,
+			//height: 560,
 			width: 1200,
 			title:{
-				text: "Materias más populares de la facultad",
+				text: self.state.chartTitle,
 				fontSize: 20
 			},
 			subtitles: [
 				{
-					text: "Haga clic sobre la barra de la materia para ver los comentarios de los alumnos.",
+					text: self.state.chartSubtitle,
 					fontSize: 14
 				}
 			],

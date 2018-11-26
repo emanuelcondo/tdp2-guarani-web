@@ -289,6 +289,11 @@ class SurveyGraph extends Component {
 		super(props);
 		
 		this.state = {
+			chartTitle: "",
+			chartSubtitle: "",
+			anio: null,
+			cuatrimestre: null,
+			depto: null,
 			drawerVisible: false,
 			showLoading: true,
 			asignatureSelected: "",
@@ -307,16 +312,64 @@ class SurveyGraph extends Component {
 	}
 
 	componentDidMount() {
-		this.getDepartmentInformation()
+		console.log('componentDidMount');
+		if (this.state.showLoading) {
+			console.log('va a actualizar componentDidMount');
+			//this.getDepartmentInformation();
+			this.updateDepartmentInformation(this.props);
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps: ',nextProps);
+		var actualAnio = this.props.anio;
+		var actualCuatri = this.props.cuatrimestre;
+		var actualDepto = this.props.depto;
+		var newAnio = nextProps.anio;
+		var newCuatri = nextProps.cuatrimestre;
+		var newDepto = nextProps.depto;
+		if (newAnio !== actualAnio || newCuatri !== actualCuatri || actualDepto !== newDepto) {
+			this.setState({showLoading: true});
+			console.log('va a actualizar componentWillReceiveProps');
+			
+			this.updateDepartmentInformation(nextProps);
+		}
+	}
+
+	updateDepartmentInformation = (nextProps) => {
+		this.setState({
+			anio: nextProps.anio,
+			cuatrimestre: nextProps.cuatrimestre,
+			depto: nextProps.depto
+		}, 
+		() => {
+			console.log('SurveyGraph NEW STATE: ', this.state);
+			this.getDepartmentInformation();
+		});
 	}
 
 	getDepartmentInformation = () => {
-		console.log('getDepartmentInformation');
-		AdminService.getSurveys('2018', '2', '75').then((response) => {
+		
+		var anio = this.state.anio;
+		var cuatrimestre = this.state.cuatrimestre;
+		var depto = this.state.depto;
+		console.log('getDepartmentInformation ', anio, cuatrimestre, depto);
+		AdminService.getSurveys(anio, cuatrimestre, depto).then((response) => {
 			console.log('Informacion del departamento obtenida', response);
 			const encuestasRecibidas = response.data.data.encuestas;
 			this.setState({encuestas: encuestasRecibidas});
 			console.log('Encuestas: ', encuestasRecibidas);
+			if (encuestasRecibidas.materias.length == 0) {
+				this.setState({
+					chartTitle: "No hay datos para los parámetros seleccionados",
+					chartSubtitle: "Seleccione otro año, cuatrimestre o departamento"
+				});
+			} else {
+				this.setState({
+					chartTitle: "Opinión general de las materias",
+					chartSubtitle: "Haga clic sobre la barra de la materia para ver los comentarios de los alumnos."
+				});
+			}
 			this.setState({datasource: encuestasRecibidas.materias});
 			this.setState({showLoading: false});
 			//this.setState({departmentSelected: deparmentInformation});
@@ -341,8 +394,8 @@ class SurveyGraph extends Component {
 	
 	getDataPoints = () => {
 		const self = this;
-		//const datasource = self.state.datasource;
-		const datasource = estadisticas; // => para pruebas mock
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		var dataPoints = [];
 		
 		for (let i = 0; i < datasource.length; ++i) {
@@ -359,7 +412,6 @@ class SurveyGraph extends Component {
 			var points = "Puntos: <strong>" + dataPoint["y"] + "</strong>";
 			dataPoint["toolTipContent"] = assignature + "</br>" + points + "</br>" + comments;
 			dataPoints.push(dataPoint);
-			//console.log(datasource[i]); </br> <strong>Temp</strong> </br>
 		}
 		
 		return dataPoints;
@@ -367,23 +419,23 @@ class SurveyGraph extends Component {
 	
 	getOptions = () => {
 		const self = this;
-		//const datasource = self.state.datasource;
-		const datasource = estadisticas; // => para pruebas mock
+		const datasource = self.state.datasource;
+		//const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = self.getDataPoints();
 
 		const options = {
 			animationEnabled: true,
 			theme: "light2",
-			height: 560,
+			//height: 560,
 			width: 1200,
 			title:{
-				text: "Materias más populares de la facultad",
+				text: self.state.chartTitle,
 				fontSize: 20
 			},
 			subtitles: [
 				{
-					text: "Haga clic sobre la barra de la materia para ver los comentarios de los alumnos.",
+					text: self.state.chartSubtitle,
 					fontSize: 14
 				}
 			],
@@ -441,7 +493,7 @@ class SurveyGraph extends Component {
 	}
 
 	render() {
-		
+		console.log('refrescando grafico');
 		const self = this;
 		const options = this.getOptions();
 		
@@ -472,7 +524,7 @@ class SurveyGraph extends Component {
 				visible={self.state.drawerVisible}
 				closable={true}
 				onClose={self.setDrawerInvisible}
-				width={550}
+				width={530}
 			>
 				<Row>
 					<Col span={24}>

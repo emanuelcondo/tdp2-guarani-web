@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
-import SurveyGraph from './SurveyGraph'
+//import SurveyGraph from './SurveyGraph'
+import AdminSurveyChart from './AdminSurveyChart'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
 import * as AuthService from '../login/service/AuthService'
 //import CourseABMContent from '../admin-dep/abm-course/CourseABMContent'
@@ -20,7 +21,8 @@ class AdminContainer extends Component {
     childrens: {
       definePeriod: <DefinePeriod />,
       initialLoad: <InitialLoadContainer />,
-      surveyGraph: <SurveyGraph/>
+      //surveyGraph: <SurveyGraph anio={2018} cuatrimestre={2} depto={75}/>
+      surveyChart: <AdminSurveyChart/>
       //books: <BookABMContent />,
       //courses: <CourseABMContent />
     },
@@ -74,7 +76,7 @@ class AdminContainer extends Component {
                   </Menu.Item>
                   <Menu.Item
                     key="3"
-                    onClick={() => this.selectNewChilder('surveyGraph')}
+                    onClick={() => this.selectNewChilder('surveyChart')}
                   >
                     Reporte de encuestas
                   </Menu.Item>

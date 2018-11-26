@@ -23,10 +23,13 @@ export default class FinalActModal extends Component {
                     inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre pero no tiene nota de examen\n";                    
                 }
                 if (registro.notaCierre == null && registro.notaExamen != null && registro.notaExamen >= 4) {
-                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota examen >=4 pero no se le ha asignado nota de cierre\n";                    
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota examen >= 4 pero no se le ha asignado nota de cierre\n";                    
                 }
                 if (registro.notaCierre != null && registro.notaCierre >= 4 && registro.notaExamen != null && registro.notaExamen < 4) {
-                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre >=4 pero nota de examen < 4\n";                    
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre >= 4 pero nota de examen < 4\n";                    
+                }
+                if (registro.notaCierre != null && registro.notaCierre < 4 && registro.notaExamen != null && registro.notaExamen >= 4) {
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre < 4 pero nota de examen >= 4\n";                    
                 }
             }
         )
@@ -75,20 +78,13 @@ export default class FinalActModal extends Component {
     generarActa = () => {
         TeacherService.gradeExam(this.props.finalId, this.props.notasFinal).then(
             (response) => {
-                console.log("OK", response)
                 message.success('Se han cargado correctamente las notas al sistema bajo el acta '+response.data.data.acta.codigo);
                 this.setState( {acta : response.data.data.acta.codigo } )
+                this.props.handleCancel();
             }).catch((e) => {
-                console.log("ERROR", e)
                 message.error('No se puedieron cargar las notas al sistema')
             }
         )
-    }
-
-    handleCancel = (e) => {
-        this.setState({
-            visible: false,
-        });
     }
 
     onChangeNotaFinal = (row) => (event) => {
@@ -202,7 +198,6 @@ export default class FinalActModal extends Component {
       visible={this.state.visible}
       onOk={this.handleOk}
       onCancel={this.props.handleCancel}
-      destroyOnClose="true"
       okText="Guardar"
       cancelText="Cerrar"
       okButtonProps={{ disabled : (this.state.acta != null) }}

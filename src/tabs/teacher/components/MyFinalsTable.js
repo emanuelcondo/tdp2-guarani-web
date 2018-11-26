@@ -16,6 +16,7 @@ class MyFinals extends Component {
     selectedCourse : null,
     selectedFinal : null,
     selectedFinalActa : null,
+    selectedRow : null,
     inscriptosAFinal : {},
     notasFinal : {}
   }
@@ -55,16 +56,18 @@ class MyFinals extends Component {
     this.setState({
       showEditModal: false,
     });
+    this.props.update();
   }
 
   handleCancelFinal = () => {
     this.setState({
       showFinalModal: false,
     });
+    this.props.update();
   }
 
   onClickInscriptosAFinal = (row) => () => {
-    this.setState( { inscriptosAFinal : {} } );
+    this.setState( { inscriptosAFinal : {}, selectedRow : row } );
       TeacherService.getExamEnrolled(row.curso._id, row._id).then( 
           (response) => {
             let notasFinal =  { registros : [] }

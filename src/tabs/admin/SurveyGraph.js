@@ -309,7 +309,7 @@ class SurveyGraph extends Component {
 	componentDidMount() {
 		console.log('componentDidMount');
 		if (this.state.showLoading) {
-			console.log('va a actualizar');
+			console.log('va a actualizar componentDidMount');
 			this.getDepartmentInformation();
 		}
 	}
@@ -324,7 +324,7 @@ class SurveyGraph extends Component {
 		var newDepto = nextProps.depto;
 		if (newAnio !== actualAnio || newCuatri !== actualCuatri || actualDepto !== newDepto) {
 			this.setState({showLoading: true});
-			console.log('va a actualizar');
+			console.log('va a actualizar componentWillReceiveProps');
 			this.getDepartmentInformation();
 		}
 	}
@@ -381,7 +381,6 @@ class SurveyGraph extends Component {
 			var points = "Puntos: <strong>" + dataPoint["y"] + "</strong>";
 			dataPoint["toolTipContent"] = assignature + "</br>" + points + "</br>" + comments;
 			dataPoints.push(dataPoint);
-			//console.log(datasource[i]); </br> <strong>Temp</strong> </br>
 		}
 		
 		return dataPoints;
@@ -494,7 +493,7 @@ class SurveyGraph extends Component {
 				visible={self.state.drawerVisible}
 				closable={true}
 				onClose={self.setDrawerInvisible}
-				width={550}
+				width={530}
 			>
 				<Row>
 					<Col span={24}>

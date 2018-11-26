@@ -22,7 +22,6 @@ class AdminSurveyChartRender extends Component {
 		}
 		console.log('Renderizando Popover');
 		return (
-			
 			<div style={{ width: '25px', height: '25px', backgroundColor: 'white', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto'}}>
 				{/*<Popover
 					visible={true}
@@ -87,8 +86,8 @@ class AdminSurveyChart extends Component {
 		return (
 		<div>
 			<Row type="flex" justify="space-around" align="middle">
-				<Col span={6}>
-					<div style={{ margin: '25px' }}>
+				<Col span={7}>
+					<div style={{ marginTop: '25px', marginLeft: '25px' }}>
 						<Select
 							placeholder="Selecciona el año"
 							style={{ width: '300px' }}
@@ -106,8 +105,8 @@ class AdminSurveyChart extends Component {
 
 					</div>
 				</Col>
-				<Col span={6}>
-					<div style={{ margin: '25px' }}>
+				<Col span={4}>
+					<div style={{ marginTop: '25px' }}>
 						<RadioGroup size="large" onChange={this.onCuatrimestreChange} value={this.state.cuatrimestreSelected}>
 							<RadioButton value={1}>1° </RadioButton>
 							<RadioButton value={2}>2° </RadioButton>
@@ -116,7 +115,7 @@ class AdminSurveyChart extends Component {
 					</div>
 				</Col>
 				<Col span={6}>
-					<div style={{ margin: '25px' }}>
+					<div style={{ marginTop: '25px' }}>
 						<Select
 							placeholder="Selecciona el departamento"
 							style={{ width: '300px' }}
@@ -133,12 +132,12 @@ class AdminSurveyChart extends Component {
 
 					</div>
 				</Col>
-				<Col span={6}>
-					<div style={{ margin: '25px' }}>
+				<Col span={4}>
+					<div style={{ marginTop: '25px' }}>
 						<Button
 							type='primary'
 							icon='bar-chart'
-							style={{ marginRight: '25px', marginTop: '25px' }}
+							//style={{ marginRight: '25px', marginTop: '25px' }}
 							onClick={this.onUpdateChart }
 						>
 							Mostrar estadística
@@ -151,18 +150,10 @@ class AdminSurveyChart extends Component {
 			</Row>
 			
 			<Row type="flex" justify="left">
-				{/*<div className={this.state.popOverVisible ? 'content-show' : 'content-hidden'}>
-					<Popover
-						visible={this.state.popOverVisible}
-						content='Seleccione año, cuatrimestre y departamento para visualizar el gráfico'
-					>
-						<Icon type="bar-chart" width='50em' height='50em' />
-					</Popover>
-				</div>
-				<div className={!this.state.popOverVisible ? 'content-show' : 'content-hidden'}>*/}
-					<AdminSurveyChartRender anio={this.state.anioToSend} cuatrimestre={this.state.cuatrimestreToSend} depto={this.state.deptoToSend}/>
-				{/*</div>*/}
-
+				<AdminSurveyChartRender 
+					anio={this.state.anioToSend} 
+					cuatrimestre={this.state.cuatrimestreToSend} 
+					depto={this.state.deptoToSend}/>
 			</Row>
 		</div>
 		)

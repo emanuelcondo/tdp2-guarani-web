@@ -10,60 +10,79 @@ export default class FinalActModal extends Component {
 
     state = {
         suma : 0,
+        visible : false,
     }
 
     handleOk = () => {
 
-        let errores = ""
+        let inconsistenciaDeNotas = ""
 
         this.props.notasFinal.registros.forEach( 
             registro => {
                 if (registro.notaCierre != null && registro.notaExamen == null) {
-                    return Modal.error({
-                        title: 'Incosistencia de notas',
-                        content: `El alumno ${registro.alumno} tiene nota de cierre pero no tiene nota de final`,
-                    });
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre pero no tiene nota de examen\n";                    
+                }
+                if (registro.notaCierre == null && registro.notaExamen != null && registro.notaExamen >= 4) {
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota examen >=4 pero no se le ha asignado nota de cierre\n";                    
+                }
+                if (registro.notaCierre != null && registro.notaCierre >= 4 && registro.notaExamen != null && registro.notaExamen < 4) {
+                    inconsistenciaDeNotas += "El alumno "+registro.alumno+" tiene nota de cierre >=4 pero nota de examen < 4\n";                    
                 }
             }
         )
 
-        let sumatoria = this.props.notasFinal.registros.reduce( 
-            (acum, val) => {
-                let nota = parseInt(val.notaCierre)
-                if (nota !== nota) return acum;
-                return acum + nota;
-            }, 0
-        )
-        if (sumatoria !== sumatoria) sumatoria = 0;
-
-        if (sumatoria !== this.state.suma) {
+        if (inconsistenciaDeNotas != "") {
             return Modal.error({
-                title: 'Suma de seguridad incorrecta',
-                content: 'Por favor verifique las notas ingresadas',
+                title: 'Incosistencia de notas',
+                content: <p style={{whiteSpace: "pre-line"}}>{inconsistenciaDeNotas}</p>,
+                width: "50%"
             });
         }
         else {
-            Modal.confirm({
-                title: 'Cargar notas de final',
-                okText: "Si",
-                content: 'Una vez cargadas las notas del final estas no podran modificarse ni se podrán agregar notas nuevas. Esta seguro que desea continuar?  ',
-                onOk: this.generarActa,
-                cancelText: "No",
-                onCancel: () => { },
-            })
+    
+            let sumatoria = this.props.notasFinal.registros.reduce( 
+                (acum, val) => {
+                    let nota = parseInt(val.notaCierre)
+                    if (nota !== nota) return acum;
+                    return acum + nota;
+                }, 0
+            )
+            if (sumatoria !== sumatoria) sumatoria = 0;
+
+            if (sumatoria !== this.state.suma) {
+                return Modal.error({
+                    title: 'Suma de seguridad incorrecta',
+                    content: 'Por favor verifique que las notas de cierre ingresadas den como resultado de su suma el valor de la suma de seguridad',
+                });
+            }
+            else {
+                Modal.confirm({
+                    title: 'Cargar notas de final',
+                    okText: "Si",
+                    content: 'Una vez cargadas las notas del final estas no podran modificarse ni se podrán agregar notas nuevas. Esta seguro que desea continuar?  ',
+                    onOk: this.generarActa,
+                    cancelText: "No",
+                    onCancel: () => { },
+                })
+            }
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState( {acta: props.acta, visible:props.visible} );
     }
 
     generarActa = () => {
         TeacherService.gradeExam(this.props.finalId, this.props.notasFinal).then(
-        (response) => {
-            message.success('Se han cargado correctamente las notas al sistema bajo el acta '+response.data.acta.codigo);
-            this.props.hayActa  = true;
-        }).catch((e) => {
-            message.error('No se puedieron cargar las notas al sistema')
-        }
-    )
-    this.setState({ visible: false });
+            (response) => {
+                console.log("OK", response)
+                message.success('Se han cargado correctamente las notas al sistema bajo el acta '+response.data.data.acta.codigo);
+                this.setState( {acta : response.data.data.acta.codigo } )
+            }).catch((e) => {
+                console.log("ERROR", e)
+                message.error('No se puedieron cargar las notas al sistema')
+            }
+        )
     }
 
     handleCancel = (e) => {
@@ -114,6 +133,15 @@ export default class FinalActModal extends Component {
 
   render() {
 
+    let sum = <div></div>
+    if (this.state.acta == null) sum = <div>
+    <Divider>Suma de seguridad</Divider>
+    <div align="Right"><Input type="number" min={0} onChange={this.onChangeSumaSeguridad} /></div>
+    </div>
+
+    let titulo = "Inscriptos"
+    if (this.state.acta != null) titulo += "- Acta " + this.state.acta;
+
     const columns = [{
         title: 'Padrón',
         dataIndex: 'alumno.legajo',
@@ -146,7 +174,7 @@ export default class FinalActModal extends Component {
         key: 'notaExamen',
         align: 'center',
         render: (text, record)  => {
-            if (this.props.hayActa || record.notaExamen != null) {
+            if (this.state.acta != null || record.notaExamen != null) {
                 return record.notaExamen;
             }
             else {
@@ -159,7 +187,7 @@ export default class FinalActModal extends Component {
         key: 'notaCierre',
         align: 'center',
         render: (text, record) => {
-            if (this.props.hayActa || record.notaCierre != null) {
+            if (this.state.acta != null || record.notaCierre != null) {
                 return record.notaCierre;
             }
             else {
@@ -169,14 +197,15 @@ export default class FinalActModal extends Component {
     }];
    
     return <Modal
-      title="Inscriptos"
+      title={titulo}
       width="90%"
-      visible={this.props.visible}
+      visible={this.state.visible}
       onOk={this.handleOk}
       onCancel={this.props.handleCancel}
       destroyOnClose="true"
       okText="Guardar"
       cancelText="Cerrar"
+      okButtonProps={{ disabled : (this.state.acta != null) }}
     >
     <div>
         <Table 
@@ -187,8 +216,7 @@ export default class FinalActModal extends Component {
             locale={{ emptyText: 'No hay ningún inscripto', }}
             pagination={false} />
     </div>
-    <Divider>Suma de seguridad</Divider>
-    <div align="Right"><Input type="number" min={0} onChange={this.onChangeSumaSeguridad} /></div>
+    {sum}
 
     </Modal >
   }

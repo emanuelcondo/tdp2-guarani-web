@@ -15,6 +15,7 @@ class MyFinals extends Component {
     fechaEdit: null,
     selectedCourse : null,
     selectedFinal : null,
+    selectedFinalActa : null,
     inscriptosAFinal : {},
     notasFinal : {}
   }
@@ -68,8 +69,7 @@ class MyFinals extends Component {
           (response) => {
             let notasFinal =  { registros : [] }
             this.setState( { selectedCourse : row.curso._id, selectedFinal : row._id, showFinalModal : true, inscriptosAFinal : response.data.data.inscripciones,
-            notasFinal : notasFinal } )
-            console.log("Inscriptos",response.data.data.inscripciones);
+            notasFinal : notasFinal, selectedFinalActa : row.acta } )
           }
       ) 
   }
@@ -137,7 +137,7 @@ class MyFinals extends Component {
               handleCancel={this.handleCancelFinal}
               inscriptosAFinal={this.state.inscriptosAFinal}      
               notasFinal={this.state.notasFinal} 
-              hayActa={false} 
+              acta={this.state.selectedFinalActa} 
             ></FinalActModal>
           </Button.Group>
         }

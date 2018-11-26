@@ -362,7 +362,7 @@ class SurveyGraph extends Component {
 			if (encuestasRecibidas.materias.length == 0) {
 				this.setState({
 					chartTitle: "No hay datos para los parámetros seleccionados",
-					chartSubtitle: "Seleccione otro año, cuatrimestre o departamento"
+					chartSubtitle: "Seleccione otro año o cuatrimestre"
 				});
 			} else {
 				this.setState({

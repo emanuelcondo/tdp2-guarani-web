@@ -307,7 +307,26 @@ class SurveyGraph extends Component {
 	}
 
 	componentDidMount() {
-		this.getDepartmentInformation()
+		console.log('componentDidMount');
+		if (this.state.showLoading) {
+			console.log('va a actualizar');
+			this.getDepartmentInformation();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps');
+		var actualAnio = this.props.anio;
+		var actualCuatri = this.props.cuatrimestre;
+		var actualDepto = this.props.depto;
+		var newAnio = nextProps.anio;
+		var newCuatri = nextProps.cuatrimestre;
+		var newDepto = nextProps.depto;
+		if (newAnio !== actualAnio || newCuatri !== actualCuatri || actualDepto !== newDepto) {
+			this.setState({showLoading: true});
+			console.log('va a actualizar');
+			this.getDepartmentInformation();
+		}
 	}
 
 	getDepartmentInformation = () => {
@@ -444,7 +463,7 @@ class SurveyGraph extends Component {
 	}
 
 	render() {
-		
+		console.log('refrescando grafico');
 		const self = this;
 		const options = this.getOptions();
 		

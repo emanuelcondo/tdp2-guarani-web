@@ -6,32 +6,80 @@ const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
+class AdminSurveyChartRender extends Component {
+
+	getRender = () => {
+		console.log('Anio {}, cuatri {}, depto {}', this.props.anio, this.props.cuatrimestre, this.props.depto)
+		if (this.props.anio !== null && this.props.cuatrimestre !== null && this.props.depto !== null  ) {
+			console.log('Renderizando SurveyGraph');
+			return (
+				<SurveyGraph 
+					anio={this.props.anio}
+					cuatrimestre={this.props.cuatrimestre}
+					depto={this.props.depto}
+				/>
+			)
+		}
+		console.log('Renderizando Popover');
+		return (
+			
+			<div style={{ width: '25px', height: '25px', backgroundColor: 'white', position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto'}}>
+				{/*<Popover
+					visible={true}
+					content='Seleccione año, cuatrimestre y departamento para visualizar el gráfico'
+				>
+					<Icon type="bar-chart" width='150em' height='150em' />
+				</Popover>*/}
+				<h1>Seleccione año, cuatrimestre y departamento para visualizar el gráfico</h1>
+			</div>
+		)
+	}
+
+	render() {
+		return this.getRender();
+	}
+}
+
 class AdminSurveyChart extends Component {
 	state = {
 		popOverVisible: true,
 		anioSelected: null,
+		anioToSend: null,
 		cuatrimestreSelected: null,
-		deptoSelected: null
+		cuatrimestreToSend: null,
+		deptoSelected: null,
+		deptoToSend: null
 	}
 	
 	onAnioSelected = (a) => {
 		console.log('Año selected: ', a);
 		this.setState({
-			anioSelected: a
+			anioSelected: a,
+		//	anioToSend: null
 		});
 	}
 	
 	onCuatrimestreChange = (e) => {
 		console.log('Cuatrimestre checked: ', e.target.value);
 		this.setState({
-			cuatrimestreSelected: e.target.value
+			cuatrimestreSelected: e.target.value,
+		//	cuatrimestreToSend: null
 		});
 	}
 	
 	onDeptoSelected = (d) => {
 		console.log('Depto selected: ', d);
 		this.setState({
-			deptoSelected: d
+			deptoSelected: d,
+		//	deptoToSend: null
+		});
+	}
+
+	onUpdateChart = () => {
+		this.setState({
+			anioToSend: this.state.anioSelected,
+			cuatrimestreToSend: this.state.cuatrimestreSelected,
+			deptoToSend: this.state.deptoSelected
 		});
 	}
 	
@@ -91,7 +139,7 @@ class AdminSurveyChart extends Component {
 							type='primary'
 							icon='bar-chart'
 							style={{ marginRight: '25px', marginTop: '25px' }}
-							onClick={() => { this.setState({ newPeriodModalVisible: true }) }}
+							onClick={this.onUpdateChart }
 						>
 							Mostrar estadística
 						</Button>
@@ -103,7 +151,7 @@ class AdminSurveyChart extends Component {
 			</Row>
 			
 			<Row type="flex" justify="left">
-				<div className={this.state.popOverVisible ? 'content-show' : 'content-hidden'}>
+				{/*<div className={this.state.popOverVisible ? 'content-show' : 'content-hidden'}>
 					<Popover
 						visible={this.state.popOverVisible}
 						content='Seleccione año, cuatrimestre y departamento para visualizar el gráfico'
@@ -111,9 +159,9 @@ class AdminSurveyChart extends Component {
 						<Icon type="bar-chart" width='50em' height='50em' />
 					</Popover>
 				</div>
-				<div className={!this.state.popOverVisible ? 'content-show' : 'content-hidden'}>
-					<SurveyGraph anio={this.state.anioSelected} cuatrimestre={this.state.cuatrimestreSelected} depto={this.state.deptoSelected}/>
-				</div>
+				<div className={!this.state.popOverVisible ? 'content-show' : 'content-hidden'}>*/}
+					<AdminSurveyChartRender anio={this.state.anioToSend} cuatrimestre={this.state.cuatrimestreToSend} depto={this.state.deptoToSend}/>
+				{/*</div>*/}
 
 			</Row>
 		</div>

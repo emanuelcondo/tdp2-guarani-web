@@ -406,7 +406,8 @@ class SurveyGraph extends Component {
 			dataPoint["color"] = SelectColor(dataPoint["y"]);
 			dataPoint["label"] = datasource[i].nombre;
 			// armo el comentario para el mousehover
-			var n = datasource[i].comentarios.length;
+			var allcomments = datasource[i].comentarios.filter(function(entry) { return entry.trim() != ''; });
+			var n = allcomments.length;
 			var comments = "<strong>" + ((n == 0) ? "Sin comentarios</strong>" : n + " comentarios</strong> <small>Clic para visualizar</small>" ) ;
 			var assignature = datasource[i].codigo + " - " + Abbreviate(datasource[i].nombre);
 			var points = "Puntos: <strong>" + dataPoint["y"] + "</strong>";
@@ -420,6 +421,7 @@ class SurveyGraph extends Component {
 	getOptions = () => {
 		const self = this;
 		const datasource = self.state.datasource;
+		
 		//const datasource = estadisticas; // => para pruebas mock
 		
 		var misDataPoints = self.getDataPoints();
@@ -460,7 +462,8 @@ class SurveyGraph extends Component {
 					var subject = e.dataPoint.label;
 					var code = e.dataPoint.name;
 					self.setState({asignatureSelected: code + ' - ' + subject});
-					self.setState({assignatureData: datasource[e.dataPoint.x].comentarios});
+					var allcomments = datasource[e.dataPoint.x].comentarios.filter(function(entry) { return entry.trim() != ''; });
+					self.setState({assignatureData: allcomments});
 					self.updateChart();
 					
 				},

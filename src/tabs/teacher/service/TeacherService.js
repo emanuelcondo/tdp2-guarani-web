@@ -42,8 +42,18 @@ export const getExamEnrolled = (courseId, examId) => {
 export const cancelExam = (courseId, examId) => {
   return server.delete(`docentes/mis-cursos/${courseId}/examenes/${examId}`)
 }
+
 export const updateExam = (courseId, examId, date) => {
   return server.put(`docentes/mis-cursos/${courseId}/examenes/${examId}`, { 'fecha': date })
+}
+
+/**
+ * Manda las notas para un final
+ * @param {*} examId  Id del examen
+ * @param {*} notas   JSON segun especificacion de la API
+ */
+export const gradeExam = (examId, notas) => {
+  return server.post(`docentes/mis-examenes/${examId}/cargar-notas`, notas)
 }
 
 export const updateNote = (courseId, students) => {

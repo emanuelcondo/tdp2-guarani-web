@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import DefinePeriod from './DefinePeriod'
+//import SurveyGraph from './SurveyGraph'
+import AdminSurveyChart from './AdminSurveyChart'
 import InitialLoadContainer from '../admin-load/InitialLoadContainer';
 import * as AuthService from '../login/service/AuthService'
-import CourseABMContent from '../admin-dep/abm-course/CourseABMContent'
+//import CourseABMContent from '../admin-dep/abm-course/CourseABMContent'
 //import BookABMContent from './BookABMContent'
 
 
@@ -19,6 +21,8 @@ class AdminContainer extends Component {
     childrens: {
       definePeriod: <DefinePeriod />,
       initialLoad: <InitialLoadContainer />,
+      //surveyGraph: <SurveyGraph anio={2018} cuatrimestre={2} depto={75}/>
+      surveyChart: <AdminSurveyChart/>
       //books: <BookABMContent />,
       //courses: <CourseABMContent />
     },
@@ -51,7 +55,7 @@ class AdminContainer extends Component {
             <Row>
               <Col span={1}>
               </Col>
-              <Col span={17}>
+              <Col span={15}>
                 <Menu
                   theme="dark"
                   mode="horizontal"
@@ -70,15 +74,21 @@ class AdminContainer extends Component {
                   >
                     Carga Inicial
                   </Menu.Item>
+                  <Menu.Item
+                    key="3"
+                    onClick={() => this.selectNewChilder('surveyChart')}
+                  >
+                    Reporte de encuestas
+                  </Menu.Item>
 
                   {/*<Menu.Item
-                    key="3"
+                    key="4"
                     onClick={() => this.selectNewChilder('courses')}
                   >
                     Cursos
                   </Menu.Item>
                   {<Menu.Item
-                    key="4"
+                    key="5"
                     onClick={() => this.selectNewChilder('books')}
                   >
                     Libros
@@ -86,7 +96,7 @@ class AdminContainer extends Component {
 
                 </Menu>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <Row type="flex" justify="end">
                   <ButtonGroup style={{ padding: '16px' }}>
                     <Button style={{ cursor: 'text' }}>

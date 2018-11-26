@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tabs, Icon, Button, Layout, Row, Col, Menu } from 'antd';
 import * as AuthService from '../login/service/AuthService'
 import CourseABMContent from './abm-course/CourseABMContent'
+import DepSurveyChart from './survey-chart/DepSurveyChart'
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.Group;
@@ -11,7 +12,8 @@ class AdminDepContainer extends Component {
 
   state = {
     childrens: {
-      courses: <CourseABMContent />
+      courses: <CourseABMContent />,
+      surveyChart: <DepSurveyChart/>
     },
     currentChildren: <CourseABMContent />,
     userName: '',
@@ -56,6 +58,12 @@ class AdminDepContainer extends Component {
                     onClick={() => this.selectNewChilder('courses')}
                   >
                     Cursos
+                  </Menu.Item>
+                  <Menu.Item
+                    key="2"
+                    onClick={() => this.selectNewChilder('surveyChart')}
+                  >
+                    Reporte de encuestas
                   </Menu.Item>
                 </Menu>
               </Col>

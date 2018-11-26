@@ -292,7 +292,7 @@ export default class CoursesABMContent extends Component {
       dataIndex: 'acciones',
       key: 'acciones',
       render: (value, row, idx) => {
-        return <div> <Button.Group>
+        return <div> <Button.Group style={{ whiteSpace:"pre" }} >
           <Button
               type='primary'
               icon='eye'
@@ -334,7 +334,7 @@ export default class CoursesABMContent extends Component {
 
 
       <Table
-        style={{ whiteSpace: 'pre'}}
+        //style={{ whiteSpace: 'pre'}}
         dataSource={dataSource}
         columns={columns}
         pagination={this.state.pagination}
